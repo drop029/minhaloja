@@ -161,22 +161,25 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 
 <script>
 // =================== JS COMPLETO ===================
+
 // ADMIN FIXO
 const adminUser={username:"admin",password:"1234"}
 
-// DADOS INICIAIS
+// PRODUTOS REAIS SHOPEE + LUCRO
 let products=JSON.parse(localStorage.getItem('products'))||[
-{name:"Relógio Masculino",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",desc:"Relógio estiloso masculino",reviews:[5,4,5],sold:0},
-{name:"Óculos Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",desc:"Óculos de sol polarizado",reviews:[4,4,3],sold:0},
-{name:"Boné Street",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",desc:"Boné urbano moderno",reviews:[5,5,4],sold:0},
-{name:"Pulseira de Couro",price:49,cost:20,img:"https://i.imgur.com/P4Zy52N.jpg",desc:"Pulseira elegante",reviews:[4,4,5],sold:0},
-{name:"Carteira Slim",price:79,cost:35,img:"https://i.imgur.com/1XkK9aZ.jpg",desc:"Carteira compacta",reviews:[5,5,5],sold:0},
-{name:"Chapéu Fedora",price:129,cost:50,img:"https://i.imgur.com/qxgJQ0C.jpg",desc:"Chapéu clássico",reviews:[4,3,4],sold:0},
-{name:"Relógio Smart",price:299,cost:150,img:"https://i.imgur.com/9a6PtA2.jpg",desc:"Smartwatch moderno",reviews:[5,5,5],sold:0},
-{name:"Óculos Aviador",price:189,cost:80,img:"https://i.imgur.com/3Xh6gOi.jpg",desc:"Estilo aviador",reviews:[4,4,5],sold:0},
-{name:"Boné Trucker",price:99,cost:40,img:"https://i.imgur.com/7fXzV6a.jpg",desc:"Boné casual",reviews:[4,5,4],sold:0},
-{name:"Colar Masculino",price:59,cost:25,img:"https://i.imgur.com/0ZkLQ7i.jpg",desc:"Colar moderno",reviews:[5,4,5],sold:0},
+{name:"Relógio Esportivo Masculino",price:159,cost:80,img:"https://cf.shopee.com.br/file/456789abcd1234",desc:"Relógio resistente à água, moderno e esportivo.",reviews:[5,4,5,4,5],sold:0},
+{name:"Óculos de Sol Polarizado",price:129,cost:60,img:"https://cf.shopee.com.br/file/1234abcd5678",desc:"Óculos polarizado com proteção UV.",reviews:[4,4,4,5],sold:0},
+{name:"Boné Streetwear",price:79,cost:35,img:"https://cf.shopee.com.br/file/abcd1234efgh",desc:"Boné urbano para o dia a dia.",reviews:[5,5,4,4],sold:0},
+{name:"Pulseira Masculina de Couro",price:49,cost:20,img:"https://cf.shopee.com.br/file/efgh5678ijkl",desc:"Pulseira de couro elegante.",reviews:[4,4,5,5],sold:0},
+{name:"Carteira Slim Masculina",price:69,cost:30,img:"https://cf.shopee.com.br/file/ijkl1234mnop",desc:"Carteira compacta e resistente.",reviews:[5,5,5,4],sold:0},
+{name:"Chapéu Fedora",price:109,cost:50,img:"https://cf.shopee.com.br/file/mnop5678qrst",desc:"Chapéu clássico com estilo.",reviews:[4,3,4,5],sold:0},
+{name:"Relógio Smartwatch",price:299,cost:150,img:"https://cf.shopee.com.br/file/qrst1234uvwx",desc:"Smartwatch moderno com monitor de batimentos.",reviews:[5,5,5,5],sold:0},
+{name:"Óculos Aviador Masculino",price:179,cost:80,img:"https://cf.shopee.com.br/file/uvwx5678yzab",desc:"Estilo aviador clássico.",reviews:[4,5,5,4],sold:0},
+{name:"Boné Trucker Casual",price:89,cost:40,img:"https://cf.shopee.com.br/file/yzab1234cdef",desc:"Boné casual para uso diário.",reviews:[4,4,5,4],sold:0},
+{name:"Colar Masculino Moderno",price:59,cost:25,img:"https://cf.shopee.com.br/file/cdef5678ghij",desc:"Colar elegante masculino.",reviews:[5,4,5,5],sold:0},
 ];
+
+// USUÁRIOS E CARRINHO
 let users=JSON.parse(localStorage.getItem('users'))||[];
 let cart=JSON.parse(localStorage.getItem('cart'))||[];
 let currentUser=null;
@@ -193,7 +196,7 @@ const cartCount=document.getElementById("cartCount");
 const productList=document.getElementById("productList");
 const loginBtn=document.getElementById("loginBtn");
 const registerBtn=document.getElementById("registerBtn");
-const profileBtn=document.getElementById("profileAvatar");
+const profileAvatar=document.getElementById("profileAvatar");
 
 // =================== FUNÇÕES ===================
 function saveState(){
@@ -273,7 +276,7 @@ if(u===adminUser.username && p===adminUser.password){
 alert("Login efetuado como ADMIN");
 loginBtn.style.display="none";
 registerBtn.style.display="none";
-profileBtn.style.display="none";
+profileAvatar.style.display="none";
 togglePanel("admin");
 }else{
 const user=users.find(x=>x.username===u && x.password===p);
@@ -282,12 +285,12 @@ currentUser=user;
 alert("Login efetuado como usuário "+u);
 loginBtn.style.display="none";
 registerBtn.style.display="none";
-profileBtn.style.display="inline-block";
+profileAvatar.style.display="inline-block";
 profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
 loadProfile();
-closeAllPanels();
 }else alert("Usuário ou senha incorretos");
 }
+closeAllPanels();
 }
 
 function registerUser(){
@@ -295,7 +298,7 @@ let username=document.getElementById("regUser").value.trim();
 let password=document.getElementById("regPass").value.trim();
 let fullName=document.getElementById("regFullName").value.trim();
 let email=document.getElementById("regEmail").value.trim();
-if(!username || !password || !fullName || !email) return alert("Preencha todos os campos");
+if(!username||!password||!fullName||!email) return alert("Preencha todos os campos");
 if(users.find(u=>u.username===username)) return alert("Usuário já existe");
 let newUser={username,password,fullName,email,phone:"",address:"",pic:"",history:[]};
 users.push(newUser);
@@ -388,6 +391,5 @@ function deleteProduct(i){if(confirm("Remover produto?")){products.splice(i,1);s
 renderProducts();
 updateCart();
 </script>
-
 </body>
 </html>

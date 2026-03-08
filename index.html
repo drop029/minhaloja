@@ -25,18 +25,29 @@ header{
 }
 .logo{ font-size:28px; font-weight:bold; color:#b366ff; letter-spacing:1px; }
 .top-actions{ display:flex; gap:12px; align-items:center; }
-button{ background:#7a00ff; border:none; padding:10px 16px; color:white; border-radius:8px; cursor:pointer; font-weight:bold; }
-button:hover{ background:#9d35ff; }
+button{
+  background:#7a00ff; border:none; padding:10px 16px; color:white; border-radius:8px; cursor:pointer; font-weight:bold;
+  position:relative;
+  overflow:hidden;
+  transition:.3s;
+}
+button::after{
+  content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg, #9d35ff, #ff66ff); transition:.5s; z-index:0;
+}
+button:hover::after{ left:0; }
+button span{ position:relative; z-index:1; }
 #search{ padding:8px; border-radius:6px; border:none; }
 .banner{ padding:50px 20px; text-align:center; background:linear-gradient(90deg,#24004a,#120020); }
 .banner h1{ font-size:36px; margin:0; }
 .banner p{ opacity:.8; }
 .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:30px; }
-.card{ background:#140020; padding:15px; border-radius:12px; box-shadow:0 0 10px #6d00ff55; transition:.25s; cursor:pointer; }
+.card{ background:#140020; padding:15px; border-radius:12px; box-shadow:0 0 10px #6d00ff55; transition:.25s; cursor:pointer; position:relative; }
 .card:hover{ transform:translateY(-6px); box-shadow:0 0 15px #9f40ff; }
 .card img{ width:100%; border-radius:10px; }
 .price{ color:#a855ff; font-size:18px; margin:6px 0; }
 .badge{ background:#ff2bd6; padding:4px 8px; border-radius:6px; font-size:12px; }
+.stars-small{ color:#ffdd00; font-size:14px; }
+.reviews-count{ font-size:12px; opacity:.7; margin-left:5px; }
 
 /* Carrinho */
 .cart{ position:fixed; top:0; right:-100%; width:90%; max-width:400px; height:100%; background:#0d0018; padding:20px; box-shadow:-5px 0 20px #6a00ff; transition:.3s; overflow:auto; z-index:20; }
@@ -65,13 +76,11 @@ button:hover{ background:#9d35ff; }
 .review-box{ background:#140020; padding:20px; border-radius:12px; max-width:600px; margin:auto; }
 .review-box h3{ margin-top:0; }
 .review-item{ border-top:1px solid #6a00ff; padding:10px 0; }
-.stars{ color:#ffdd00; }
 .review-media{ display:flex; overflow-x:auto; gap:5px; margin-top:5px; }
 .review-media img{ height:80px; border-radius:6px; }
 
 /* Inputs */
 input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border:none; }
-
 </style>
 </head>
 <body>
@@ -80,8 +89,8 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
   <div class="logo">AlphaStyle</div>
   <div class="top-actions">
     <input id="search" placeholder="Buscar produto" oninput="searchProducts()">
-    <button id="loginBtn" onclick="openLogin()">Login</button>
-    <button id="registerBtn" onclick="openRegister()">Register</button>
+    <button id="loginBtn" onclick="openLogin()"><span>Login</span></button>
+    <button id="registerBtn" onclick="openRegister()"><span>Register</span></button>
     <button onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
   </div>
 </header>
@@ -107,7 +116,7 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
 
 <!-- Login -->
 <div class="page" id="loginPage">
-  <h2>Login Admin</h2>
+  <h2>Login</h2>
   <input id="user" placeholder="Usuário">
   <input id="pass" type="password" placeholder="Senha">
   <button onclick="login()">Entrar</button>
@@ -123,7 +132,7 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
   <button onclick="closeRegister()">Voltar</button>
 </div>
 
-<!-- Admin -->
+<!-- Admin (mesmo login) -->
 <div class="page" id="adminPage">
   <div class="admin-panel">
     <div class="tabs">
@@ -168,7 +177,6 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
 </div>
 
 <script>
-// Variáveis
 const cartDiv = document.getElementById("cart")
 const overlayDiv = document.getElementById("overlay")
 const cartTotal = document.getElementById("cartTotal")
@@ -196,107 +204,59 @@ let adminLogged=false
 let currentReviewProduct = null
 let users=[]
 
-// Produtos
+// Funções
 function renderProducts(){
 productList.innerHTML=""
 products.forEach((p,i)=>{
-productList.innerHTML+=`
-<div class="card" onclick="openReviews(${i})">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<div class="price">R$ ${p.price}</div>
-<div class="badge">${Math.floor(Math.random()*15)+3} vendo agora</div>
-<button onclick="event.stopPropagation(); addToCart(${i})">Adicionar</button>
-</div>`})}
+  let totalStars = p.reviews.reduce((s,r)=>s+r.stars,0)
+  let avgStars = p.reviews.length?Math.round(totalStars/p.reviews.length):0
+  productList.innerHTML+=`
+  <div class="card" onclick="openReviews(${i})">
+    <img src="${p.img}">
+    <h3>${p.name}</h3>
+    <div class="stars-small">${"★".repeat(avgStars)}${"☆".repeat(5-avgStars)}<span class="reviews-count">(${p.reviews.length})</span></div>
+    <div class="price">R$ ${p.price}</div>
+    <div class="badge">${Math.floor(Math.random()*15)+3} vendo agora</div>
+    <button onclick="event.stopPropagation(); addToCart(${i})">Adicionar</button>
+  </div>`
+})
+}
 
 // Carrinho
-function addToCart(i){
-  const item = {...products[i], quantity:1}
-  cart.push(item)
-  updateCart()
-}
-function updateCart(){
-  let itemsHTML = ""
-  let total = 0
-  cart.forEach((p,idx)=>{
-    total+=p.price*p.quantity
-    itemsHTML+=`<div class="cart-item">
-    <img src="${p.img}">
-    <div class="cart-item-info">
-    <h4>${p.name}</h4>
-    <p>R$ ${p.price} x ${p.quantity}</p>
-    </div>
-    <button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button>
-    </div>`
-  })
-  document.getElementById("cartItems").innerHTML = itemsHTML
-  cartTotal.innerText = total
-  cartCount.innerText = cart.length
-}
+function addToCart(i){ const item={...products[i], quantity:1}; cart.push(item); updateCart() }
+function updateCart(){ let itemsHTML="",total=0; cart.forEach((p,idx)=>{ total+=p.price*p.quantity; itemsHTML+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>` }); document.getElementById("cartItems").innerHTML=itemsHTML; cartTotal.innerText=total; cartCount.innerText=cart.length }
 function removeFromCart(idx){ cart.splice(idx,1); updateCart() }
 function toggleCart(){ cartDiv.classList.add("open"); overlayDiv.classList.add("show") }
 function closeCart(){ cartDiv.classList.remove("open"); overlayDiv.classList.remove("show") }
 
-// Login/Register/Admin
+// Login/Register
 function openLogin(){ loginPage.classList.add("active") }
 function closeLogin(){ loginPage.classList.remove("active") }
 function openRegister(){ registerPage.classList.add("active") }
 function closeRegister(){ registerPage.classList.remove("active") }
-function login(){
+function login(){ 
   let u=document.getElementById("user").value
   let p=document.getElementById("pass").value
-  if(u=="Marc@s015" && p=="Mayc@la015"){
-    alert("Admin logado")
-    loginPage.classList.remove("active")
-    adminPage.classList.add("active")
-    loginBtn.style.display="none"
-    registerBtn.style.display="none"
-    adminLogged=true
-  }else{ alert("Login inválido") }
+  if(!u||!p){ return alert("Preencha os campos") }
+  alert("Login efetuado como "+u)
+  closeLogin()
+  if(u=="Marc@s015" && p=="Mayc@la015"){ adminPage.classList.add("active"); loginBtn.style.display="none"; registerBtn.style.display="none"; adminLogged=true }
 }
-function registerUser(){
-  let u=document.getElementById("regUser").value
-  let p=document.getElementById("regPass").value
-  if(!u || !p) return alert("Preencha todos os campos")
-  users.push({username:u,password:p})
-  alert("Usuário registrado!")
-  closeRegister()
-}
+function registerUser(){ let u=document.getElementById("regUser").value; let p=document.getElementById("regPass").value; if(!u||!p)return alert("Preencha os campos"); users.push({username:u,password:p}); alert("Usuário registrado!"); closeRegister() }
 function logout(){ adminPage.classList.remove("active"); loginBtn.style.display="inline-block"; registerBtn.style.display="inline-block"; adminLogged=false }
 
 // Admin
 function addProduct(){ if(!adminLogged) return alert("Faça login"); let n=document.getElementById("pNome").value; let pr=parseFloat(document.getElementById("pPreco").value); let c=parseFloat(document.getElementById("pCusto").value); let img=document.getElementById("pImg").value; products.push({name:n,price:pr,cost:c,img:img,reviews:[]}); renderProducts() }
-function checkoutPix(){ if(cart.length==0) return alert("Carrinho vazio"); let total=cart.reduce((t,p)=>t+p.price,0); let custo=cart.reduce((t,p)=>t+p.cost,0); lucroTotal+=total-custo; lucro.innerText=lucroTotal; let pedido=document.createElement("div"); pedido.className="order"; pedido.innerText=`Pedido R$${total}`; pedidosDiv.appendChild(pedido); alert("Pagamento PIX enviado (simulação)"); cart=[]; updateCart(); closeCart() }
+function checkoutPix(){ if(cart.length==0)return alert("Carrinho vazio"); let total=cart.reduce((t,p)=>t+p.price,0); let custo=cart.reduce((t,p)=>t+p.cost,0); lucroTotal+=total-custo; lucro.innerText=lucroTotal; let pedido=document.createElement("div"); pedido.className="order"; pedido.innerText=`Pedido R$${total}`; pedidosDiv.appendChild(pedido); alert("Pagamento PIX enviado (simulação)"); cart=[]; updateCart(); closeCart() }
 function checkoutMercadoPago(){ window.open("https://www.mercadopago.com.br/checkout") }
 function searchProducts(){ let s=document.getElementById("search").value.toLowerCase(); document.querySelectorAll(".card").forEach(c=>{ c.style.display=c.innerText.toLowerCase().includes(s)?"block":"none" }) }
-function showTab(tab){ if(!adminLogged) return alert("Faça login"); document.getElementById("produtosTab").style.display = tab==="produtos"?"block":"none"; document.getElementById("pedidosTab").style.display = tab==="pedidos"?"block":"none"; document.getElementById("tabProdutos").classList.toggle("active", tab==="produtos"); document.getElementById("tabPedidos").classList.toggle("active", tab==="pedidos") }
+function showTab(tab){ if(!adminLogged)return alert("Faça login"); document.getElementById("produtosTab").style.display=tab==="produtos"?"block":"none"; document.getElementById("pedidosTab").style.display=tab==="pedidos"?"block":"none"; document.getElementById("tabProdutos").classList.toggle("active",tab==="produtos"); document.getElementById("tabPedidos").classList.toggle("active",tab==="pedidos") }
 
 // Avaliações
-function openReviews(i){ currentReviewProduct=i; reviewProductName.innerText = products[i].name; renderReviews(); reviewOverlay.classList.add("show") }
+function openReviews(i){ currentReviewProduct=i; reviewProductName.innerText=products[i].name; renderReviews(); reviewOverlay.classList.add("show") }
 function closeReviews(){ reviewOverlay.classList.remove("show") }
-function renderReviews(){
-  let r = products[currentReviewProduct].reviews
-  reviewsList.innerHTML=""
-  if(r.length===0) reviewsList.innerHTML="<p>Nenhuma avaliação ainda</p>"
-  r.forEach(rv=>{
-    reviewsList.innerHTML+=`<div class="review-item">
-      <div class="stars">${"★".repeat(rv.stars)}${"☆".repeat(5-rv.stars)}</div>
-      <p>${rv.comment}</p>
-      ${rv.media?`<div class="review-media"><img src="${rv.media}"></div>`:""}
-    </div>`
-  })
-}
-function addReview(){
-  let stars = parseInt(document.getElementById("reviewStars").value)
-  let comment = document.getElementById("reviewComment").value
-  let media = document.getElementById("reviewMedia").value
-  if(comment==="") return alert("Comentário obrigatório")
-  products[currentReviewProduct].reviews.push({stars,comment,media})
-  document.getElementById("reviewStars").value=5
-  document.getElementById("reviewComment").value=""
-  document.getElementById("reviewMedia").value=""
-  renderReviews()
-}
+function renderReviews(){ let r=products[currentReviewProduct].reviews; reviewsList.innerHTML=""; if(r.length===0) reviewsList.innerHTML="<p>Nenhuma avaliação ainda</p>"; r.forEach(rv=>{ reviewsList.innerHTML+=`<div class="review-item"><div class="stars">${"★".repeat(rv.stars)}${"☆".repeat(5-rv.stars)}</div><p>${rv.comment}</p>${rv.media?`<div class="review-media"><img src="${rv.media}"></div>`:""}</div>` }) }
+function addReview(){ let stars=parseInt(document.getElementById("reviewStars").value); let comment=document.getElementById("reviewComment").value; let media=document.getElementById("reviewMedia").value; if(comment==="") return alert("Comentário obrigatório"); products[currentReviewProduct].reviews.push({stars,comment,media}); document.getElementById("reviewStars").value=5; document.getElementById("reviewComment").value=""; document.getElementById("reviewMedia").value=""; renderReviews() }
 
 renderProducts()
 </script>

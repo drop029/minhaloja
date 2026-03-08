@@ -60,13 +60,13 @@ button:hover{
 }
 
 .banner{
-  padding:60px 20px;
+  padding:50px 20px;
   text-align:center;
   background:linear-gradient(90deg,#24004a,#120020);
 }
 
 .banner h1{
-  font-size:40px;
+  font-size:36px;
   margin:0;
 }
 
@@ -112,11 +112,13 @@ button:hover{
   font-size:12px;
 }
 
+/* =================== CARRINHO =================== */
 .cart{
   position:fixed;
   top:0;
-  right:-420px;
-  width:420px;
+  right:-100%;
+  width:90%;
+  max-width:400px;
   height:100%;
   background:#0d0018;
   padding:20px;
@@ -158,6 +160,7 @@ input{
   border:none;
 }
 
+/* =================== LOGIN & ADMIN =================== */
 .page{
   display:none;
   padding:30px;
@@ -172,6 +175,23 @@ input{
   margin:auto;
 }
 
+.tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.tab{
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  background:#1a002a;
+}
+
+.tab.active{
+  background:#7a00ff;
+}
+
 .order{
   background:#140020;
   padding:10px;
@@ -182,7 +202,6 @@ input{
 </head>
 <body>
 
-<!-- =================== HEADER =================== -->
 <header>
   <div class="logo">AlphaStyle</div>
   <div class="top-actions">
@@ -192,16 +211,14 @@ input{
   </div>
 </header>
 
-<!-- =================== BANNER =================== -->
 <div class="banner">
   <h1>Bem-vindo à AlphaStyle</h1>
   <p>Acessórios masculinos modernos</p>
 </div>
 
-<!-- =================== PRODUTOS =================== -->
 <div class="products" id="productList"></div>
 
-<!-- =================== OVERLAY E CARRINHO =================== -->
+<!-- Overlay e Carrinho -->
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 
 <div class="cart" id="cart">
@@ -219,7 +236,7 @@ input{
   <button onclick="checkoutMercadoPago()">Mercado Pago</button>
 </div>
 
-<!-- =================== LOGIN =================== -->
+<!-- Login -->
 <div class="page" id="loginPage">
   <h2>Login Admin</h2>
   <input id="user" placeholder="Usuário">
@@ -228,28 +245,35 @@ input{
   <button onclick="closeLogin()">Voltar</button>
 </div>
 
-<!-- =================== ADMIN =================== -->
+<!-- Admin -->
 <div class="page" id="adminPage">
   <div class="admin-panel">
-    <h2>Painel Admin</h2>
+    <div class="tabs">
+      <div class="tab active" id="tabProdutos" onclick="showTab('produtos')">Produtos</div>
+      <div class="tab" id="tabPedidos" onclick="showTab('pedidos')">Pedidos</div>
+    </div>
+
+    <div id="produtosTab">
+      <h3>Adicionar Produto</h3>
+      <input id="pNome" placeholder="Nome">
+      <input id="pPreco" placeholder="Preço venda">
+      <input id="pCusto" placeholder="Custo fornecedor">
+      <input id="pImg" placeholder="URL imagem">
+      <button onclick="addProduct()">Adicionar Produto</button>
+    </div>
+
+    <div id="pedidosTab" style="display:none">
+      <h3>Pedidos</h3>
+      <div id="pedidos"></div>
+    </div>
+
     <p>Lucro total: R$ <span id="lucro">0</span></p>
-
-    <h3>Adicionar Produto</h3>
-    <input id="pNome" placeholder="Nome">
-    <input id="pPreco" placeholder="Preço venda">
-    <input id="pCusto" placeholder="Custo fornecedor">
-    <input id="pImg" placeholder="URL imagem">
-    <button onclick="addProduct()">Adicionar Produto</button>
-
-    <h3>Pedidos</h3>
-    <div id="pedidos"></div>
-
     <button onclick="logout()">Sair</button>
   </div>
 </div>
 
-<!-- =================== SCRIPT =================== -->
 <script>
+// Variáveis
 const cartDiv = document.getElementById("cart")
 const overlayDiv = document.getElementById("overlay")
 const cartTotal = document.getElementById("cartTotal")
@@ -269,6 +293,7 @@ let products=[
 
 let cart=[]
 let lucroTotal=0
+let adminLogged=false
 
 function renderProducts(){
   productList.innerHTML=""
@@ -324,6 +349,7 @@ function login(){
     loginPage.classList.remove("active")
     adminPage.classList.add("active")
     loginBtn.style.display="none"
+    adminLogged=true
   }else{
     alert("Login inválido")
   }
@@ -332,9 +358,11 @@ function login(){
 function logout(){
   adminPage.classList.remove("active")
   loginBtn.style.display="inline-block"
+  adminLogged=false
 }
 
 function addProduct(){
+  if(!adminLogged) return alert("Faça login primeiro")
   let n=document.getElementById("pNome").value
   let pr=parseFloat(document.getElementById("pPreco").value)
   let c=parseFloat(document.getElementById("pCusto").value)
@@ -371,6 +399,15 @@ function searchProducts(){
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=c.innerText.toLowerCase().includes(s)?"block":"none"
   })
+}
+
+// Abas Admin
+function showTab(tab){
+  if(!adminLogged) return alert("Faça login primeiro")
+  document.getElementById("produtosTab").style.display = tab==="produtos"?"block":"none"
+  document.getElementById("pedidosTab").style.display = tab==="pedidos"?"block":"none"
+  document.getElementById("tabProdutos").classList.toggle("active", tab==="produtos")
+  document.getElementById("tabPedidos").classList.toggle("active", tab==="pedidos")
 }
 
 renderProducts()

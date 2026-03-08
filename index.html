@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlphaStyle 3.0</title>
+<title>AlphaStyle Final</title>
 <style>
 body{margin:0;font-family:Arial, Helvetica, sans-serif;background:#070010;color:white;}
 header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#140028;box-shadow:0 0 15px #7a00ff;position:sticky;top:0;z-index:10;}
@@ -27,8 +27,6 @@ button span{position:relative;z-index:1;}
 .add-btn::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg,#ff66ff,#9d35ff);transition:.5s;z-index:0;}
 .add-btn:hover::after{left:0;}
 .add-btn span{position:relative;z-index:1;}
-
-/* Side Panels */
 .side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:.3s;overflow:auto;z-index:20;}
 .side-panel.open{right:0;}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#00000090;display:none;z-index:15;}
@@ -42,15 +40,11 @@ button span{position:relative;z-index:1;}
 .close-btn{background:#ff3c3c;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;color:white;margin-bottom:10px;}
 .side-panel input{width:100%;padding:8px;margin:6px 0 12px 0;border-radius:6px;border:none;}
 label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
-
-/* Admin */
 .admin-panel{display:none;margin-top:20px;border:1px solid #6a00ff;padding:10px;border-radius:8px;}
 .admin-panel h3{margin-top:0;font-size:18px;}
 .admin-panel input, .admin-panel select{margin-bottom:6px;}
 .admin-panel button{margin-bottom:6px;}
 .admin-section{border-top:1px solid #6a00ff;margin-top:10px;padding-top:10px;}
-
-/* Responsive */
 @media(max-width:600px){.banner h1{font-size:28px;}.products{padding:15px;gap:15px;}}
 </style>
 </head>
@@ -59,10 +53,10 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 <header>
 <div class="logo">AlphaStyle</div>
 <div class="top-actions">
-  <input id="search" type="search" placeholder="Buscar produto" oninput="renderProducts()">
-  <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
-  <button id="registerBtn" onclick="togglePanel('register')"><span>Register</span></button>
-  <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
+<input id="search" placeholder="Buscar produto" oninput="renderProducts()">
+<button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
+<button id="registerBtn" onclick="togglePanel('register')"><span>Register</span></button>
+<button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
 </div>
 </header>
 
@@ -103,7 +97,7 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 <button onclick="registerUser()">Registrar</button>
 </div>
 
-<!-- Painel Admin Completo -->
+<!-- Painel Admin -->
 <div class="side-panel admin-panel" id="adminPanel">
 <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
 <h2>Painel Admin Profissional</h2>
@@ -134,163 +128,117 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 <ul id="statTopProducts"></ul>
 <p>Total de Usuários: <span id="statTotalUsers">0</span></p>
 </div>
-
 </div>
 
 <script>
 // Admin fixo
 const adminUser={username:"admin",password:"1234"}
 
-// Dados
+// Dados iniciais
 let products=JSON.parse(localStorage.getItem('products'))||[
-  {name:"Relógio Masculino",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[5,4,5],sold:0},
-  {name:"Óculos Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[4,4,3],sold:0},
-  {name:"Boné Street",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",reviews:[5,5,4],sold:0},
+{name:"Relógio Masculino",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[5,4,5],sold:0},
+{name:"Óculos Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[4,4,3],sold:0},
+{name:"Boné Street",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",reviews:[5,5,4],sold:0},
 ]
-
 let users=JSON.parse(localStorage.getItem('users'))||[]
 let cart=JSON.parse(localStorage.getItem('cart'))||[]
-let totalSales=0
+let overlayDiv=document.getElementById("overlay")
+let cartDiv=document.getElementById("cartPanel")
+let loginDiv=document.getElementById("loginPanel")
+let registerDiv=document.getElementById("registerPanel")
+let adminPanel=document.getElementById("adminPanel")
+let cartTotal=document.getElementById("cartTotal")
+let cartCount=document.getElementById("cartCount")
+let productList=document.getElementById("productList")
+let loginBtn=document.getElementById("loginBtn")
+let registerBtn=document.getElementById("registerBtn")
 
-function saveState(){
-  localStorage.setItem('products',JSON.stringify(products))
-  localStorage.setItem('users',JSON.stringify(users))
-  localStorage.setItem('cart',JSON.stringify(cart))
-}
+// Funções de painel
+function togglePanel(panel){closeAllPanels();overlayDiv.classList.add("show");
+if(panel==="cart")cartDiv.classList.add("open");
+if(panel==="login")loginDiv.classList.add("open");
+if(panel==="register")registerDiv.classList.add("open");
+if(panel==="admin")adminPanel.classList.add("open")}
+function closeAllPanels(){overlayDiv.classList.remove("show");cartDiv.classList.remove("open");loginDiv.classList.remove("open");registerDiv.classList.remove("open");adminPanel.classList.remove("open")}
 
 // Render Produtos
 function renderProducts(){
-  const searchText=document.getElementById("search").value.toLowerCase()
-  const list=document.getElementById("productList")
-  list.innerHTML=""
-  products.forEach((p,i)=>{
-    if(!p.name.toLowerCase().includes(searchText)) return
-    const soldNow=p.sold || 0
-    const promo=Math.random()<0.3?'🔥 Promo!':''
-    const stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0
-    let starHTML=""
-    for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆"}
-    list.innerHTML+=`<div class="card">
-      <img src="${p.img}" loading="lazy" alt="${p.name}">
-      <div class="badge">${soldNow} vendendo ${promo}</div>
-      <h3>${p.name}</h3>
-      <div class="price">R$ ${p.price}</div>
-      <div>${starHTML}</div>
-      <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
-    </div>`
-  })
-}
-
-// Fly-to-cart
-let flying=false
-function flyToCart(e,i){
-  if(flying)return
-  flying=true
-  const img=e.target.closest('.card').querySelector('img')
-  const clone=img.cloneNode(true)
-  const rect=img.getBoundingClientRect()
-  clone.style.position='fixed';clone.style.top=rect.top+'px';clone.style.left=rect.left+'px'
-  clone.style.width=rect.width+'px';clone.style.height=rect.height+'px'
-  clone.style.transition='all 0.8s ease-in-out';clone.style.zIndex=100
-  document.body.appendChild(clone)
-  const cartBtn=document.querySelector('.top-actions button:last-child')
-  const cRect=cartBtn.getBoundingClientRect()
-  setTimeout(()=>{clone.style.top=cRect.top+'px';clone.style.left=cRect.left+'px';clone.style.width='40px';clone.style.height='40px';clone.style.opacity=0},10)
-  setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)
-}
+let searchText=document.getElementById("search").value.toLowerCase()
+productList.innerHTML=""
+products.forEach((p,i)=>{
+if(!p.name.toLowerCase().includes(searchText)) return
+const soldNow=p.sold||0
+const promo=Math.random()<0.3?'🔥 Promo!':''
+let stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0
+let starHTML=""
+for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆"}
+productList.innerHTML+=`<div class="card">
+<img src="${p.img}" loading="lazy" alt="${p.name}">
+<div class="badge">${soldNow} vendendo ${promo}</div>
+<h3>${p.name}</h3>
+<div class="price">R$ ${p.price}</div>
+<div>${starHTML}</div>
+<button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
+</div>`})}
 
 // Carrinho
+let flying=false
+function flyToCart(e,i){if(flying)return;flying=true
+const img=e.target.closest('.card').querySelector('img')
+const clone=img.cloneNode(true)
+const rect=img.getBoundingClientRect()
+clone.style.position='fixed';clone.style.top=rect.top+'px';clone.style.left=rect.left+'px';clone.style.width=rect.width+'px';clone.style.height=rect.height+'px';clone.style.transition='all 0.8s ease-in-out';clone.style.zIndex=100
+document.body.appendChild(clone)
+const cartBtn=document.querySelector('.top-actions button:last-child')
+const cRect=cartBtn.getBoundingClientRect()
+setTimeout(()=>{clone.style.top=cRect.top+'px';clone.style.left=cRect.left+'px';clone.style.width='40px';clone.style.height='40px';clone.style.opacity=0},10)
+setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)}
+
 function addToCart(i){
-  const existing=cart.find(p=>p.name===products[i].name)
-  if(existing){existing.quantity++;products[i].sold++}
-  else{cart.push({...products[i],quantity:1});products[i].sold=1}
-  updateCart();renderAdminStats();saveState()
+const existing=cart.find(p=>p.name===products[i].name)
+if(existing){existing.quantity++;products[i].sold++}
+else{cart.push({...products[i],quantity:1});products[i].sold=1}
+updateCart();renderAdminStats();saveState()
 }
-function updateCart(){
-  let html="",total=0,count=0
-  cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity
-    html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`})
-  document.getElementById("cartItems").innerHTML=html
-  document.getElementById("cartTotal").innerText=total
-  document.getElementById("cartCount").innerText=count
-}
+function updateCart(){let html="",total=0,count=0
+cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity
+html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`})
+cartTotal.innerText=total;cartCount.innerText=count;document.getElementById("cartItems").innerHTML=html}
 function removeFromCart(idx){cart.splice(idx,1);updateCart();saveState()}
 function emptyCart(){cart=[];updateCart();saveState()}
 
-// Painéis
-function togglePanel(panel){closeAllPanels();overlayDiv.classList.add("show")
-  if(panel==="cart")cartDiv.classList.add("open")
-  if(panel==="login")loginDiv.classList.add("open")
-  if(panel==="register")registerDiv.classList.add("open")
-  if(panel==="admin")adminPanel.classList.add("open")}
-function closeAllPanels(){overlayDiv.classList.remove("show");cartDiv.classList.remove("open");loginDiv.classList.remove("open");registerDiv.classList.remove("open");adminPanel.classList.remove("open")}
-
 // Login/Register
 function login(){
-  let u=document.getElementById("user").value,p=document.getElementById("pass").value
-  if(!u||!p)return alert("Preencha os campos")
-  if(u===adminUser.username&&p===adminUser.password){
-    alert("Login efetuado como ADMIN")
-    loginBtn.style.display="none";registerBtn.style.display="none"
-    togglePanel("admin")
-  }else{
-    const user=users.find(x=>x.username===u&&x.password===p)
-    if(user){alert("Login efetuado como usuário "+u);loginBtn.style.display="none";registerBtn.style.display="none"}
-    else{alert("Usuário ou senha inválidos")}}
-  closeAllPanels()
-}
-function registerUser(){let u=document.getElementById("regUser").value,p=document.getElementById("regPass").value
+let u=document.getElementById("user").value,p=document.getElementById("pass").value
 if(!u||!p)return alert("Preencha os campos")
-if(users.find(x=>x.username===u))return alert("Usuário já existe")
-users.push({username:u,password:p});saveState();alert("Usuário registrado!");closeAllPanels()}
+if(u===adminUser.username&&p===adminUser.password){alert("Login efetuado como ADMIN");loginBtn.style.display="none";registerBtn.style.display="none";togglePanel("admin")}
+else{const user=users.find(x=>x.username===u&&x.password===p);if(user){alert("Login efetuado como usuário "+u);loginBtn.style.display="none";registerBtn.style.display="none"}else{alert("Usuário ou senha inválidos")}}
+closeAllPanels()
+}
+function registerUser(){let u=document.getElementById("regUser").value,p=document.getElementById("regPass").value;if(!u||!p)return alert("Preencha os campos");if(users.find(x=>x.username===u))return alert("Usuário já existe");users.push({username:u,password:p});saveState();alert("Usuário registrado!");closeAllPanels()}
 
 // Admin Functions
-function adminAddProduct(){
-  const name=document.getElementById("adminName").value
-  const price=parseFloat(document.getElementById("adminPrice").value)
-  const cost=parseFloat(document.getElementById("adminCost").value)
-  const img=document.getElementById("adminImg").value
-  if(!name||isNaN(price)||isNaN(cost)||!img)return alert("Preencha todos os campos")
-  products.push({name,price,cost,img,reviews:[],sold:0})
-  saveState();alert("Produto adicionado!");renderProducts();renderAdminProducts()
-  document.getElementById("adminName").value="";document.getElementById("adminPrice").value="";document.getElementById("adminCost").value="";document.getElementById("adminImg").value=""
-}
+function adminAddProduct(){const name=document.getElementById("adminName").value;const price=parseFloat(document.getElementById("adminPrice").value);const cost=parseFloat(document.getElementById("adminCost").value);const img=document.getElementById("adminImg").value;if(!name||isNaN(price)||isNaN(cost)||!img)return alert("Preencha todos os campos");products.push({name,price,cost,img,reviews:[],sold:0});saveState();alert("Produto adicionado!");renderProducts();renderAdminProducts();document.getElementById("adminName").value="";document.getElementById("adminPrice").value="";document.getElementById("adminCost").value="";document.getElementById("adminImg").value=""}
 
-function renderAdminProducts(){
-  let html=""
-  products.forEach((p,i)=>{html+=`<div><b>${p.name}</b> - R$${p.price} <button onclick="adminEditProduct(${i})">Editar</button> <button onclick="adminRemoveProduct(${i})">Remover</button></div>`})
-  document.getElementById("adminProductList").innerHTML=html
-}
-
-function adminEditProduct(i){
-  const newName=prompt("Nome:",products[i].name)
-  const newPrice=parseFloat(prompt("Preço:",products[i].price))
-  const newCost=parseFloat(prompt("Custo:",products[i].cost))
-  const newImg=prompt("URL Imagem:",products[i].img)
-  if(!newName||isNaN(newPrice)||isNaN(newCost)||!newImg)return
-  products[i]={...products[i],name:newName,price:newPrice,cost:newCost,img:newImg}
-  saveState();renderProducts();renderAdminProducts();renderAdminStats()
-}
-
+function renderAdminProducts(){let html="";products.forEach((p,i)=>{html+=`<div><b>${p.name}</b> - R$${p.price} <button onclick="adminEditProduct(${i})">Editar</button> <button onclick="adminRemoveProduct(${i})">Remover</button></div>`});document.getElementById("adminProductList").innerHTML=html}
+function adminEditProduct(i){const newName=prompt("Nome:",products[i].name);const newPrice=parseFloat(prompt("Preço:",products[i].price));const newCost=parseFloat(prompt("Custo:",products[i].cost));const newImg=prompt("URL Imagem:",products[i].img);if(!newName||isNaN(newPrice)||isNaN(newCost)||!newImg)return;products[i]={...products[i],name:newName,price:newPrice,cost:newCost,img:newImg};saveState();renderProducts();renderAdminProducts();renderAdminStats()}
 function adminRemoveProduct(i){if(confirm("Remover produto?")){products.splice(i,1);saveState();renderProducts();renderAdminProducts();renderAdminStats()}}
 
-// Admin Users
 function renderAdminUsers(){let html="";users.forEach((u,i)=>{html+=`<div>${u.username} <button onclick="adminRemoveUser(${i})">Remover</button></div>`});document.getElementById("adminUserList").innerHTML=html}
 function adminRemoveUser(i){if(confirm("Remover usuário?")){users.splice(i,1);saveState();renderAdminUsers();renderAdminStats()}}
 
-// Stats
-function renderAdminStats(){
-  let total=0
-  products.forEach(p=>{total+=p.price*(p.sold||0)})
-  document.getElementById("statTotalSales").innerText=total
-  document.getElementById("statTotalUsers").innerText=users.length
-  const top=products.slice().sort((a,b)=>(b.sold||0)-(a.sold||0)).slice(0,5)
-  let html="";top.forEach(p=>{html+=`<li>${p.name} - ${p.sold||0} vendidos</li>`})
-  document.getElementById("statTopProducts").innerHTML=html
-}
+function renderAdminStats(){let total=0;products.forEach(p=>{total+=p.price*(p.sold||0)});document.getElementById("statTotalSales").innerText=total;document.getElementById("statTotalUsers").innerText=users.length;const top=products.slice().sort((a,b)=>(b.sold||0)-(a.sold||0)).slice(0,5);let html="";top.forEach(p=>{html+=`<li>${p.name} - ${p.sold||0} vendidos</li>`});document.getElementById("statTopProducts").innerHTML=html}
 
 // Checkout
-function checkoutPix(){
-  if(cart.length==0)return alert("Carrinho vazio")
-  let total=cart.reduce((t,p)=>t+p.price*p.quantity,0)
-  alert("Pagamento
+function checkoutPix(){if(cart.length==0)return alert("Carrinho vazio");let total=cart.reduce((t,p)=>t+p.price*p.quantity,0);alert("Pagamento PIX simulado: R$ "+total);cart=[];updateCart();saveState();closeAllPanels()}
+function checkoutMercadoPago(){window.open("https://www.mercadopago.com.br/checkout")}
+
+// Inicialização
+renderProducts()
+updateCart()
+renderAdminProducts()
+renderAdminUsers()
+renderAdminStats()
+</script>
+</body>
+</html>

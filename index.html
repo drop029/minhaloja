@@ -1,74 +1,130 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-br">
 <head>
-
-<title>Loja Masculina</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlphaStyle Store</title>
 <style>
-
-body{
-background:black;
-color:white;
-font-family:Arial;
-text-align:center;
-}
-
-h1{
-color:purple;
-}
-
-.produto{
-background:#111;
-padding:20px;
-margin:20px;
-border-radius:10px;
-display:inline-block;
-width:220px;
-}
-
-button{
-background:purple;
-color:white;
-border:none;
-padding:10px;
-cursor:pointer;
-border-radius:5px;
-}
-
-button:hover{
-background:#b300ff;
-}
-
-img{
-width:200px;
-border-radius:10px;
-}
-
+body{margin:0;font-family:Arial;background:#0b0b0b;color:white}
+header{background:#140018;padding:20px;text-align:center}
+header h1{color:#b300ff;margin:0}
+.container{max-width:1100px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:#111;border-radius:12px;padding:15px;text-align:center;box-shadow:0 0 10px rgba(179,0,255,0.2)}
+.card img{width:100%;border-radius:10px}
+.price{font-size:20px;color:#b300ff;font-weight:bold}
+button{background:#7a00cc;border:none;color:white;padding:12px 18px;border-radius:8px;cursor:pointer;transition:0.3s}
+button:hover{transform:scale(1.08);background:#b300ff;box-shadow:0 0 10px #b300ff}
+form{background:#111;padding:20px;border-radius:10px;max-width:400px;margin:auto}
+input{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:none}
+.hidden{display:none}
+footer{text-align:center;padding:30px;color:#777}
 </style>
-
 </head>
-
 <body>
 
-<h1>Loja Masculina</h1>
+<header>
+<h1>AlphaStyle</h1>
+<p>Acessórios masculinos</p>
+</header>
 
-<p>Relógios e acessórios masculinos</p>
+<div class="container" id="auth">
+<h2>Cadastro</h2>
+<form id="registerForm">
+<input placeholder="Usuário" id="regUser" required>
+<input placeholder="Senha" type="password" id="regPass" required>
+<input placeholder="Endereço" id="regAddress" required>
+<button type="submit">Cadastrar</button>
+</form>
 
-<div class="produto">
-
-<img src="https://via.placeholder.com/200">
-
-<h3>Relógio Masculino Premium</h3>
-
-<p>R$59,90</p>
-
-<a href="LINK_AQUI" target="_blank">
-<button>Comprar</button>
-</a>
-
+<h2>Login</h2>
+<form id="loginForm">
+<input placeholder="Usuário" id="logUser" required>
+<input placeholder="Senha" type="password" id="logPass" required>
+<button type="submit">Entrar</button>
+</form>
 </div>
 
-</body>
+<div class="container hidden" id="store">
+<h2>Produtos</h2>
+<div class="grid">
 
+<div class="card">
+<img src="https://i.imgur.com/3ZQ3Z6K.jpeg">
+<h3>Relógio Masculino Premium</h3>
+<p class="price">R$59,90</p>
+<button onclick="comprar('Relógio Masculino')">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.imgur.com/dQw4w9L.jpeg">
+<h3>Corrente Masculina Aço</h3>
+<p class="price">R$39,90</p>
+<button onclick="comprar('Corrente Masculina')">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.imgur.com/1z7Z1Z1.jpeg">
+<h3>Óculos Masculino Estiloso</h3>
+<p class="price">R$49,90</p>
+<button onclick="comprar('Óculos Masculino')">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.imgur.com/oYiTqum.jpeg">
+<h3>Pulseira Masculina Couro</h3>
+<p class="price">R$34,90</p>
+<button onclick="comprar('Pulseira Masculina')">Comprar</button>
+</div>
+
+</div>
+</div>
+
+<footer>
+AlphaStyle © 2026
+</footer>
+
+<script>
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+document.getElementById("registerForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+let user = document.getElementById("regUser").value;
+let pass = document.getElementById("regPass").value;
+let address = document.getElementById("regAddress").value;
+
+users.push({user,pass,address});
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Cadastro realizado");
+});
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+let user = document.getElementById("logUser").value;
+let pass = document.getElementById("logPass").value;
+
+let valid = users.find(u => u.user===user && u.pass===pass);
+
+if(valid){
+
+document.getElementById("auth").classList.add("hidden");
+
+document.getElementById("store").classList.remove("hidden");
+
+}else{
+alert("login errado");
+}
+});
+
+function comprar(produto){
+alert("Pedido recebido: "+produto+"\nAgora você compra na Shopee e envia para o cliente.");
+}
+
+</script>
+
+</body>
 </html>

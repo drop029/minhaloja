@@ -1,92 +1,4 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlphaStyle</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#070010;
-color:white;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 25px;
-background:#140028;
-box-shadow:0 0 15px #7a00ff;
-position:sticky;
-top:0;
-z-index:10;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#b366ff;
-}
-
-.top-actions{
-display:flex;
-gap:15px;
-align-items:center;
-}
-
-button{
-background:#7a00ff;
-border:none;
-padding:10px 16px;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
-
-button:hover{
-background:#9d35ff;
-}
-
-#search{
-padding:8px;
-border-radius:6px;
-border:none;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:30px;
-}
-
-.card{
-background:#140020;
-padding:15px;
-border-radius:12px;
-box-shadow:0 0 10px #6d00ff55;
-transition:.25s;
-}
-
-.card:hover{
-transform:translateY(-6px);
-box-shadow:0 0 15px #9f40ff;
-}
-
-.card img{
-width:100%;
-border-radius:10px;
-}
-
-.price{
-color:#a855ff;
-font-size:18px;
-margin:6px 0;
-}
-
 .cart{
 position:fixed;
 top:0;
@@ -133,37 +45,25 @@ border-radius:6px;
 border:none;
 }
 
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000000cc;
-display:none;
-justify-content:center;
-align-items:center;
-z-index:30;
-}
-
-.modal-content{
-background:#120020;
-padding:30px;
-border-radius:12px;
-width:320px;
-}
-
-.admin{
+.page{
 display:none;
 padding:30px;
 }
 
-.badge{
-background:#ff2bd6;
-padding:4px 8px;
-border-radius:6px;
-font-size:12px;
-margin-left:5px;
+.page.active{
+display:block;
+}
+
+.admin-panel{
+max-width:800px;
+margin:auto;
+}
+
+.order{
+background:#140020;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
 }
 
 </style>
@@ -175,10 +75,15 @@ margin-left:5px;
 
 <div class="top-actions">
 <input id="search" placeholder="Buscar" oninput="searchProducts()">
-<button onclick="openLogin()">Entrar</button>
+<button onclick="openLogin()">Login</button>
 <button onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
 </div>
 </header>
+
+<div class="banner">
+<h1>Bem-vindo à AlphaStyle</h1>
+<p>Acessórios masculinos modernos</p>
+</div>
 
 <div class="products" id="productList"></div>
 
@@ -193,185 +98,3 @@ margin-left:5px;
 <h3>Endereço</h3>
 <input id="rua" placeholder="Rua">
 <input id="cidade" placeholder="Cidade">
-<input id="cep" placeholder="CEP">
-
-<button onclick="checkoutPix()">Pagar com PIX</button>
-<button onclick="checkoutMercadoPago()">Mercado Pago</button>
-</div>
-
-<div class="modal" id="loginModal">
-<div class="modal-content">
-<h2>Login</h2>
-<input id="user" placeholder="Usuário">
-<input id="pass" type="password" placeholder="Senha">
-<button onclick="login()">Entrar</button>
-<button onclick="closeLogin()">Voltar</button>
-</div>
-</div>
-
-<div class="admin" id="adminPanel">
-<h2>Painel Admin</h2>
-<p>Lucro total: R$ <span id="lucro">0</span></p>
-
-<h3>Adicionar Produto</h3>
-<input id="pNome" placeholder="Nome">
-<input id="pPreco" placeholder="Preço venda">
-<input id="pCusto" placeholder="Custo fornecedor">
-<input id="pImg" placeholder="URL imagem">
-<button onclick="addProduct()">Adicionar</button>
-
-<h3>Pedidos</h3>
-<div id="pedidos"></div>
-</div>
-
-<script>
-
-let products=[
-{name:"Relógio Premium",price:79,cost:30,img:"https://i.imgur.com/2DhmtJ4.jpg"},
-{name:"Óculos Masculino",price:69,cost:25,img:"https://i.imgur.com/ZK6Q6wH.jpg"},
-{name:"Carteira Slim",price:49,cost:15,img:"https://i.imgur.com/p0KZP6C.jpg"}
-]
-
-let cart=[]
-let lucroTotal=0
-
-function renderProducts(){
-let list=document.getElementById("productList")
-list.innerHTML=""
-
-products.forEach((p,i)=>{
-list.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<div class="price">R$ ${p.price}</div>
-<button onclick="addToCart(${i})">Adicionar</button>
-<span class="badge">${Math.floor(Math.random()*15)+3} vendo</span>
-</div>`
-})
-}
-
-function addToCart(i){
-cart.push(products[i])
-updateCart()
-}
-
-function updateCart(){
-let items=document.getElementById("cartItems")
-items.innerHTML=""
-
-let total=0
-
-cart.forEach(p=>{
-items.innerHTML+=`<p>${p.name} - R$ ${p.price}</p>`
-
-total+=p.price
-})
-
-document.getElementById("cartTotal").innerText=total
-
-document.getElementById("cartCount").innerText=cart.length
-}
-
-function toggleCart(){
-let cartEl=document.getElementById("cart")
-let overlay=document.getElementById("overlay")
-
-cartEl.classList.add("open")
-overlay.classList.add("show")
-}
-
-function closeCart(){
-let cartEl=document.getElementById("cart")
-let overlay=document.getElementById("overlay")
-
-cartEl.classList.remove("open")
-overlay.classList.remove("show")
-}
-
-function openLogin(){
-document.getElementById("loginModal").style.display="flex"
-}
-
-function closeLogin(){
-document.getElementById("loginModal").style.display="none"
-}
-
-function login(){
-let u=document.getElementById("user").value
-let p=document.getElementById("pass").value
-
-if(u=="Marc@s015" && p=="Mayc@la015"){
-alert("Admin logado")
-document.getElementById("adminPanel").style.display="block"
-closeLogin()
-}else{
-alert("Login usuário")
-closeLogin()
-}
-}
-
-function addProduct(){
-let n=document.getElementById("pNome").value
-let pr=parseFloat(document.getElementById("pPreco").value)
-let c=parseFloat(document.getElementById("pCusto").value)
-let img=document.getElementById("pImg").value
-
-products.push({name:n,price:pr,cost:c,img:img})
-renderProducts()
-}
-
-function checkoutPix(){
-if(cart.length==0) return alert("Carrinho vazio")
-
-let rua=document.getElementById("rua").value
-let cidade=document.getElementById("cidade").value
-let cep=document.getElementById("cep").value
-
-let total=cart.reduce((t,p)=>t+p.price,0)
-let custo=cart.reduce((t,p)=>t+p.cost,0)
-
-lucroTotal+=total-custo
-
-document.getElementById("lucro").innerText=lucroTotal
-
-let pedido=`Pedido R$${total} | ${rua} ${cidade} ${cep}`
-
-document.getElementById("pedidos").innerHTML+=`<p>${pedido}</p>`
-
-alert("Pagamento PIX enviado (simulação)")
-
-cart=[]
-updateCart()
-closeCart()
-}
-
-function checkoutMercadoPago(){
-window.open("https://www.mercadopago.com.br/checkout")
-}
-
-function searchProducts(){
-let s=document.getElementById("search").value.toLowerCase()
-let cards=document.querySelectorAll(".card")
-
-cards.forEach(c=>{
-if(c.innerText.toLowerCase().includes(s)){
-c.style.display="block"
-}else{
-c.style.display="none"
-}
-})
-}
-
-setInterval(()=>{
-let nomes=["Carlos","Ana","Pedro","Marcos","Julia"]
-let p=products[Math.floor(Math.random()*products.length)]
-console.log(nomes[Math.floor(Math.random()*nomes.length)]+" comprou "+p.name)
-},8000)
-
-renderProducts()
-
-</script>
-
-</body>
-</html>

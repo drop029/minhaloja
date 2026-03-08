@@ -3,34 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlphaStyle Store</title>
+<title>AlphaStyle</title>
 <style>
+
 body{margin:0;font-family:Arial;background:#0a0a0a;color:white}
-header{background:#140018;padding:20px;text-align:center;box-shadow:0 0 15px rgba(179,0,255,0.3)}
-header h1{color:#b300ff;margin:0;font-size:32px}
-.container{max-width:1200px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
-.card{background:#111;border-radius:12px;padding:15px;text-align:center;box-shadow:0 0 12px rgba(179,0,255,0.2);transition:0.3s}
-.card:hover{transform:scale(1.03)}
-.card img{width:100%;border-radius:10px;height:210px;object-fit:cover}
-.price{font-size:20px;color:#b300ff;font-weight:bold}
-button{background:#7a00cc;border:none;color:white;padding:12px 18px;border-radius:8px;cursor:pointer;transition:0.25s;font-weight:bold}
-button:hover{transform:scale(1.1);background:#b300ff;box-shadow:0 0 10px #b300ff}
-form{background:#111;padding:20px;border-radius:10px;max-width:420px;margin:auto;margin-bottom:25px;box-shadow:0 0 10px rgba(179,0,255,0.2)}
-input{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:none;background:#1c1c1c;color:white}
+
+header{
+background:#120016;
+padding:18px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 0 20px rgba(179,0,255,0.35)
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+color:#d14cff;
+letter-spacing:2px
+}
+
+.cartIcon{
+font-size:22px;
+cursor:pointer;
+background:#7a00cc;
+padding:10px 14px;
+border-radius:8px;
+transition:0.3s
+}
+
+.cartIcon:hover{
+background:#b300ff;
+transform:scale(1.08)
+}
+
+.container{max-width:1200px;margin:auto;padding:25px}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:22px
+}
+
+.card{
+background:#111;
+border-radius:14px;
+padding:15px;
+text-align:center;
+box-shadow:0 0 15px rgba(179,0,255,0.15);
+transition:0.3s
+}
+
+.card:hover{
+transform:translateY(-5px) scale(1.02);
+box-shadow:0 0 20px rgba(179,0,255,0.35)
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+height:210px;
+object-fit:cover
+}
+
+.price{
+font-size:20px;
+color:#b300ff;
+font-weight:bold
+}
+
+button{
+background:#7a00cc;
+border:none;
+color:white;
+padding:12px 18px;
+border-radius:8px;
+cursor:pointer;
+transition:0.25s;
+font-weight:bold
+}
+
+button:hover{
+transform:scale(1.08);
+background:#b300ff;
+box-shadow:0 0 12px #b300ff
+}
+
+form{
+background:#111;
+padding:25px;
+border-radius:12px;
+max-width:420px;
+margin:auto;
+margin-bottom:25px;
+box-shadow:0 0 15px rgba(179,0,255,0.25)
+}
+
+input{
+width:100%;
+padding:11px;
+margin:6px 0;
+border-radius:6px;
+border:none;
+background:#1c1c1c;
+color:white
+}
+
 .hidden{display:none}
-footer{text-align:center;padding:30px;color:#777}
-.adminPanel{background:#111;padding:20px;border-radius:10px;margin-top:20px;box-shadow:0 0 10px rgba(179,0,255,0.2)}
-.order{background:#1a1a1a;padding:12px;margin:10px 0;border-radius:8px}
-.cartItem{background:#1a1a1a;margin:6px;padding:8px;border-radius:6px}
-.total{font-size:20px;color:#b300ff;font-weight:bold}
+
+.adminPanel{
+background:#111;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+box-shadow:0 0 12px rgba(179,0,255,0.2)
+}
+
+.order{
+background:#1a1a1a;
+padding:12px;
+margin:10px 0;
+border-radius:8px
+}
+
+.cartModal{
+position:fixed;
+top:0;
+right:0;
+width:320px;
+height:100%;
+background:#111;
+padding:20px;
+box-shadow:-5px 0 20px rgba(0,0,0,0.5);
+transform:translateX(100%);
+transition:0.3s
+}
+
+.cartModal.open{transform:translateX(0)}
+
+.cartItem{
+background:#1a1a1a;
+padding:8px;
+margin:6px 0;
+border-radius:6px
+}
+
+.total{
+font-size:20px;
+color:#b300ff;
+font-weight:bold;
+margin-top:10px
+}
+
 </style>
 </head>
 <body>
 
 <header>
-<h1>AlphaStyle</h1>
-<p>Acessórios masculinos premium</p>
+<div class="logo">AlphaStyle</div>
+<div class="cartIcon" onclick="toggleCart()">🛒</div>
 </header>
 
 <div class="container" id="auth">
@@ -41,41 +173,34 @@ footer{text-align:center;padding:30px;color:#777}
 <input placeholder="Senha" type="password" id="regPass" required>
 <input placeholder="Rua" id="regStreet" required>
 <input placeholder="Cidade" id="regCity" required>
-<input placeholder="CEP" id="regCep" required>
 <input placeholder="Estado" id="regState" required>
+<input placeholder="CEP" id="regCep" required>
 <button type="submit">Cadastrar</button>
 </form>
 
-<h2>Login</h2>
+<h2>Entrar</h2>
 <form id="loginForm">
 <input placeholder="Usuário" id="logUser" required>
 <input placeholder="Senha" type="password" id="logPass" required>
 <button type="submit">Entrar</button>
 </form>
 
-<h2>Login administrador</h2>
-<form id="adminLogin">
-<input placeholder="Admin" id="adminUser">
-<input placeholder="Senha" type="password" id="adminPass">
-<button type="submit">Entrar Admin</button>
-</form>
-
 </div>
 
 <div class="container hidden" id="store">
-
 <h2>Produtos</h2>
 <div class="grid" id="productGrid"></div>
+</div>
 
-<h2>Carrinho</h2>
+<div class="cartModal" id="cartModal">
+<h2>Seu carrinho</h2>
 <div id="cart"></div>
 <p class="total" id="total"></p>
 <button onclick="finalizarCompra()">Finalizar pedido</button>
-
 </div>
 
 <div class="container hidden" id="adminPanel">
-<h2>Painel do administrador</h2>
+<h2>Painel administrador</h2>
 
 <div class="adminPanel">
 <h3>Adicionar produto</h3>
@@ -87,7 +212,7 @@ footer{text-align:center;padding:30px;color:#777}
 </div>
 
 <div class="adminPanel">
-<h3>Pedidos recebidos</h3>
+<h3>Pedidos</h3>
 <div id="orders"></div>
 </div>
 
@@ -97,10 +222,6 @@ footer{text-align:center;padding:30px;color:#777}
 </div>
 
 </div>
-
-<footer>
-AlphaStyle © 2026
-</footer>
 
 <script>
 
@@ -128,6 +249,7 @@ if(!grid) return;
 grid.innerHTML="";
 
 products.forEach((p,i)=>{
+
 let card=document.createElement("div");
 card.className="card";
 
@@ -135,7 +257,7 @@ card.innerHTML=`
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p class="price">R$ ${p.price}</p>
-<button onclick="addCart(${i})">Adicionar ao carrinho</button>
+<button onclick="addCart(${i})">Adicionar</button>
 `;
 
 grid.appendChild(card);
@@ -153,8 +275,11 @@ let total=0;
 let html="";
 
 cart.forEach(p=>{
+
 total+=p.price;
+
 html+=`<div class='cartItem'>${p.name} - R$ ${p.price}</div>`;
+
 });
 
 div.innerHTML=html;
@@ -162,9 +287,16 @@ div.innerHTML=html;
 document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
 }
 
+function toggleCart(){
+
+document.getElementById("cartModal").classList.toggle("open");
+
+}
+
 function finalizarCompra(){
 
 let user=localStorage.getItem("loggedUser");
+
 let u=users.find(x=>x.user===user);
 
 orders.push({
@@ -175,13 +307,15 @@ items:cart
 
 save();
 
-alert("Pedido realizado com sucesso!");
+alert("Pedido realizado!");
 
 cart=[];
 renderCart();
+
 }
 
 function addProduct(){
+
 let name=document.getElementById("prodName").value;
 let price=parseFloat(document.getElementById("prodPrice").value);
 let cost=parseFloat(document.getElementById("prodCost").value);
@@ -190,9 +324,10 @@ let img=document.getElementById("prodImg").value;
 products.push({name,price,cost,img});
 
 save();
+
 renderProducts();
 
-alert("Produto adicionado na loja");
+alert("Produto adicionado");
 }
 
 function renderOrders(){
@@ -200,9 +335,8 @@ function renderOrders(){
 let div=document.getElementById("orders");
 let profit=0;
 
-div.innerHTML="";
-
 orders.forEach(o=>{
+
 let html="<div class='order'>";
 
 html+=`<p><b>Cliente:</b> ${o.user}</p>`;
@@ -217,6 +351,7 @@ html+=`<p>${i.name}</p>`;
 html+="</div>";
 
 div.innerHTML+=html;
+
 });
 
 document.getElementById("profit").innerText="R$ "+profit.toFixed(2);
@@ -225,29 +360,43 @@ document.getElementById("profit").innerText="R$ "+profit.toFixed(2);
 // cadastro
 
 document.getElementById("registerForm").addEventListener("submit",function(e){
-e.preventDefault();
+
+ e.preventDefault();
 
 let user=document.getElementById("regUser").value;
 let pass=document.getElementById("regPass").value;
 let street=document.getElementById("regStreet").value;
 let city=document.getElementById("regCity").value;
-let cep=document.getElementById("regCep").value;
 let state=document.getElementById("regState").value;
+let cep=document.getElementById("regCep").value;
 
-users.push({user,pass,street,city,cep,state});
+users.push({user,pass,street,city,state,cep});
 
 localStorage.setItem("users",JSON.stringify(users));
 
-alert("Conta criada com sucesso");
+alert("Conta criada");
+
 });
 
 // login
 
 document.getElementById("loginForm").addEventListener("submit",function(e){
-e.preventDefault();
+
+ e.preventDefault();
 
 let user=document.getElementById("logUser").value;
 let pass=document.getElementById("logPass").value;
+
+if(user==="Marc@s015" && pass==="Mayc@la015"){
+
+ document.getElementById("auth").classList.add("hidden");
+ document.getElementById("adminPanel").classList.remove("hidden");
+
+ renderOrders();
+
+ return;
+
+}
 
 let valid=users.find(u=>u.user===user && u.pass===pass);
 
@@ -264,26 +413,7 @@ renderProducts();
 }else{
 alert("Login incorreto");
 }
-});
 
-// admin login
-
-document.getElementById("adminLogin").addEventListener("submit",function(e){
- e.preventDefault();
-
-let user=document.getElementById("adminUser").value;
-let pass=document.getElementById("adminPass").value;
-
-if(user==="admin" && pass==="1234"){
-
- document.getElementById("auth").classList.add("hidden");
- document.getElementById("adminPanel").classList.remove("hidden");
-
- renderOrders();
-
-}else{
-alert("Acesso admin negado");
-}
 });
 
 </script>

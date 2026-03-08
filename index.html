@@ -5,28 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlphaStyle Pro</title>
 <style>
-/* ====== BASE ====== */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#070010;color:white;}
 button,input,textarea,select{font-family:inherit;}
 button{cursor:pointer;}
-
-/* ====== HEADER ====== */
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#140028;box-shadow:0 0 15px #7a00ff;position:sticky;top:0;z-index:10;}
-.logo{font-size:28px;font-weight:bold;color:#b366ff;}
+header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:15px 25px; background:#140028; box-shadow:0 0 15px #7a00ff;
+  position:sticky; top:0; z-index:10;
+}
+.logo{
+  font-size:32px; font-weight:bold; flex:1;
+  text-align:center;
+  background:linear-gradient(90deg,#ff00ff,#b366ff,#00ffff,#ff00ff);
+  background-size:300% 300%; 
+  -webkit-background-clip:text; 
+  -webkit-text-fill-color:transparent;
+  animation:gradientMove 6s ease infinite;
+}
+@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.top-left-profile{display:flex;align-items:center;gap:10px;}
 .top-actions{display:flex;gap:10px;align-items:center;}
-#search{padding:8px;border-radius:6px;border:none;}
 button{background:#7a00ff;border:none;padding:10px 15px;color:white;border-radius:8px;font-weight:bold;position:relative;overflow:hidden;transition:0.3s;}
-button span{position:relative;z-index:1;}
+button span{position:relative; z-index:1;}
 button::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg,#9d35ff,#ff66ff);transition:0.5s;z-index:0;}
 button:hover::after{left:0;}
-
-/* ====== BANNER ====== */
+input,textarea{padding:6px;border-radius:6px;border:none;width:100%;margin-bottom:6px;}
 .banner{padding:40px 20px;text-align:center;background:linear-gradient(90deg,#24004a,#120020);}
 .banner h1{font-size:34px;margin-bottom:10px;}
 .banner p{opacity:0.8;font-size:18px;}
-
-/* ====== PRODUTOS ====== */
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:25px;}
 .card{background:#140020;padding:15px;border-radius:12px;box-shadow:0 0 10px #6d00ff55;position:relative;transition:0.3s;}
 .card:hover{transform:translateY(-6px);box-shadow:0 0 15px #9f40ff;}
@@ -34,13 +41,9 @@ button:hover::after{left:0;}
 .price{color:#a855ff;font-size:18px;margin:6px 0;}
 .badge{background:#ff2bd6;padding:4px 8px;border-radius:6px;font-size:12px;position:absolute;top:10px;right:10px;}
 .add-btn{width:100%;margin-top:10px;}
-
-/* ====== SIDE PANELS ====== */
 .side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:0.3s;overflow:auto;z-index:20;}
 .side-panel.open{right:0;}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#00000090;display:none;z-index:15;}
-
-/* ====== CARRINHO ====== */
 .cart-item{display:flex;gap:8px;align-items:center;margin-bottom:10px;border-bottom:1px solid #6a00ff;padding-bottom:10px;}
 .cart-item img{width:60px;border-radius:6px;}
 .cart-item-info{flex:1;}
@@ -48,19 +51,13 @@ button:hover::after{left:0;}
 .cart-item-info p{margin:3px 0;font-size:14px;}
 .remove-btn{background:#ff3c3c;padding:4px 8px;border-radius:6px;color:white;cursor:pointer;}
 .close-btn{background:#ff3c3c;padding:6px 10px;border-radius:6px;color:white;margin-bottom:10px;}
-
-/* ====== PERFIL ====== */
 .profile-panel img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;border:2px solid #b366ff;}
 .profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid #b366ff;}
-
-/* ====== ADMIN ====== */
 .admin-panel h3{margin-top:5px;font-size:18px;}
 .admin-section{border-top:1px solid #6a00ff;margin-top:10px;padding-top:10px;}
 .admin-product{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .admin-product input{margin-right:4px;}
 .admin-product button{padding:4px 6px;font-size:12px;}
-
-/* ====== DASHBOARD ====== */
 .bar{height:20px;background:#7a00ff;margin:5px 0;border-radius:5px;text-align:right;padding-right:5px;opacity:0.8;}
 @media(max-width:600px){.banner h1{font-size:28px;}.banner p{font-size:16px;}}
 </style>
@@ -68,12 +65,14 @@ button:hover::after{left:0;}
 <body>
 
 <header>
+  <div class="top-left-profile">
+    <img id="profileAvatar" class="profile-avatar" style="display:none" onclick="togglePanel('profile')">
+  </div>
   <div class="logo">AlphaStyle</div>
   <div class="top-actions">
     <input id="search" placeholder="Buscar produto" oninput="renderProducts()">
     <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
     <button id="registerBtn" onclick="togglePanel('register')"><span>Registrar</span></button>
-    <img id="profileAvatar" class="profile-avatar" style="display:none" onclick="togglePanel('profile')">
     <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
   </div>
 </header>
@@ -86,7 +85,7 @@ button:hover::after{left:0;}
 <div class="products" id="productList"></div>
 <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
-<!-- CARRINHO -->
+<!-- SIDE PANELS -->
 <div class="side-panel" id="cartPanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
   <h2>Carrinho</h2>
@@ -95,7 +94,6 @@ button:hover::after{left:0;}
   <button onclick="emptyCart()">Esvaziar Carrinho</button>
 </div>
 
-<!-- LOGIN -->
 <div class="side-panel" id="loginPanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
   <h2>Login</h2>
@@ -104,7 +102,6 @@ button:hover::after{left:0;}
   <button onclick="login()">Entrar</button>
 </div>
 
-<!-- REGISTER -->
 <div class="side-panel" id="registerPanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
   <h2>Registrar</h2>
@@ -112,18 +109,22 @@ button:hover::after{left:0;}
   <label>Senha</label><input id="regPass" type="password" placeholder="Senha">
   <label>Nome Completo</label><input id="regFullName" placeholder="Nome completo">
   <label>Email</label><input id="regEmail" placeholder="Email">
+  <label>CPF</label><input id="regCPF" placeholder="CPF">
+  <label>Telefone</label><input id="regPhone" placeholder="Telefone">
+  <label>Endereço</label><input id="regAddress" placeholder="Endereço">
+  <label>Foto URL</label><input id="regPic" placeholder="URL da foto">
   <button onclick="registerUser()">Registrar</button>
 </div>
 
-<!-- PERFIL -->
 <div class="side-panel" id="profilePanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Perfil</button>
   <h2>Meu Perfil</h2>
   <div class="profile-panel">
     <img id="profilePic" src="https://i.imgur.com/2DhmtJ4.jpg" alt="Avatar">
-    <label>Foto URL</label><input id="profilePicInput" placeholder="URL da foto">
+    <label>Foto URL</label><input id="profilePicInput">
     <label>Nome</label><input id="profileName">
     <label>Email</label><input id="profileEmail">
+    <label>CPF</label><input id="profileCPF">
     <label>Telefone</label><input id="profilePhone">
     <label>Endereço</label><input id="profileAddress">
     <button onclick="saveProfile()">Salvar Perfil</button>
@@ -132,11 +133,9 @@ button:hover::after{left:0;}
   </div>
 </div>
 
-<!-- ADMIN -->
 <div class="side-panel admin-panel" id="adminPanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
-  <h2>Painel Admin Profissional</h2>
-
+  <h2>Painel Admin</h2>
   <div class="admin-section">
     <h3>Adicionar Produto</h3>
     <input id="adminName" placeholder="Nome Produto">
@@ -146,12 +145,10 @@ button:hover::after{left:0;}
     <input id="adminImg" placeholder="URL Imagem">
     <button onclick="adminAddProduct()">Adicionar Produto</button>
   </div>
-
   <div class="admin-section">
     <h3>Editar/Remover Produtos</h3>
     <div id="adminProductList"></div>
   </div>
-
   <div class="admin-section">
     <h3>Dashboard de Vendas</h3>
     <div id="dashboard"></div>
@@ -161,79 +158,60 @@ button:hover::after{left:0;}
 <script>
 // ================= VARIÁVEIS =================
 const adminUser={username:"admin",password:"1234"};
-const defaultProducts=[
-{name:"Relógio Esportivo Masculino",price:159,cost:80,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",desc:"Relógio resistente à água, moderno e esportivo.",reviews:[5,4,5,4,5],sold:0},
-{name:"Óculos de Sol Polarizado",price:129,cost:60,img:"https://images.unsplash.com/photo-1516728778615-2d590ea1856f?w=500",desc:"Óculos polarizado com proteção UV.",reviews:[4,4,4,5],sold:0},
-{name:"Boné Streetwear",price:79,cost:35,img:"https://images.unsplash.com/photo-1503342452485-86f48843b77c?w=500",desc:"Boné urbano para o dia a dia.",reviews:[5,5,4,4],sold:0},
-{name:"Pulseira Masculina de Couro",price:49,cost:20,img:"https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=500",desc:"Pulseira de couro elegante.",reviews:[4,4,5,5],sold:0},
-{name:"Carteira Slim Masculina",price:69,cost:30,img:"https://images.unsplash.com/photo-1606813909151-0546b8f6e089?w=500",desc:"Carteira compacta e resistente.",reviews:[5,5,5,4],sold:0}
+let products=JSON.parse(localStorage.getItem("products"))||[
+  {name:"Relógio",price:159,cost:80,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",desc:"Relógio moderno",reviews:[5,4,5],sold:0},
+  {name:"Óculos",price:129,cost:60,img:"https://images.unsplash.com/photo-1516728778615-2d590ea1856f?w=500",desc:"Óculos polarizado",reviews:[4,4,4],sold:0}
 ];
-
-// CARREGAR PRODUTOS E USUÁRIOS DO LOCALSTORAGE OU PADRÃO
-let products = JSON.parse(localStorage.getItem("products")) || defaultProducts;
-let users = JSON.parse(localStorage.getItem("users")) || [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let currentUser = null;
+let users=JSON.parse(localStorage.getItem("users"))||[];
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+let currentUser=JSON.parse(localStorage.getItem("currentUser"))||null;
 
 // ELEMENTOS
 const overlay=document.getElementById("overlay");
+const productListDiv=document.getElementById("productList");
 const cartTotal=document.getElementById("cartTotal");
 const cartCount=document.getElementById("cartCount");
-const productListDiv=document.getElementById("productList");
 const profileAvatar=document.getElementById("profileAvatar");
 const loginBtn=document.getElementById("loginBtn");
 const registerBtn=document.getElementById("registerBtn");
 
 // ================= FUNÇÕES =================
-// Salvar estado
-function saveState(){localStorage.setItem("products",JSON.stringify(products)); localStorage.setItem("users",JSON.stringify(users)); localStorage.setItem("cart",JSON.stringify(cart));}
-// Painéis
+function saveState(){
+  localStorage.setItem("products",JSON.stringify(products));
+  localStorage.setItem("users",JSON.stringify(users));
+  localStorage.setItem("cart",JSON.stringify(cart));
+  localStorage.setItem("currentUser",JSON.stringify(currentUser));
+}
 function togglePanel(panel){closeAllPanels();overlay.classList.add("show");document.getElementById(panel+"Panel")?.classList.add("open");}
 function closeAllPanels(){overlay.classList.remove("show");document.querySelectorAll(".side-panel").forEach(el=>el.classList.remove("open"));}
-
-// Renderizar produtos
-function renderProducts(){
-  const search=document.getElementById("search").value.toLowerCase();
-  productListDiv.innerHTML="";
-  products.filter(p=>p.name.toLowerCase().includes(search)).forEach((p,i)=>{
-    let stars=Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length||0);
-    let starHTML="";for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆";}
-    productListDiv.innerHTML+=`<div class="card">
-      <img src="${p.img}">
-      <div class="badge">${p.sold} vendidos</div>
-      <h3>${p.name}</h3>
-      <div class="price">R$ ${p.price}</div>
-      <p>${p.desc}</p>
-      <div>${starHTML}</div>
-      <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
-    </div>`;
-  });
-}
-
-// Carrinho
-function updateCart(){cartTotal.innerText=cart.reduce((a,p)=>a+p.price*p.quantity,0);cartCount.innerText=cart.reduce((a,p)=>a+p.quantity,0);document.getElementById("cartItems").innerHTML=cart.map((p,i)=>`<div class="cart-item">
-<img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$${p.price} x ${p.quantity}</p></div>
-<button class="remove-btn" onclick="removeFromCart(${i})">Remover</button></div>`).join('');}
+function renderProducts(){productListDiv.innerHTML="";products.forEach((p,i)=>{let stars=Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length||0);let starHTML="";for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆";}productListDiv.innerHTML+=`<div class="card"><img src="${p.img}"><div class="badge">${p.sold} vendidos</div><h3>${p.name}</h3><div class="price">R$ ${p.price}</div><p>${p.desc}</p><div>${starHTML}</div><button class="add-btn" onclick="addToCart(${i})"><span>Adicionar</span></button></div>`;});}
+function updateCart(){cartTotal.innerText=cart.reduce((a,p)=>a+p.price*p.quantity,0);cartCount.innerText=cart.reduce((a,p)=>a+p.quantity,0);document.getElementById("cartItems").innerHTML=cart.map((p,i)=>`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${i})">Remover</button></div>`).join('');}
 function addToCart(i){const e=cart.find(x=>x.name===products[i].name);if(e){e.quantity++;products[i].sold++;}else{cart.push({...products[i],quantity:1});products[i].sold=1;}saveState();renderProducts();updateCart();}
 function removeFromCart(i){cart.splice(i,1);saveState();updateCart();}
 function emptyCart(){cart=[];saveState();updateCart();}
-function flyToCart(e,i){const img=e.target.closest(".card").querySelector("img");const clone=img.cloneNode(true);const rect=img.getBoundingClientRect();clone.style.position="fixed";clone.style.top=rect.top+"px";clone.style.left=rect.left+"px";clone.style.width=rect.width+"px";clone.style.transition="all 0.8s ease";clone.style.zIndex=1000;document.body.appendChild(clone);const c=document.querySelector(".top-actions button:last-child").getBoundingClientRect();setTimeout(()=>{clone.style.top=c.top+"px";clone.style.left=c.left+"px";clone.style.width="40px";clone.style.height="40px";clone.style.opacity="0";},10);setTimeout(()=>{clone.remove();addToCart(i);},800);}
 
-// ================= LOGIN / REGISTER =================
 function login(){
-  let u=document.getElementById("user").value.trim(),p=document.getElementById("pass").value.trim();
+  let u=document.getElementById("user").value.trim();
+  let p=document.getElementById("pass").value.trim();
   if(!u||!p)return alert("Preencha todos os campos!");
-  if(u===adminUser.username && p===adminUser.password){
-    togglePanel("admin"); profileAvatar.style.display="none";loginBtn.style.display="none";registerBtn.style.display="none";
+  if(u===adminUser.username&&p===adminUser.password){
     alert("Logado como ADMIN");
-    renderAdminPanel(); renderDashboard();
-  } else {
+    profileAvatar.style.display="none";
+    loginBtn.style.display="none";
+    registerBtn.style.display="none";
+    togglePanel("admin");
+  }else{
     const user=users.find(x=>x.username===u&&x.password===p);
     if(!user)return alert("Usuário ou senha inválidos!");
-    currentUser=user; alert("Bem-vindo "+u+"!");
-    loginBtn.style.display="none";registerBtn.style.display="none";profileAvatar.style.display="block";profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
+    currentUser=user;
+    alert("Bem-vindo "+u+"!");
+    loginBtn.style.display="none";
+    registerBtn.style.display="none";
+    profileAvatar.style.display="block";
+    profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
     loadProfile();
   }
+  saveState();
   closeAllPanels();
 }
 
@@ -241,36 +219,44 @@ function registerUser(){
   let u=document.getElementById("regUser").value.trim(),
       p=document.getElementById("regPass").value.trim(),
       f=document.getElementById("regFullName").value.trim(),
-      e=document.getElementById("regEmail").value.trim();
+      e=document.getElementById("regEmail").value.trim(),
+      c=document.getElementById("regCPF").value.trim(),
+      t=document.getElementById("regPhone").value.trim(),
+      a=document.getElementById("regAddress").value.trim(),
+      pic=document.getElementById("regPic").value.trim();
   if(!u||!p||!f||!e)return alert("Preencha todos os campos!");
   if(users.find(x=>x.username===u))return alert("Usuário já existe!");
-  users.push({username:u,password:p,fullName:f,email:e,phone:"",address:"",pic:"",history:[]});
-  saveState();alert("Registrado! Faça login.");closeAllPanels();
+  users.push({username:u,password:p,fullName:f,email:e,cpf:c,phone:t,address:a,pic:pic,history:[]});
+  saveState();
+  alert("Registrado! Faça login.");
+  closeAllPanels();
 }
 
-// ================= PERFIL =================
 function loadProfile(){
   if(!currentUser)return;
   document.getElementById("profilePic").src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
   document.getElementById("profilePicInput").value=currentUser.pic||"";
   document.getElementById("profileName").value=currentUser.fullName||"";
   document.getElementById("profileEmail").value=currentUser.email||"";
+  document.getElementById("profileCPF").value=currentUser.cpf||"";
   document.getElementById("profilePhone").value=currentUser.phone||"";
   document.getElementById("profileAddress").value=currentUser.address||"";
   document.getElementById("purchaseHistory").innerHTML=(currentUser.history||[]).map(h=>`<li>${h}</li>`).join('');
 }
+
 function saveProfile(){
   if(!currentUser)return;
   currentUser.pic=document.getElementById("profilePicInput").value;
   currentUser.fullName=document.getElementById("profileName").value;
   currentUser.email=document.getElementById("profileEmail").value;
+  currentUser.cpf=document.getElementById("profileCPF").value;
   currentUser.phone=document.getElementById("profilePhone").value;
   currentUser.address=document.getElementById("profileAddress").value;
   profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
-  saveState();alert("Perfil salvo!");
+  saveState();
+  alert("Perfil salvo!");
 }
 
-// ================= ADMIN =================
 function adminAddProduct(){
   let n=document.getElementById("adminName").value,
       pr=Number(document.getElementById("adminPrice").value),
@@ -279,46 +265,26 @@ function adminAddProduct(){
       i=document.getElementById("adminImg").value;
   if(!n||!pr||!c||!d||!i)return alert("Preencha todos os campos!");
   products.push({name:n,price:pr,cost:c,desc:d,img:i,reviews:[],sold:0});
-  saveState(); renderProducts(); renderAdminPanel(); renderDashboard(); alert("Produto adicionado!");
+  saveState();
+  renderProducts();
+  renderAdminPanel();
+  alert("Produto adicionado!");
 }
 
 function renderAdminPanel(){
-  const listDiv=document.getElementById("adminProductList");
-  listDiv.innerHTML="";
-  products.forEach((p,i)=>{
-    const div=document.createElement("div"); div.className="admin-product";
-    div.innerHTML=`<input value="${p.name}" id="name${i}"><input value="${p.price}" type="number" id="price${i}"><input value="${p.desc}" id="desc${i}">
-      <button onclick="updateProduct(${i})">Salvar</button>
-      <button onclick="deleteProduct(${i})">Remover</button>`;
-    listDiv.appendChild(div);
-  });
+  const div=document.getElementById("adminProductList");
+  div.innerHTML="";
+  products.forEach((p,i)=>div.innerHTML+=`<div class="admin-product">${p.name} - R$${p.price} <button onclick="editProduct(${i})">Editar</button><button onclick="removeProduct(${i})">Remover</button></div>`);
+  document.getElementById("dashboard").innerHTML=products.map(p=>`<div>${p.name} - Vendidos: ${p.sold} <div class="bar" style="width:${p.sold*10}px"></div></div>`).join("");
 }
+function editProduct(i){let p=products[i];p.name=prompt("Nome",p.name)||p.name;p.price=Number(prompt("Preço",p.price))||p.price;saveState();renderProducts();renderAdminPanel();}
+function removeProduct(i){if(confirm("Remover produto?")){products.splice(i,1);saveState();renderProducts();renderAdminPanel();}}
 
-function updateProduct(i){
-  const n=document.getElementById("name"+i).value;
-  const pr=Number(document.getElementById("price"+i).value);
-  const d=document.getElementById("desc"+i).value;
-  if(!n||!pr||!d)return alert("Preencha todos os campos!");
-  products[i].name=n; products[i].price=pr; products[i].desc=d;
-  saveState(); renderProducts(); renderAdminPanel(); renderDashboard(); alert("Produto atualizado!");
-}
-
-function deleteProduct(i){if(confirm("Tem certeza?")){products.splice(i,1);saveState();renderProducts();renderAdminPanel();renderDashboard();}}
-
-// ================= DASHBOARD =================
-function renderDashboard(){
-  const dash=document.getElementById("dashboard");
-  dash.innerHTML="";
-  products.forEach(p=>{
-    const div=document.createElement("div");
-    div.innerHTML=`${p.name} - ${p.sold} vendidos - Total R$${p.sold*p.price} <div class="bar" style="width:${Math.min(p.sold*10,100)}%"></div>`;
-    dash.appendChild(div);
-  });
-}
-
-// ================= INIT =================
-renderProducts(); updateCart();
+// ================= INICIAL =================
+renderProducts();
+updateCart();
+if(currentUser){profileAvatar.style.display="block";profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";loadProfile();}
+renderAdminPanel();
 </script>
-
 </body>
 </html>

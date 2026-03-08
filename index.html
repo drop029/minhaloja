@@ -13,7 +13,6 @@ body{
   background:#070010;
   color:white;
 }
-
 header{
   display:flex;
   justify-content:space-between;
@@ -25,179 +24,47 @@ header{
   top:0;
   z-index:10;
 }
-
-.logo{
-  font-size:28px;
-  font-weight:bold;
-  color:#b366ff;
-  letter-spacing:1px;
-}
-
-.top-actions{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-
-button{
-  background:#7a00ff;
-  border:none;
-  padding:10px 16px;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-button:hover{
-  background:#9d35ff;
-}
-
-#search{
-  padding:8px;
-  border-radius:6px;
-  border:none;
-}
-
-.banner{
-  padding:50px 20px;
-  text-align:center;
-  background:linear-gradient(90deg,#24004a,#120020);
-}
-
-.banner h1{
-  font-size:36px;
-  margin:0;
-}
-
-.banner p{
-  opacity:.8;
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  padding:30px;
-}
-
-.card{
-  background:#140020;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 0 10px #6d00ff55;
-  transition:.25s;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 0 15px #9f40ff;
-}
-
-.card img{
-  width:100%;
-  border-radius:10px;
-}
-
-.price{
-  color:#a855ff;
-  font-size:18px;
-  margin:6px 0;
-}
-
-.badge{
-  background:#ff2bd6;
-  padding:4px 8px;
-  border-radius:6px;
-  font-size:12px;
-}
+.logo{ font-size:28px; font-weight:bold; color:#b366ff; letter-spacing:1px; }
+.top-actions{ display:flex; gap:12px; align-items:center; }
+button{ background:#7a00ff; border:none; padding:10px 16px; color:white; border-radius:8px; cursor:pointer; font-weight:bold; }
+button:hover{ background:#9d35ff; }
+#search{ padding:8px; border-radius:6px; border:none; }
+.banner{ padding:50px 20px; text-align:center; background:linear-gradient(90deg,#24004a,#120020); }
+.banner h1{ font-size:36px; margin:0; }
+.banner p{ opacity:.8; }
+.products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:30px; }
+.card{ background:#140020; padding:15px; border-radius:12px; box-shadow:0 0 10px #6d00ff55; transition:.25s; cursor:pointer; }
+.card:hover{ transform:translateY(-6px); box-shadow:0 0 15px #9f40ff; }
+.card img{ width:100%; border-radius:10px; }
+.price{ color:#a855ff; font-size:18px; margin:6px 0; }
+.badge{ background:#ff2bd6; padding:4px 8px; border-radius:6px; font-size:12px; }
 
 /* =================== CARRINHO =================== */
-.cart{
-  position:fixed;
-  top:0;
-  right:-100%;
-  width:90%;
-  max-width:400px;
-  height:100%;
-  background:#0d0018;
-  padding:20px;
-  box-shadow:-5px 0 20px #6a00ff;
-  transition:.3s;
-  overflow:auto;
-  z-index:20;
-}
-
-.cart.open{
-  right:0;
-}
-
-.overlay{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#00000090;
-  display:none;
-  z-index:15;
-}
-
-.overlay.show{
-  display:block;
-}
-
-.close-btn{
-  background:#ff3c3c;
-  margin-bottom:15px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border-radius:6px;
-  border:none;
-}
+.cart{ position:fixed; top:0; right:-100%; width:90%; max-width:400px; height:100%; background:#0d0018; padding:20px; box-shadow:-5px 0 20px #6a00ff; transition:.3s; overflow:auto; z-index:20; }
+.cart.open{ right:0; }
+.overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:#00000090; display:none; z-index:15; }
+.overlay.show{ display:block; }
+.close-btn{ background:#ff3c3c; margin-bottom:15px; }
 
 /* =================== LOGIN & ADMIN =================== */
-.page{
-  display:none;
-  padding:30px;
-}
+.page{ display:none; padding:30px; }
+.page.active{ display:block; }
+.admin-panel{ max-width:800px; margin:auto; }
+.tabs{ display:flex; gap:10px; margin-bottom:20px; }
+.tab{ padding:10px 20px; border-radius:8px; cursor:pointer; background:#1a002a; }
+.tab.active{ background:#7a00ff; }
+.order{ background:#140020; padding:10px; margin-top:10px; border-radius:8px; }
 
-.page.active{
-  display:block;
+/* =================== AVALIAÇÕES =================== */
+.review-overlay{
+  position:fixed; top:0; left:0; width:100%; height:100%; background:#000000d0; display:none; z-index:30; overflow:auto; padding:20px;
 }
-
-.admin-panel{
-  max-width:800px;
-  margin:auto;
-}
-
-.tabs{
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.tab{
-  padding:10px 20px;
-  border-radius:8px;
-  cursor:pointer;
-  background:#1a002a;
-}
-
-.tab.active{
-  background:#7a00ff;
-}
-
-.order{
-  background:#140020;
-  padding:10px;
-  margin-top:10px;
-  border-radius:8px;
-}
+.review-overlay.show{ display:block; }
+.review-box{ background:#140020; padding:20px; border-radius:12px; max-width:600px; margin:auto; }
+.review-box h3{ margin-top:0; }
+.review-item{ border-top:1px solid #6a00ff; padding:10px 0; }
+.stars{ color:#ffdd00; }
+.add-review input, .add-review textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border:none; }
 </style>
 </head>
 <body>
@@ -218,9 +85,10 @@ input{
 
 <div class="products" id="productList"></div>
 
-<!-- Overlay e Carrinho -->
+<!-- Overlay -->
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 
+<!-- Carrinho -->
 <div class="cart" id="cart">
   <button class="close-btn" onclick="closeCart()">✖ Fechar</button>
   <h2>Carrinho</h2>
@@ -272,8 +140,28 @@ input{
   </div>
 </div>
 
+<!-- Avaliações -->
+<div class="review-overlay" id="reviewOverlay">
+  <div class="review-box">
+    <button class="close-btn" onclick="closeReviews()">✖ Fechar</button>
+    <h3 id="reviewProductName">Produto</h3>
+    <div id="reviewsList"></div>
+
+    <div class="add-review">
+      <h4>Adicionar Avaliação</h4>
+      <label>Nota (1 a 5):</label>
+      <input type="number" id="reviewStars" min="1" max="5" value="5">
+      <label>Comentário:</label>
+      <textarea id="reviewComment" placeholder="Escreva seu comentário"></textarea>
+      <label>Foto/Vídeo (URL):</label>
+      <input id="reviewMedia" placeholder="https://...">
+      <button onclick="addReview()">Enviar Avaliação</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// Variáveis
+/* ========== VARIÁVEIS ========== */
 const cartDiv = document.getElementById("cart")
 const overlayDiv = document.getElementById("overlay")
 const cartTotal = document.getElementById("cartTotal")
@@ -284,36 +172,47 @@ const loginBtn = document.getElementById("loginBtn")
 const pedidosDiv = document.getElementById("pedidos")
 const lucro = document.getElementById("lucro")
 const productList = document.getElementById("productList")
+const reviewOverlay = document.getElementById("reviewOverlay")
+const reviewsList = document.getElementById("reviewsList")
+const reviewProductName = document.getElementById("reviewProductName")
 
 let products=[
-  {name:"Relógio Premium",price:79,cost:30,img:"https://i.imgur.com/2DhmtJ4.jpg"},
-  {name:"Óculos Masculino",price:69,cost:25,img:"https://i.imgur.com/ZK6Q6wH.jpg"},
-  {name:"Carteira Slim",price:49,cost:15,img:"https://i.imgur.com/p0KZP6C.jpg"}
+  {name:"Relógio Premium",price:79,cost:30,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[
+    {stars:5,comment:"Excelente produto!",media:"https://i.imgur.com/2DhmtJ4.jpg"},
+    {stars:4,comment:"Gostei muito.",media:""}
+  ]},
+  {name:"Óculos Masculino",price:69,cost:25,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[
+    {stars:5,comment:"Óculos top!",media:""},
+    {stars:3,comment:"Ok para o preço.",media:""}
+  ]},
+  {name:"Carteira Slim",price:49,cost:15,img:"https://i.imgur.com/p0KZP6C.jpg",reviews:[
+    {stars:4,comment:"Boa carteira.",media:""},
+    {stars:5,comment:"Ótima qualidade!",media:"https://i.imgur.com/p0KZP6C.jpg"}
+  ]}
 ]
 
 let cart=[]
 let lucroTotal=0
 let adminLogged=false
+let currentReviewProduct = null
 
+/* ========== PRODUTOS ========== */
 function renderProducts(){
   productList.innerHTML=""
   products.forEach((p,i)=>{
     productList.innerHTML+=`
-      <div class="card">
+      <div class="card" onclick="openReviews(${i})">
         <img src="${p.img}">
         <h3>${p.name}</h3>
         <div class="price">R$ ${p.price}</div>
-        <button onclick="addToCart(${i})">Adicionar</button>
         <div class="badge">${Math.floor(Math.random()*15)+3} vendo agora</div>
+        <button onclick="event.stopPropagation(); addToCart(${i})">Adicionar</button>
       </div>`
   })
 }
 
-function addToCart(i){
-  cart.push(products[i])
-  updateCart()
-}
-
+/* ========== CARRINHO ========== */
+function addToCart(i){ cart.push(products[i]); updateCart() }
 function updateCart(){
   let items=""
   cart.forEach(p=>{items+=`<p>${p.name} - R$ ${p.price}</p>`})
@@ -321,26 +220,12 @@ function updateCart(){
   cartTotal.innerText = cart.reduce((t,p)=>t+p.price,0)
   cartCount.innerText = cart.length
 }
+function toggleCart(){ cartDiv.classList.add("open"); overlayDiv.classList.add("show") }
+function closeCart(){ cartDiv.classList.remove("open"); overlayDiv.classList.remove("show") }
 
-function toggleCart(){
-  cartDiv.classList.add("open")
-  overlayDiv.classList.add("show")
-}
-
-function closeCart(){
-  cartDiv.classList.remove("open")
-  overlayDiv.classList.remove("show")
-}
-
-function openLogin(){
-  loginPage.classList.add("active")
-  window.scrollTo(0,0)
-}
-
-function closeLogin(){
-  loginPage.classList.remove("active")
-}
-
+/* ========== LOGIN ========== */
+function openLogin(){ loginPage.classList.add("active"); window.scrollTo(0,0) }
+function closeLogin(){ loginPage.classList.remove("active") }
 function login(){
   let u=document.getElementById("user").value
   let p=document.getElementById("pass").value
@@ -350,64 +235,78 @@ function login(){
     adminPage.classList.add("active")
     loginBtn.style.display="none"
     adminLogged=true
-  }else{
-    alert("Login inválido")
-  }
+  }else{ alert("Login inválido") }
 }
+function logout(){ adminPage.classList.remove("active"); loginBtn.style.display="inline-block"; adminLogged=false }
 
-function logout(){
-  adminPage.classList.remove("active")
-  loginBtn.style.display="inline-block"
-  adminLogged=false
-}
-
+/* ========== ADMIN ========== */
 function addProduct(){
   if(!adminLogged) return alert("Faça login primeiro")
   let n=document.getElementById("pNome").value
   let pr=parseFloat(document.getElementById("pPreco").value)
   let c=parseFloat(document.getElementById("pCusto").value)
   let img=document.getElementById("pImg").value
-
-  products.push({name:n,price:pr,cost:c,img:img})
+  products.push({name:n,price:pr,cost:c,img:img,reviews:[]})
   renderProducts()
 }
-
 function checkoutPix(){
   if(cart.length==0) return alert("Carrinho vazio")
   let total=cart.reduce((t,p)=>t+p.price,0)
   let custo=cart.reduce((t,p)=>t+p.cost,0)
   lucroTotal+=total-custo
   lucro.innerText=lucroTotal
-
   let pedido=document.createElement("div")
   pedido.className="order"
   pedido.innerText=`Pedido R$${total}`
   pedidosDiv.appendChild(pedido)
-
   alert("Pagamento PIX enviado (simulação)")
-  cart=[]
-  updateCart()
-  closeCart()
+  cart=[]; updateCart(); closeCart()
 }
-
-function checkoutMercadoPago(){
-  window.open("https://www.mercadopago.com.br/checkout")
-}
-
+function checkoutMercadoPago(){ window.open("https://www.mercadopago.com.br/checkout") }
 function searchProducts(){
   let s=document.getElementById("search").value.toLowerCase()
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=c.innerText.toLowerCase().includes(s)?"block":"none"
   })
 }
-
-// Abas Admin
 function showTab(tab){
   if(!adminLogged) return alert("Faça login primeiro")
   document.getElementById("produtosTab").style.display = tab==="produtos"?"block":"none"
   document.getElementById("pedidosTab").style.display = tab==="pedidos"?"block":"none"
   document.getElementById("tabProdutos").classList.toggle("active", tab==="produtos")
   document.getElementById("tabPedidos").classList.toggle("active", tab==="pedidos")
+}
+
+/* ========== AVALIAÇÕES ========== */
+function openReviews(i){
+  currentReviewProduct = i
+  reviewProductName.innerText = products[i].name
+  renderReviews()
+  reviewOverlay.classList.add("show")
+}
+function closeReviews(){ reviewOverlay.classList.remove("show") }
+function renderReviews(){
+  let r = products[currentReviewProduct].reviews
+  reviewsList.innerHTML = ""
+  if(r.length===0) reviewsList.innerHTML="<p>Nenhuma avaliação ainda</p>"
+  r.forEach(rv=>{
+    reviewsList.innerHTML += `<div class="review-item">
+      <div class="stars">${"★".repeat(rv.stars)}${"☆".repeat(5-rv.stars)}</div>
+      <p>${rv.comment}</p>
+      ${rv.media?`<img src="${rv.media}" style="max-width:100%; border-radius:8px; margin-top:5px;">`:''}
+    </div>`
+  })
+}
+function addReview(){
+  let stars = parseInt(document.getElementById("reviewStars").value)
+  let comment = document.getElementById("reviewComment").value
+  let media = document.getElementById("reviewMedia").value
+  if(comment==="") return alert("Comentário obrigatório")
+  products[currentReviewProduct].reviews.push({stars,comment,media})
+  document.getElementById("reviewStars").value = 5
+  document.getElementById("reviewComment").value = ""
+  document.getElementById("reviewMedia").value = ""
+  renderReviews()
 }
 
 renderProducts()

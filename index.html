@@ -2,49 +2,378 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlphaStyle</title>
-<link rel="stylesheet" href="style.css">
-</head>
 
+<style>
+/* =================== ESTILO =================== */
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#070010;
+  color:white;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 25px;
+  background:#140028;
+  box-shadow:0 0 15px #7a00ff;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  color:#b366ff;
+  letter-spacing:1px;
+}
+
+.top-actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+button{
+  background:#7a00ff;
+  border:none;
+  padding:10px 16px;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  background:#9d35ff;
+}
+
+#search{
+  padding:8px;
+  border-radius:6px;
+  border:none;
+}
+
+.banner{
+  padding:60px 20px;
+  text-align:center;
+  background:linear-gradient(90deg,#24004a,#120020);
+}
+
+.banner h1{
+  font-size:40px;
+  margin:0;
+}
+
+.banner p{
+  opacity:.8;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  padding:30px;
+}
+
+.card{
+  background:#140020;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 0 10px #6d00ff55;
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 15px #9f40ff;
+}
+
+.card img{
+  width:100%;
+  border-radius:10px;
+}
+
+.price{
+  color:#a855ff;
+  font-size:18px;
+  margin:6px 0;
+}
+
+.badge{
+  background:#ff2bd6;
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:12px;
+}
+
+.cart{
+  position:fixed;
+  top:0;
+  right:-420px;
+  width:420px;
+  height:100%;
+  background:#0d0018;
+  padding:20px;
+  box-shadow:-5px 0 20px #6a00ff;
+  transition:.3s;
+  overflow:auto;
+  z-index:20;
+}
+
+.cart.open{
+  right:0;
+}
+
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#00000090;
+  display:none;
+  z-index:15;
+}
+
+.overlay.show{
+  display:block;
+}
+
+.close-btn{
+  background:#ff3c3c;
+  margin-bottom:15px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:6px;
+  border:none;
+}
+
+.page{
+  display:none;
+  padding:30px;
+}
+
+.page.active{
+  display:block;
+}
+
+.admin-panel{
+  max-width:800px;
+  margin:auto;
+}
+
+.order{
+  background:#140020;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+}
+</style>
+</head>
 <body>
 
+<!-- =================== HEADER =================== -->
 <header>
-
-<h1>AlphaStyle</h1>
-
-<div class="top">
-<input id="search" placeholder="Buscar produto">
-
-<a href="login.html">
-<button>Login</button>
-</a>
-
-<button onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
-
-</div>
-
+  <div class="logo">AlphaStyle</div>
+  <div class="top-actions">
+    <input id="search" placeholder="Buscar produto" oninput="searchProducts()">
+    <button id="loginBtn" onclick="openLogin()">Login</button>
+    <button onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
+  </div>
 </header>
 
-<div class="products" id="productList"></div>
-
-<div class="cart" id="cart">
-
-<h2>Carrinho</h2>
-
-<div id="cartItems"></div>
-
-<h3>Total: R$ <span id="cartTotal">0</span></h3>
-
-<input placeholder="Rua">
-<input placeholder="Cidade">
-
-<button onclick="finalizarPedido()">Finalizar Pedido</button>
-
-<button onclick="toggleCart()">Fechar</button>
-
+<!-- =================== BANNER =================== -->
+<div class="banner">
+  <h1>Bem-vindo à AlphaStyle</h1>
+  <p>Acessórios masculinos modernos</p>
 </div>
 
-<script src="script.js"></script>
+<!-- =================== PRODUTOS =================== -->
+<div class="products" id="productList"></div>
 
+<!-- =================== OVERLAY E CARRINHO =================== -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<div class="cart" id="cart">
+  <button class="close-btn" onclick="closeCart()">✖ Fechar</button>
+  <h2>Carrinho</h2>
+  <div id="cartItems"></div>
+  <h3>Total: R$ <span id="cartTotal">0</span></h3>
+
+  <h3>Endereço</h3>
+  <input id="rua" placeholder="Rua">
+  <input id="cidade" placeholder="Cidade">
+  <input id="cep" placeholder="CEP">
+
+  <button onclick="checkoutPix()">Pagar com PIX</button>
+  <button onclick="checkoutMercadoPago()">Mercado Pago</button>
+</div>
+
+<!-- =================== LOGIN =================== -->
+<div class="page" id="loginPage">
+  <h2>Login Admin</h2>
+  <input id="user" placeholder="Usuário">
+  <input id="pass" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <button onclick="closeLogin()">Voltar</button>
+</div>
+
+<!-- =================== ADMIN =================== -->
+<div class="page" id="adminPage">
+  <div class="admin-panel">
+    <h2>Painel Admin</h2>
+    <p>Lucro total: R$ <span id="lucro">0</span></p>
+
+    <h3>Adicionar Produto</h3>
+    <input id="pNome" placeholder="Nome">
+    <input id="pPreco" placeholder="Preço venda">
+    <input id="pCusto" placeholder="Custo fornecedor">
+    <input id="pImg" placeholder="URL imagem">
+    <button onclick="addProduct()">Adicionar Produto</button>
+
+    <h3>Pedidos</h3>
+    <div id="pedidos"></div>
+
+    <button onclick="logout()">Sair</button>
+  </div>
+</div>
+
+<!-- =================== SCRIPT =================== -->
+<script>
+const cartDiv = document.getElementById("cart")
+const overlayDiv = document.getElementById("overlay")
+const cartTotal = document.getElementById("cartTotal")
+const cartCount = document.getElementById("cartCount")
+const loginPage = document.getElementById("loginPage")
+const adminPage = document.getElementById("adminPage")
+const loginBtn = document.getElementById("loginBtn")
+const pedidosDiv = document.getElementById("pedidos")
+const lucro = document.getElementById("lucro")
+const productList = document.getElementById("productList")
+
+let products=[
+  {name:"Relógio Premium",price:79,cost:30,img:"https://i.imgur.com/2DhmtJ4.jpg"},
+  {name:"Óculos Masculino",price:69,cost:25,img:"https://i.imgur.com/ZK6Q6wH.jpg"},
+  {name:"Carteira Slim",price:49,cost:15,img:"https://i.imgur.com/p0KZP6C.jpg"}
+]
+
+let cart=[]
+let lucroTotal=0
+
+function renderProducts(){
+  productList.innerHTML=""
+  products.forEach((p,i)=>{
+    productList.innerHTML+=`
+      <div class="card">
+        <img src="${p.img}">
+        <h3>${p.name}</h3>
+        <div class="price">R$ ${p.price}</div>
+        <button onclick="addToCart(${i})">Adicionar</button>
+        <div class="badge">${Math.floor(Math.random()*15)+3} vendo agora</div>
+      </div>`
+  })
+}
+
+function addToCart(i){
+  cart.push(products[i])
+  updateCart()
+}
+
+function updateCart(){
+  let items=""
+  cart.forEach(p=>{items+=`<p>${p.name} - R$ ${p.price}</p>`})
+  document.getElementById("cartItems").innerHTML = items
+  cartTotal.innerText = cart.reduce((t,p)=>t+p.price,0)
+  cartCount.innerText = cart.length
+}
+
+function toggleCart(){
+  cartDiv.classList.add("open")
+  overlayDiv.classList.add("show")
+}
+
+function closeCart(){
+  cartDiv.classList.remove("open")
+  overlayDiv.classList.remove("show")
+}
+
+function openLogin(){
+  loginPage.classList.add("active")
+  window.scrollTo(0,0)
+}
+
+function closeLogin(){
+  loginPage.classList.remove("active")
+}
+
+function login(){
+  let u=document.getElementById("user").value
+  let p=document.getElementById("pass").value
+  if(u=="Marc@s015" && p=="Mayc@la015"){
+    alert("Admin logado")
+    loginPage.classList.remove("active")
+    adminPage.classList.add("active")
+    loginBtn.style.display="none"
+  }else{
+    alert("Login inválido")
+  }
+}
+
+function logout(){
+  adminPage.classList.remove("active")
+  loginBtn.style.display="inline-block"
+}
+
+function addProduct(){
+  let n=document.getElementById("pNome").value
+  let pr=parseFloat(document.getElementById("pPreco").value)
+  let c=parseFloat(document.getElementById("pCusto").value)
+  let img=document.getElementById("pImg").value
+
+  products.push({name:n,price:pr,cost:c,img:img})
+  renderProducts()
+}
+
+function checkoutPix(){
+  if(cart.length==0) return alert("Carrinho vazio")
+  let total=cart.reduce((t,p)=>t+p.price,0)
+  let custo=cart.reduce((t,p)=>t+p.cost,0)
+  lucroTotal+=total-custo
+  lucro.innerText=lucroTotal
+
+  let pedido=document.createElement("div")
+  pedido.className="order"
+  pedido.innerText=`Pedido R$${total}`
+  pedidosDiv.appendChild(pedido)
+
+  alert("Pagamento PIX enviado (simulação)")
+  cart=[]
+  updateCart()
+  closeCart()
+}
+
+function checkoutMercadoPago(){
+  window.open("https://www.mercadopago.com.br/checkout")
+}
+
+function searchProducts(){
+  let s=document.getElementById("search").value.toLowerCase()
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(s)?"block":"none"
+  })
+}
+
+renderProducts()
+</script>
 </body>
 </html>

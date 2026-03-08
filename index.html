@@ -5,35 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlphaStyle Store</title>
 <style>
-body{margin:0;font-family:Arial;background:#0b0b0b;color:white}
-header{background:#140018;padding:20px;text-align:center}
-header h1{color:#b300ff;margin:0}
-.container{max-width:1100px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.card{background:#111;border-radius:12px;padding:15px;text-align:center;box-shadow:0 0 10px rgba(179,0,255,0.2)}
-.card img{width:100%;border-radius:10px}
+body{margin:0;font-family:Arial;background:#0a0a0a;color:white}
+header{background:#140018;padding:20px;text-align:center;box-shadow:0 0 15px rgba(179,0,255,0.3)}
+header h1{color:#b300ff;margin:0;font-size:32px}
+.container{max-width:1200px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.card{background:#111;border-radius:12px;padding:15px;text-align:center;box-shadow:0 0 12px rgba(179,0,255,0.2);transition:0.3s}
+.card:hover{transform:scale(1.03)}
+.card img{width:100%;border-radius:10px;height:210px;object-fit:cover}
 .price{font-size:20px;color:#b300ff;font-weight:bold}
-button{background:#7a00cc;border:none;color:white;padding:12px 18px;border-radius:8px;cursor:pointer;transition:0.3s}
-button:hover{transform:scale(1.08);background:#b300ff;box-shadow:0 0 10px #b300ff}
-form{background:#111;padding:20px;border-radius:10px;max-width:400px;margin:auto}
-input{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:none}
+button{background:#7a00cc;border:none;color:white;padding:12px 18px;border-radius:8px;cursor:pointer;transition:0.25s;font-weight:bold}
+button:hover{transform:scale(1.1);background:#b300ff;box-shadow:0 0 10px #b300ff}
+form{background:#111;padding:20px;border-radius:10px;max-width:420px;margin:auto;margin-bottom:25px;box-shadow:0 0 10px rgba(179,0,255,0.2)}
+input{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:none;background:#1c1c1c;color:white}
 .hidden{display:none}
 footer{text-align:center;padding:30px;color:#777}
+.adminPanel{background:#111;padding:20px;border-radius:10px;margin-top:20px;box-shadow:0 0 10px rgba(179,0,255,0.2)}
+.order{background:#1a1a1a;padding:12px;margin:10px 0;border-radius:8px}
+.cartItem{background:#1a1a1a;margin:6px;padding:8px;border-radius:6px}
+.total{font-size:20px;color:#b300ff;font-weight:bold}
 </style>
 </head>
 <body>
 
 <header>
 <h1>AlphaStyle</h1>
-<p>Acessórios masculinos</p>
+<p>Acessórios masculinos premium</p>
 </header>
 
 <div class="container" id="auth">
-<h2>Cadastro</h2>
+
+<h2>Criar conta</h2>
 <form id="registerForm">
 <input placeholder="Usuário" id="regUser" required>
 <input placeholder="Senha" type="password" id="regPass" required>
-<input placeholder="Endereço" id="regAddress" required>
+<input placeholder="Rua" id="regStreet" required>
+<input placeholder="Cidade" id="regCity" required>
+<input placeholder="CEP" id="regCep" required>
+<input placeholder="Estado" id="regState" required>
 <button type="submit">Cadastrar</button>
 </form>
 
@@ -43,41 +52,50 @@ footer{text-align:center;padding:30px;color:#777}
 <input placeholder="Senha" type="password" id="logPass" required>
 <button type="submit">Entrar</button>
 </form>
+
+<h2>Login administrador</h2>
+<form id="adminLogin">
+<input placeholder="Admin" id="adminUser">
+<input placeholder="Senha" type="password" id="adminPass">
+<button type="submit">Entrar Admin</button>
+</form>
+
 </div>
 
 <div class="container hidden" id="store">
+
 <h2>Produtos</h2>
-<div class="grid">
+<div class="grid" id="productGrid"></div>
 
-<div class="card">
-<img src="https://i.imgur.com/3ZQ3Z6K.jpeg">
-<h3>Relógio Masculino Premium</h3>
-<p class="price">R$59,90</p>
-<button onclick="comprar('Relógio Masculino')">Comprar</button>
-</div>
-
-<div class="card">
-<img src="https://i.imgur.com/dQw4w9L.jpeg">
-<h3>Corrente Masculina Aço</h3>
-<p class="price">R$39,90</p>
-<button onclick="comprar('Corrente Masculina')">Comprar</button>
-</div>
-
-<div class="card">
-<img src="https://i.imgur.com/1z7Z1Z1.jpeg">
-<h3>Óculos Masculino Estiloso</h3>
-<p class="price">R$49,90</p>
-<button onclick="comprar('Óculos Masculino')">Comprar</button>
-</div>
-
-<div class="card">
-<img src="https://i.imgur.com/oYiTqum.jpeg">
-<h3>Pulseira Masculina Couro</h3>
-<p class="price">R$34,90</p>
-<button onclick="comprar('Pulseira Masculina')">Comprar</button>
-</div>
+<h2>Carrinho</h2>
+<div id="cart"></div>
+<p class="total" id="total"></p>
+<button onclick="finalizarCompra()">Finalizar pedido</button>
 
 </div>
+
+<div class="container hidden" id="adminPanel">
+<h2>Painel do administrador</h2>
+
+<div class="adminPanel">
+<h3>Adicionar produto</h3>
+<input id="prodName" placeholder="Nome do produto">
+<input id="prodPrice" placeholder="Preço de venda">
+<input id="prodCost" placeholder="Custo na Shopee">
+<input id="prodImg" placeholder="Link da imagem">
+<button onclick="addProduct()">Adicionar produto</button>
+</div>
+
+<div class="adminPanel">
+<h3>Pedidos recebidos</h3>
+<div id="orders"></div>
+</div>
+
+<div class="adminPanel">
+<h3>Lucro total</h3>
+<p id="profit"></p>
+</div>
+
 </div>
 
 <footer>
@@ -88,41 +106,185 @@ AlphaStyle © 2026
 
 let users = JSON.parse(localStorage.getItem("users")) || [];
 
+let products = JSON.parse(localStorage.getItem("products")) || [
+{name:"Relógio Premium",price:59.9,cost:25,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30"},
+{name:"Corrente Masculina",price:39.9,cost:15,img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990"},
+{name:"Óculos Masculino",price:49.9,cost:18,img:"https://images.unsplash.com/photo-1511499767150-a48a237f0083"},
+{name:"Pulseira Couro",price:34.9,cost:10,img:"https://images.unsplash.com/photo-1608042314453-ae338d80c427"}
+];
+
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+let cart = [];
+
+function save(){
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("orders",JSON.stringify(orders));
+}
+
+function renderProducts(){
+let grid=document.getElementById("productGrid");
+if(!grid) return;
+
+grid.innerHTML="";
+
+products.forEach((p,i)=>{
+let card=document.createElement("div");
+card.className="card";
+
+card.innerHTML=`
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p class="price">R$ ${p.price}</p>
+<button onclick="addCart(${i})">Adicionar ao carrinho</button>
+`;
+
+grid.appendChild(card);
+});
+}
+
+function addCart(i){
+cart.push(products[i]);
+renderCart();
+}
+
+function renderCart(){
+let div=document.getElementById("cart");
+let total=0;
+let html="";
+
+cart.forEach(p=>{
+total+=p.price;
+html+=`<div class='cartItem'>${p.name} - R$ ${p.price}</div>`;
+});
+
+div.innerHTML=html;
+
+document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+}
+
+function finalizarCompra(){
+
+let user=localStorage.getItem("loggedUser");
+let u=users.find(x=>x.user===user);
+
+orders.push({
+user:u.user,
+address:`${u.street}, ${u.city} - ${u.state} CEP:${u.cep}`,
+items:cart
+});
+
+save();
+
+alert("Pedido realizado com sucesso!");
+
+cart=[];
+renderCart();
+}
+
+function addProduct(){
+let name=document.getElementById("prodName").value;
+let price=parseFloat(document.getElementById("prodPrice").value);
+let cost=parseFloat(document.getElementById("prodCost").value);
+let img=document.getElementById("prodImg").value;
+
+products.push({name,price,cost,img});
+
+save();
+renderProducts();
+
+alert("Produto adicionado na loja");
+}
+
+function renderOrders(){
+
+let div=document.getElementById("orders");
+let profit=0;
+
+div.innerHTML="";
+
+orders.forEach(o=>{
+let html="<div class='order'>";
+
+html+=`<p><b>Cliente:</b> ${o.user}</p>`;
+html+=`<p><b>Endereço:</b> ${o.address}</p>`;
+
+
+o.items.forEach(i=>{
+profit += (i.price - i.cost);
+html+=`<p>${i.name}</p>`;
+});
+
+html+="</div>";
+
+div.innerHTML+=html;
+});
+
+document.getElementById("profit").innerText="R$ "+profit.toFixed(2);
+}
+
+// cadastro
+
 document.getElementById("registerForm").addEventListener("submit",function(e){
 e.preventDefault();
 
-let user = document.getElementById("regUser").value;
-let pass = document.getElementById("regPass").value;
-let address = document.getElementById("regAddress").value;
+let user=document.getElementById("regUser").value;
+let pass=document.getElementById("regPass").value;
+let street=document.getElementById("regStreet").value;
+let city=document.getElementById("regCity").value;
+let cep=document.getElementById("regCep").value;
+let state=document.getElementById("regState").value;
 
-users.push({user,pass,address});
+users.push({user,pass,street,city,cep,state});
+
 localStorage.setItem("users",JSON.stringify(users));
 
-alert("Cadastro realizado");
+alert("Conta criada com sucesso");
 });
+
+// login
 
 document.getElementById("loginForm").addEventListener("submit",function(e){
 e.preventDefault();
 
-let user = document.getElementById("logUser").value;
-let pass = document.getElementById("logPass").value;
+let user=document.getElementById("logUser").value;
+let pass=document.getElementById("logPass").value;
 
-let valid = users.find(u => u.user===user && u.pass===pass);
+let valid=users.find(u=>u.user===user && u.pass===pass);
 
 if(valid){
+
+localStorage.setItem("loggedUser",user);
 
 document.getElementById("auth").classList.add("hidden");
 
 document.getElementById("store").classList.remove("hidden");
 
+renderProducts();
+
 }else{
-alert("login errado");
+alert("Login incorreto");
 }
 });
 
-function comprar(produto){
-alert("Pedido recebido: "+produto+"\nAgora você compra na Shopee e envia para o cliente.");
+// admin login
+
+document.getElementById("adminLogin").addEventListener("submit",function(e){
+ e.preventDefault();
+
+let user=document.getElementById("adminUser").value;
+let pass=document.getElementById("adminPass").value;
+
+if(user==="admin" && pass==="1234"){
+
+ document.getElementById("auth").classList.add("hidden");
+ document.getElementById("adminPanel").classList.remove("hidden");
+
+ renderOrders();
+
+}else{
+alert("Acesso admin negado");
 }
+});
 
 </script>
 

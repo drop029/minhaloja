@@ -3,335 +3,294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlphaStyle 2.0</title>
+<title>AlphaStyle 3.0</title>
 <style>
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#070010;
-  color:white;
-}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 25px;
-  background:#140028;
-  box-shadow:0 0 15px #7a00ff;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-.logo{ font-size:28px; font-weight:bold; color:#b366ff; letter-spacing:1px; }
-.top-actions{ display:flex; gap:12px; align-items:center; }
-button{
-  background:#7a00ff; border:none; padding:10px 16px; color:white; border-radius:8px; cursor:pointer; font-weight:bold;
-  position:relative; overflow:hidden; transition:.3s;
-}
-button::after{
-  content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg, #9d35ff, #ff66ff); transition:.5s; z-index:0;
-}
-button:hover::after{ left:0; }
-button span{ position:relative; z-index:1; }
-#search{ padding:8px; border-radius:6px; border:none; }
-.banner{ padding:50px 20px; text-align:center; background:linear-gradient(90deg,#24004a,#120020); }
-.banner h1{ font-size:36px; margin:0; }
-.banner p{ opacity:.8; }
-.products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:30px; }
-.card{ background:#140020; padding:15px; border-radius:12px; box-shadow:0 0 10px #6d00ff55; transition:.25s; cursor:pointer; position:relative; }
-.card:hover{ transform:translateY(-6px); box-shadow:0 0 15px #9f40ff; }
-.card img{ width:100%; border-radius:10px; }
-.price{ color:#a855ff; font-size:18px; margin:6px 0; }
-.badge{ background:#ff2bd6; padding:4px 8px; border-radius:6px; font-size:12px; position:absolute; top:10px; right:10px; }
-.add-btn{ position:relative; overflow:hidden; }
-.add-btn::after{ content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg,#ff66ff,#9d35ff); transition:.5s; z-index:0; }
-.add-btn:hover::after{ left:0; }
-.add-btn span{ position:relative; z-index:1; }
+body{margin:0;font-family:Arial, Helvetica, sans-serif;background:#070010;color:white;}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#140028;box-shadow:0 0 15px #7a00ff;position:sticky;top:0;z-index:10;}
+.logo{font-size:28px;font-weight:bold;color:#b366ff;letter-spacing:1px;}
+.top-actions{display:flex;gap:12px;align-items:center;}
+button{background:#7a00ff;border:none;padding:10px 16px;color:white;border-radius:8px;cursor:pointer;font-weight:bold;position:relative;overflow:hidden;transition:.3s;}
+button::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg, #9d35ff, #ff66ff);transition:.5s;z-index:0;}
+button:hover::after{left:0;}
+button span{position:relative;z-index:1;}
+#search{padding:8px;border-radius:6px;border:none;}
+.banner{padding:50px 20px;text-align:center;background:linear-gradient(90deg,#24004a,#120020);}
+.banner h1{font-size:36px;margin:0;}
+.banner p{opacity:.8;}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:30px;}
+.card{background:#140020;padding:15px;border-radius:12px;box-shadow:0 0 10px #6d00ff55;transition:.25s;cursor:pointer;position:relative;}
+.card:hover{transform:translateY(-6px);box-shadow:0 0 15px #9f40ff;}
+.card img{width:100%;border-radius:10px;}
+.price{color:#a855ff;font-size:18px;margin:6px 0;}
+.badge{background:#ff2bd6;padding:4px 8px;border-radius:6px;font-size:12px;position:absolute;top:10px;right:10px;}
+.add-btn{position:relative;overflow:hidden;}
+.add-btn::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg,#ff66ff,#9d35ff);transition:.5s;z-index:0;}
+.add-btn:hover::after{left:0;}
+.add-btn span{position:relative;z-index:1;}
 
 /* Side Panels */
-.side-panel{ position:fixed; top:0; right:-100%; width:90%; max-width:400px; height:100%; background:#0d0018; padding:20px; box-shadow:-5px 0 20px #6a00ff; transition:.3s; overflow:auto; z-index:20; }
-.side-panel.open{ right:0; }
-.overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:#00000090; display:none; z-index:15; }
-.overlay.show{ display:block; }
+.side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:.3s;overflow:auto;z-index:20;}
+.side-panel.open{right:0;}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#00000090;display:none;z-index:15;}
+.overlay.show{display:block;}
+.cart-item{display:flex;gap:10px;align-items:center;margin-bottom:10px;border-bottom:1px solid #6a00ff;padding-bottom:10px;}
+.cart-item img{width:60px;border-radius:8px;}
+.cart-item-info{flex:1;}
+.cart-item-info h4{margin:0;font-size:16px;}
+.cart-item-info p{margin:2px 0;font-size:14px;}
+.remove-btn{background:#ff3c3c;padding:4px 8px;border:none;border-radius:6px;cursor:pointer;color:white;}
+.close-btn{background:#ff3c3c;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;color:white;margin-bottom:10px;}
+.side-panel input{width:100%;padding:8px;margin:6px 0 12px 0;border-radius:6px;border:none;}
+label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 
-/* Cart Items */
-.cart-item{ display:flex; gap:10px; align-items:center; margin-bottom:10px; border-bottom:1px solid #6a00ff; padding-bottom:10px; }
-.cart-item img{ width:60px; border-radius:8px; }
-.cart-item-info{ flex:1; }
-.cart-item-info h4{ margin:0; font-size:16px; }
-.cart-item-info p{ margin:2px 0; font-size:14px; }
-.remove-btn{ background:#ff3c3c; padding:4px 8px; border:none; border-radius:6px; cursor:pointer; color:white; }
-.close-btn{ background:#ff3c3c; padding:6px 10px; border:none; border-radius:6px; cursor:pointer; color:white; margin-bottom:10px; }
-
-/* Inputs */
-.side-panel input{ width:100%; padding:8px; margin:6px 0 12px 0; border-radius:6px; border:none; }
-label{ display:block; margin-top:10px; font-size:14px; opacity:0.8; }
-
-/* Admin Panel */
-.admin-panel{ display:none; margin-top:20px; border:1px solid #6a00ff; padding:10px; border-radius:8px; }
-.admin-panel h3{ margin-top:0; font-size:18px; }
-.admin-panel input{ margin-bottom:6px; }
-.admin-panel button{ margin-bottom:6px; }
+/* Admin */
+.admin-panel{display:none;margin-top:20px;border:1px solid #6a00ff;padding:10px;border-radius:8px;}
+.admin-panel h3{margin-top:0;font-size:18px;}
+.admin-panel input, .admin-panel select{margin-bottom:6px;}
+.admin-panel button{margin-bottom:6px;}
+.admin-section{border-top:1px solid #6a00ff;margin-top:10px;padding-top:10px;}
 
 /* Responsive */
-@media(max-width:600px){
-  .banner h1{ font-size:28px; }
-  .products{ padding:15px; gap:15px; }
-}
+@media(max-width:600px){.banner h1{font-size:28px;}.products{padding:15px;gap:15px;}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">AlphaStyle</div>
-  <div class="top-actions">
-    <input id="search" type="search" placeholder="Buscar produto" oninput="searchProducts()">
-    <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
-    <button id="registerBtn" onclick="togglePanel('register')"><span>Register</span></button>
-    <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
-  </div>
+<div class="logo">AlphaStyle</div>
+<div class="top-actions">
+  <input id="search" type="search" placeholder="Buscar produto" oninput="renderProducts()">
+  <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
+  <button id="registerBtn" onclick="togglePanel('register')"><span>Register</span></button>
+  <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
+</div>
 </header>
 
 <div class="banner">
-  <h1>Bem-vindo à AlphaStyle</h1>
-  <p>Acessórios masculinos modernos</p>
+<h1>Bem-vindo à AlphaStyle</h1>
+<p>Acessórios masculinos modernos</p>
 </div>
 
 <div class="products" id="productList"></div>
 
 <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
-<!-- Side Panels -->
+<!-- Carrinho -->
 <div class="side-panel" id="cartPanel">
-  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-  <h2>Carrinho</h2>
-  <div id="cartItems"></div>
-  <h3>Total: R$ <span id="cartTotal">0</span></h3>
-  <button onclick="emptyCart()">Esvaziar Carrinho</button>
-  <button onclick="checkoutPix()">Pagar com PIX</button>
-  <button onclick="checkoutMercadoPago()">Mercado Pago</button>
+<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+<h2>Carrinho</h2>
+<div id="cartItems"></div>
+<h3>Total: R$ <span id="cartTotal">0</span></h3>
+<button onclick="emptyCart()">Esvaziar Carrinho</button>
+<button onclick="checkoutPix()">Pagar com PIX</button>
+<button onclick="checkoutMercadoPago()">Mercado Pago</button>
 </div>
 
+<!-- Login/Register -->
 <div class="side-panel" id="loginPanel">
-  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-  <h2>Login</h2>
-  <label for="user">Usuário</label>
-  <input id="user" placeholder="Usuário">
-  <label for="pass">Senha</label>
-  <input id="pass" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+<h2>Login</h2>
+<label>Usuário</label><input id="user" placeholder="Usuário">
+<label>Senha</label><input id="pass" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
 </div>
 
 <div class="side-panel" id="registerPanel">
-  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-  <h2>Register</h2>
-  <label for="regUser">Usuário</label>
-  <input id="regUser" placeholder="Usuário">
-  <label for="regPass">Senha</label>
-  <input id="regPass" type="password" placeholder="Senha">
-  <button onclick="registerUser()">Registrar</button>
+<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+<h2>Register</h2>
+<label>Usuário</label><input id="regUser" placeholder="Usuário">
+<label>Senha</label><input id="regPass" type="password" placeholder="Senha">
+<button onclick="registerUser()">Registrar</button>
 </div>
 
-<!-- Admin Panel -->
+<!-- Painel Admin Completo -->
 <div class="side-panel admin-panel" id="adminPanel">
-  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
-  <h2>Painel Admin</h2>
-  <h3>Adicionar Produto</h3>
-  <input id="adminName" placeholder="Nome Produto">
-  <input id="adminPrice" type="number" placeholder="Preço">
-  <input id="adminCost" type="number" placeholder="Custo">
-  <input id="adminImg" placeholder="URL Imagem">
-  <button onclick="adminAddProduct()">Adicionar Produto</button>
-  <h3>Lista de Produtos</h3>
-  <div id="adminProductList"></div>
+<button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
+<h2>Painel Admin Profissional</h2>
+
+<div class="admin-section">
+<h3>Adicionar Produto</h3>
+<input id="adminName" placeholder="Nome Produto">
+<input id="adminPrice" type="number" placeholder="Preço">
+<input id="adminCost" type="number" placeholder="Custo">
+<input id="adminImg" placeholder="URL Imagem">
+<button onclick="adminAddProduct()">Adicionar Produto</button>
+</div>
+
+<div class="admin-section">
+<h3>Editar/Remover Produtos</h3>
+<div id="adminProductList"></div>
+</div>
+
+<div class="admin-section">
+<h3>Usuários Registrados</h3>
+<div id="adminUserList"></div>
+</div>
+
+<div class="admin-section">
+<h3>Estatísticas</h3>
+<p>Total de Vendas: R$ <span id="statTotalSales">0</span></p>
+<p>Produtos mais vendidos:</p>
+<ul id="statTopProducts"></ul>
+<p>Total de Usuários: <span id="statTotalUsers">0</span></p>
+</div>
+
 </div>
 
 <script>
-const cartDiv = document.getElementById("cartPanel")
-const loginDiv = document.getElementById("loginPanel")
-const registerDiv = document.getElementById("registerPanel")
-const overlayDiv = document.getElementById("overlay")
-const cartTotal = document.getElementById("cartTotal")
-const cartCount = document.getElementById("cartCount")
-const productList = document.getElementById("productList")
-const searchInput = document.getElementById("search")
-const loginBtn = document.getElementById("loginBtn")
-const registerBtn = document.getElementById("registerBtn")
-const adminPanel = document.getElementById("adminPanel")
-const adminProductList = document.getElementById("adminProductList")
+// Admin fixo
+const adminUser={username:"admin",password:"1234"}
 
-// Usuário Admin fixo
-const adminUser = { username: "admin", password: "1234" }
-
-// Produtos
-let products = [
-  {name:"Relógio Masculino Estilo Casual",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[5,4,5]},
-  {name:"Óculos de Sol Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[4,4,3]},
-  {name:"Boné Street Style",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",reviews:[5,5,4]},
-  {name:"Fone Bluetooth Pro",price:179,cost:85,img:"https://i.imgur.com/kT5zHqH.jpg",reviews:[4,3,5]},
-  {name:"Carteira Slim de Couro",price:129,cost:55,img:"https://i.imgur.com/p0KZP6C.jpg",reviews:[4,5,4]},
-  {name:"Pulseira Masculina Estilo",price:79,cost:30,img:"https://i.imgur.com/v0eF5fT.jpg",reviews:[3,4,4]},
-  {name:"Cinto Masculino Casual",price:59,cost:25,img:"https://i.imgur.com/dQ7zXrs.jpg",reviews:[5,4,4]},
-  {name:"Meias Estilizadas (kit 3)",price:49,cost:15,img:"https://i.imgur.com/eR0Bztt.jpg",reviews:[4,3,5]},
-  {name:"Bolsa Pochete Unissex",price:139,cost:60,img:"https://i.imgur.com/aBt7wN2.jpg",reviews:[5,5,5]},
-  {name:"Pulseira de Couro Trançada",price:69,cost:28,img:"https://i.imgur.com/M8Y9h5w.jpg",reviews:[4,4,3]}
+// Dados
+let products=JSON.parse(localStorage.getItem('products'))||[
+  {name:"Relógio Masculino",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[5,4,5],sold:0},
+  {name:"Óculos Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[4,4,3],sold:0},
+  {name:"Boné Street",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",reviews:[5,5,4],sold:0},
 ]
 
-// Carrinho e usuários
-let cart = JSON.parse(localStorage.getItem('cart')) || []
-let users = JSON.parse(localStorage.getItem('users')) || []
+let users=JSON.parse(localStorage.getItem('users'))||[]
+let cart=JSON.parse(localStorage.getItem('cart'))||[]
+let totalSales=0
 
 function saveState(){
-  localStorage.setItem('cart', JSON.stringify(cart))
-  localStorage.setItem('users', JSON.stringify(users))
-  localStorage.setItem('products', JSON.stringify(products))
+  localStorage.setItem('products',JSON.stringify(products))
+  localStorage.setItem('users',JSON.stringify(users))
+  localStorage.setItem('cart',JSON.stringify(cart))
 }
 
 // Render Produtos
 function renderProducts(){
-  const searchText = searchInput.value.toLowerCase()
-  productList.innerHTML=""
+  const searchText=document.getElementById("search").value.toLowerCase()
+  const list=document.getElementById("productList")
+  list.innerHTML=""
   products.forEach((p,i)=>{
-    if(!p.name.toLowerCase().includes(searchText)) return;
-    const soldNow = Math.floor(Math.random()*15)+3
-    const promo = Math.random() < 0.3 ? '🔥 Promo!' : ''
-    const stars = p.reviews.length ? Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length) : 0
-    let starHTML = ""
-    for(let s=0;s<5;s++){ starHTML += s<stars ? "⭐" : "☆" }
-    productList.innerHTML+=`
-      <div class="card">
-        <img src="${p.img}" loading="lazy" alt="${p.name}">
-        <div class="badge">${soldNow} vendendo ${promo}</div>
-        <h3>${p.name}</h3>
-        <div class="price">R$ ${p.price}</div>
-        <div>${starHTML}</div>
-        <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
-      </div>`
+    if(!p.name.toLowerCase().includes(searchText)) return
+    const soldNow=p.sold || 0
+    const promo=Math.random()<0.3?'🔥 Promo!':''
+    const stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0
+    let starHTML=""
+    for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆"}
+    list.innerHTML+=`<div class="card">
+      <img src="${p.img}" loading="lazy" alt="${p.name}">
+      <div class="badge">${soldNow} vendendo ${promo}</div>
+      <h3>${p.name}</h3>
+      <div class="price">R$ ${p.price}</div>
+      <div>${starHTML}</div>
+      <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
+    </div>`
   })
 }
 
 // Fly-to-cart
 let flying=false
-function flyToCart(e,index){
-  if(flying) return
+function flyToCart(e,i){
+  if(flying)return
   flying=true
-  const img = e.target.closest('.card').querySelector('img')
-  const imgClone = img.cloneNode(true)
-  const rect = img.getBoundingClientRect()
-  imgClone.style.position='fixed'
-  imgClone.style.top=rect.top+'px'
-  imgClone.style.left=rect.left+'px'
-  imgClone.style.width=rect.width+'px'
-  imgClone.style.height=rect.height+'px'
-  imgClone.style.transition='all 0.8s ease-in-out'
-  imgClone.style.zIndex=100
-  document.body.appendChild(imgClone)
-  const cartBtn = document.querySelector('.top-actions button:last-child')
-  const cartRect = cartBtn.getBoundingClientRect()
-  setTimeout(()=>{
-    imgClone.style.top=cartRect.top+'px'
-    imgClone.style.left=cartRect.left+'px'
-    imgClone.style.width='40px'
-    imgClone.style.height='40px'
-    imgClone.style.opacity=0
-  },10)
-  setTimeout(()=>{
-    document.body.removeChild(imgClone)
-    addToCart(index)
-    flying=false
-  },810)
+  const img=e.target.closest('.card').querySelector('img')
+  const clone=img.cloneNode(true)
+  const rect=img.getBoundingClientRect()
+  clone.style.position='fixed';clone.style.top=rect.top+'px';clone.style.left=rect.left+'px'
+  clone.style.width=rect.width+'px';clone.style.height=rect.height+'px'
+  clone.style.transition='all 0.8s ease-in-out';clone.style.zIndex=100
+  document.body.appendChild(clone)
+  const cartBtn=document.querySelector('.top-actions button:last-child')
+  const cRect=cartBtn.getBoundingClientRect()
+  setTimeout(()=>{clone.style.top=cRect.top+'px';clone.style.left=cRect.left+'px';clone.style.width='40px';clone.style.height='40px';clone.style.opacity=0},10)
+  setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)
 }
 
 // Carrinho
 function addToCart(i){
-  const existing = cart.find(p => p.name === products[i].name)
-  if(existing){ existing.quantity++ }
-  else{ cart.push({...products[i], quantity:1}) }
-  updateCart()
-  saveState()
+  const existing=cart.find(p=>p.name===products[i].name)
+  if(existing){existing.quantity++;products[i].sold++}
+  else{cart.push({...products[i],quantity:1});products[i].sold=1}
+  updateCart();renderAdminStats();saveState()
 }
 function updateCart(){
-  let itemsHTML="", total=0, totalCount=0
-  cart.forEach((p,idx)=>{
-    total += p.price*p.quantity
-    totalCount += p.quantity
-    itemsHTML+=`<div class="cart-item">
-      <img src="${p.img}">
-      <div class="cart-item-info">
-        <h4>${p.name}</h4>
-        <p>R$ ${p.price} x ${p.quantity}</p>
-      </div>
-      <button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button>
-    </div>`
-  })
-  document.getElementById("cartItems").innerHTML = itemsHTML
-  cartTotal.innerText = total
-  cartCount.innerText = totalCount
+  let html="",total=0,count=0
+  cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity
+    html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`})
+  document.getElementById("cartItems").innerHTML=html
+  document.getElementById("cartTotal").innerText=total
+  document.getElementById("cartCount").innerText=count
 }
-function removeFromCart(idx){ cart.splice(idx,1); updateCart(); saveState() }
-function emptyCart(){ cart=[]; updateCart(); saveState() }
+function removeFromCart(idx){cart.splice(idx,1);updateCart();saveState()}
+function emptyCart(){cart=[];updateCart();saveState()}
 
 // Painéis
-function togglePanel(panel){
-  closeAllPanels()
-  overlayDiv.classList.add("show")
-  if(panel==="cart") cartDiv.classList.add("open")
-  if(panel==="login") loginDiv.classList.add("open")
-  if(panel==="register") registerDiv.classList.add("open")
-  if(panel==="admin") adminPanel.classList.add("open")
-}
-function closeAllPanels(){
-  overlayDiv.classList.remove("show")
-  cartDiv.classList.remove("open")
-  loginDiv.classList.remove("open")
-  registerDiv.classList.remove("open")
-  adminPanel.classList.remove("open")
-}
+function togglePanel(panel){closeAllPanels();overlayDiv.classList.add("show")
+  if(panel==="cart")cartDiv.classList.add("open")
+  if(panel==="login")loginDiv.classList.add("open")
+  if(panel==="register")registerDiv.classList.add("open")
+  if(panel==="admin")adminPanel.classList.add("open")}
+function closeAllPanels(){overlayDiv.classList.remove("show");cartDiv.classList.remove("open");loginDiv.classList.remove("open");registerDiv.classList.remove("open");adminPanel.classList.remove("open")}
 
 // Login/Register
 function login(){
-  let u = document.getElementById("user").value
-  let p = document.getElementById("pass").value
-  if(!u||!p) return alert("Preencha os campos")
-  if(u===adminUser.username && p===adminUser.password){
+  let u=document.getElementById("user").value,p=document.getElementById("pass").value
+  if(!u||!p)return alert("Preencha os campos")
+  if(u===adminUser.username&&p===adminUser.password){
     alert("Login efetuado como ADMIN")
-    loginBtn.style.display="none"
-    registerBtn.style.display="none"
+    loginBtn.style.display="none";registerBtn.style.display="none"
     togglePanel("admin")
   }else{
-    const user = users.find(x => x.username===u && x.password===p)
-    if(user){
-      alert("Login efetuado como usuário "+u)
-      loginBtn.style.display="none"
-      registerBtn.style.display="none"
-    }else{ alert("Usuário ou senha inválidos") }
-  }
+    const user=users.find(x=>x.username===u&&x.password===p)
+    if(user){alert("Login efetuado como usuário "+u);loginBtn.style.display="none";registerBtn.style.display="none"}
+    else{alert("Usuário ou senha inválidos")}}
   closeAllPanels()
 }
-function registerUser(){
-  let u = document.getElementById("regUser").value
-  let p = document.getElementById("regPass").value
-  if(!u||!p) return alert("Preencha os campos")
-  if(users.find(x=>x.username===u)) return alert("Usuário já existe")
-  users.push({username:u,password:p})
-  saveState()
-  alert("Usuário registrado!")
-  closeAllPanels()
+function registerUser(){let u=document.getElementById("regUser").value,p=document.getElementById("regPass").value
+if(!u||!p)return alert("Preencha os campos")
+if(users.find(x=>x.username===u))return alert("Usuário já existe")
+users.push({username:u,password:p});saveState();alert("Usuário registrado!");closeAllPanels()}
+
+// Admin Functions
+function adminAddProduct(){
+  const name=document.getElementById("adminName").value
+  const price=parseFloat(document.getElementById("adminPrice").value)
+  const cost=parseFloat(document.getElementById("adminCost").value)
+  const img=document.getElementById("adminImg").value
+  if(!name||isNaN(price)||isNaN(cost)||!img)return alert("Preencha todos os campos")
+  products.push({name,price,cost,img,reviews:[],sold:0})
+  saveState();alert("Produto adicionado!");renderProducts();renderAdminProducts()
+  document.getElementById("adminName").value="";document.getElementById("adminPrice").value="";document.getElementById("adminCost").value="";document.getElementById("adminImg").value=""
 }
 
-// Admin CRUD
-function adminAddProduct(){
-  const name = document.getElementById("adminName").value
-  const price = parseFloat(document.getElementById("adminPrice").value)
-  const cost = parseFloat(document.getElementById("adminCost").value)
-  const img = document.getElementById("adminImg").value
-  if(!name || isNaN(price)|| isNaN(cost) || !img) return alert("Preencha todos os campos")
-  products.push({name,price,cost,img,reviews:[]})
-  saveState()
-  alert("Produto adicionado!")
-  renderProducts()
-  renderAdminProducts()
-  document.getElementById("adminName").value=""
-  document.getElementById("adminPrice").value=""
-  document.getElementById("adminCost").value=""
-  document.getElementById("adminImg").
+function renderAdminProducts(){
+  let html=""
+  products.forEach((p,i)=>{html+=`<div><b>${p.name}</b> - R$${p.price} <button onclick="adminEditProduct(${i})">Editar</button> <button onclick="adminRemoveProduct(${i})">Remover</button></div>`})
+  document.getElementById("adminProductList").innerHTML=html
+}
+
+function adminEditProduct(i){
+  const newName=prompt("Nome:",products[i].name)
+  const newPrice=parseFloat(prompt("Preço:",products[i].price))
+  const newCost=parseFloat(prompt("Custo:",products[i].cost))
+  const newImg=prompt("URL Imagem:",products[i].img)
+  if(!newName||isNaN(newPrice)||isNaN(newCost)||!newImg)return
+  products[i]={...products[i],name:newName,price:newPrice,cost:newCost,img:newImg}
+  saveState();renderProducts();renderAdminProducts();renderAdminStats()
+}
+
+function adminRemoveProduct(i){if(confirm("Remover produto?")){products.splice(i,1);saveState();renderProducts();renderAdminProducts();renderAdminStats()}}
+
+// Admin Users
+function renderAdminUsers(){let html="";users.forEach((u,i)=>{html+=`<div>${u.username} <button onclick="adminRemoveUser(${i})">Remover</button></div>`});document.getElementById("adminUserList").innerHTML=html}
+function adminRemoveUser(i){if(confirm("Remover usuário?")){users.splice(i,1);saveState();renderAdminUsers();renderAdminStats()}}
+
+// Stats
+function renderAdminStats(){
+  let total=0
+  products.forEach(p=>{total+=p.price*(p.sold||0)})
+  document.getElementById("statTotalSales").innerText=total
+  document.getElementById("statTotalUsers").innerText=users.length
+  const top=products.slice().sort((a,b)=>(b.sold||0)-(a.sold||0)).slice(0,5)
+  let html="";top.forEach(p=>{html+=`<li>${p.name} - ${p.sold||0} vendidos</li>`})
+  document.getElementById("statTopProducts").innerHTML=html
+}
+
+// Checkout
+function checkoutPix(){
+  if(cart.length==0)return alert("Carrinho vazio")
+  let total=cart.reduce((t,p)=>t+p.price*p.quantity,0)
+  alert("Pagamento

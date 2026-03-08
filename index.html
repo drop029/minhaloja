@@ -38,11 +38,10 @@ button span{position:relative;z-index:1;}
 .cart-item-info p{margin:2px 0;font-size:14px;}
 .remove-btn{background:#ff3c3c;padding:4px 8px;border:none;border-radius:6px;cursor:pointer;color:white;}
 .close-btn{background:#ff3c3c;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;margin-bottom:10px;color:white;}
-.side-panel input, .side-panel textarea{width:100%;padding:8px;margin:6px 0 12px 0;border-radius:6px;border:none;}
+.side-panel input, .side-panel textarea, .side-panel select{width:100%;padding:8px;margin:6px 0 12px 0;border-radius:6px;border:none;}
 label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 .admin-panel{display:none;margin-top:20px;border:1px solid #6a00ff;padding:10px;border-radius:8px;}
 .admin-panel h3{margin-top:0;font-size:18px;}
-.admin-panel input, .admin-panel select, .admin-panel textarea{margin-bottom:6px;}
 .admin-panel button{margin-bottom:6px;}
 .admin-section{border-top:1px solid #6a00ff;margin-top:10px;padding-top:10px;}
 .profile-panel img{width:100px;height:100px;border-radius:50%;margin-bottom:10px;}
@@ -156,13 +155,12 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 <ul id="statTopProducts"></ul>
 <p>Total de Usuários: <span id="statTotalUsers">0</span></p>
 </div>
-</div>
 
 <script>
-// Admin fixo
+// ADMIN FIXO
 const adminUser={username:"admin",password:"1234"}
 
-// Dados iniciais
+// DADOS INICIAIS
 let products=JSON.parse(localStorage.getItem('products'))||[
 {name:"Relógio Masculino",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",desc:"Relógio estiloso masculino",reviews:[5,4,5],sold:0},
 {name:"Óculos Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",desc:"Óculos de sol polarizado",reviews:[4,4,3],sold:0},
@@ -174,23 +172,33 @@ let products=JSON.parse(localStorage.getItem('products'))||[
 {name:"Óculos Aviador",price:189,cost:80,img:"https://i.imgur.com/3Xh6gOi.jpg",desc:"Estilo aviador",reviews:[4,4,5],sold:0},
 {name:"Boné Trucker",price:99,cost:40,img:"https://i.imgur.com/7fXzV6a.jpg",desc:"Boné casual",reviews:[4,5,4],sold:0},
 {name:"Colar Masculino",price:59,cost:25,img:"https://i.imgur.com/0ZkLQ7i.jpg",desc:"Colar moderno",reviews:[5,4,5],sold:0},
-]
-let users=JSON.parse(localStorage.getItem('users'))||[]
-let cart=JSON.parse(localStorage.getItem('cart'))||[]
-let overlayDiv=document.getElementById("overlay")
-let cartDiv=document.getElementById("cartPanel")
-let loginDiv=document.getElementById("loginPanel")
-let registerDiv=document.getElementById("registerPanel")
-let profileDiv=document.getElementById("profilePanel")
-let adminPanel=document.getElementById("adminPanel")
-let cartTotal=document.getElementById("cartTotal")
-let cartCount=document.getElementById("cartCount")
-let productList=document.getElementById("productList")
-let loginBtn=document.getElementById("loginBtn")
-let registerBtn=document.getElementById("registerBtn")
-let profileBtn=document.getElementById("profileBtn")
+];
+let users=JSON.parse(localStorage.getItem('users'))||[];
+let cart=JSON.parse(localStorage.getItem('cart'))||[];
+let currentUser=null;
 
-// Funções de painel
+// ELEMENTOS
+const overlayDiv=document.getElementById("overlay");
+const cartDiv=document.getElementById("cartPanel");
+const loginDiv=document.getElementById("loginPanel");
+const registerDiv=document.getElementById("registerPanel");
+const profileDiv=document.getElementById("profilePanel");
+const adminPanel=document.getElementById("adminPanel");
+const cartTotal=document.getElementById("cartTotal");
+const cartCount=document.getElementById("cartCount");
+const productList=document.getElementById("productList");
+const loginBtn=document.getElementById("loginBtn");
+const registerBtn=document.getElementById("registerBtn");
+const profileBtn=document.getElementById("profileBtn");
+
+// FUNÇÕES
+function saveState(){
+localStorage.setItem("products",JSON.stringify(products));
+localStorage.setItem("users",JSON.stringify(users));
+localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+// PAINÉIS
 function togglePanel(panel){closeAllPanels();overlayDiv.classList.add("show");
 if(panel==="cart")cartDiv.classList.add("open");
 if(panel==="login")loginDiv.classList.add("open");
@@ -199,17 +207,17 @@ if(panel==="profile")profileDiv.classList.add("open");
 if(panel==="admin")adminPanel.classList.add("open")}
 function closeAllPanels(){overlayDiv.classList.remove("show");cartDiv.classList.remove("open");loginDiv.classList.remove("open");registerDiv.classList.remove("open");profileDiv.classList.remove("open");adminPanel.classList.remove("open")}
 
-// Render Produtos
+// RENDER PRODUTOS
 function renderProducts(){
-let searchText=document.getElementById("search").value.toLowerCase()
-productList.innerHTML=""
+let searchText=document.getElementById("search").value.toLowerCase();
+productList.innerHTML="";
 products.forEach((p,i)=>{
-if(!p.name.toLowerCase().includes(searchText)) return
-const soldNow=p.sold||0
-const promo=Math.random()<0.3?'🔥 Promo!':''
-let stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0
-let starHTML=""
-for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆"}
+if(!p.name.toLowerCase().includes(searchText)) return;
+const soldNow=p.sold||0;
+const promo=Math.random()<0.3?'🔥 Promo!':'';
+let stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0;
+let starHTML="";
+for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆";}
 productList.innerHTML+=`<div class="card">
 <img src="${p.img}" loading="lazy" alt="${p.name}">
 <div class="badge">${soldNow} vendidos ${promo}</div>
@@ -218,9 +226,28 @@ productList.innerHTML+=`<div class="card">
 <p>${p.desc}</p>
 <div>${starHTML}</div>
 <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
-</div>`})}
+</div>`});
+}
 
-// Carrinho
+// CARRINHO
+function updateCart(){
+let html="",total=0,count=0;
+cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity;
+html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`});
+cartTotal.innerText=total;cartCount.innerText=count;document.getElementById("cartItems").innerHTML=html;
+}
+
+function addToCart(i){
+const existing=cart.find(p=>p.name===products[i].name);
+if(existing){existing.quantity++;products[i].sold++}
+else{cart.push({...products[i],quantity:1});products[i].sold=1}
+updateCart();renderAdminStats();saveState();
+}
+
+function removeFromCart(idx){cart.splice(idx,1);updateCart();saveState();}
+function emptyCart(){cart=[];updateCart();saveState();}
+
+// ANIMAÇÃO FLY
 let flying=false
 function flyToCart(e,i){if(flying)return;flying=true
 const img=e.target.closest('.card').querySelector('img')
@@ -231,40 +258,17 @@ document.body.appendChild(clone)
 const cartBtn=document.querySelector('.top-actions button:last-child')
 const cRect=cartBtn.getBoundingClientRect()
 setTimeout(()=>{clone.style.top=cRect.top+'px';clone.style.left=cRect.left+'px';clone.style.width='40px';clone.style.height='40px';clone.style.opacity=0},10)
-setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)}
-
-function addToCart(i){
-const existing=cart.find(p=>p.name===products[i].name)
-if(existing){existing.quantity++;products[i].sold++}
-else{cart.push({...products[i],quantity:1});products[i].sold=1}
-updateCart();renderAdminStats();saveState()
+setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)
 }
-function updateCart(){let html="",total=0,count=0
-cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity
-html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`})
-cartTotal.innerText=total;cartCount.innerText=count;document.getElementById("cartItems").innerHTML=html}
-function removeFromCart(idx){cart.splice(idx,1);updateCart();saveState()}
-function emptyCart(){cart=[];updateCart();saveState()}
 
-// Login/Register
-let currentUser=null
-
+// LOGIN/REGISTER
 function login(){
-let u=document.getElementById("user").value,p=document.getElementById("pass").value
-if(!u||!p)return alert("Preencha os campos")
-if(u===adminUser.username&&p===adminUser.password){alert("Login efetuado como ADMIN");loginBtn.style.display="none";registerBtn.style.display="none";profileBtn.style.display="none";togglePanel("admin")}
-else{const user=users.find(x=>x.username===u&&x.password===p);if(user){alert("Login efetuado como usuário "+u);currentUser=user;loginBtn.style.display="none";registerBtn.style.display="none";profileBtn.style.display="inline-block";loadProfile()}else{alert("Usuário ou senha inválidos")}}
-closeAllPanels()
-}
-function registerUser(){
-let u=document.getElementById("regUser").value,p=document.getElementById("regPass").value,n=document.getElementById("regFullName").value,e=document.getElementById("regEmail").value;
-if(!u||!p||!n||!e)return alert("Preencha todos os campos");
-if(users.find(x=>x.username===u))return alert("Usuário já existe");
-users.push({username:u,password:p,name:n,email:e,phone:"",address:"",avatar:"https://i.imgur.com/2DhmtJ4.jpg",history:[]});
-saveState();alert("Usuário registrado!");closeAllPanels()
-}
-
-// Perfil
-function loadProfile(){
-if(!currentUser) return;
-document.getElementById("
+let u=document.getElementById("user").value,p=document.getElementById("pass").value;
+if(!u||!p)return alert("Preencha os campos");
+if(u===adminUser.username&&p===adminUser.password){
+alert("Login efetuado como ADMIN");
+loginBtn.style.display="none";registerBtn.style.display="none";profileBtn.style.display="none";togglePanel("admin")
+}else{
+const user=users.find(x=>x.username===u&&x.password===p);
+if(user){currentUser=user;alert("Login efetuado como usuário "+u);
+loginBtn.style.display="none";registerBtn.style.display="none";profileBtn.style.display="inline-block";loadProfile();}else{alert("

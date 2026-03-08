@@ -27,9 +27,7 @@ header{
 .top-actions{ display:flex; gap:12px; align-items:center; }
 button{
   background:#7a00ff; border:none; padding:10px 16px; color:white; border-radius:8px; cursor:pointer; font-weight:bold;
-  position:relative;
-  overflow:hidden;
-  transition:.3s;
+  position:relative; overflow:hidden; transition:.3s;
 }
 button::after{
   content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg, #9d35ff, #ff66ff); transition:.5s; z-index:0;
@@ -46,66 +44,24 @@ button span{ position:relative; z-index:1; }
 .card img{ width:100%; border-radius:10px; }
 .price{ color:#a855ff; font-size:18px; margin:6px 0; }
 .badge{ background:#ff2bd6; padding:4px 8px; border-radius:6px; font-size:12px; }
-.stars-small{ color:#ffdd00; font-size:14px; }
-.reviews-count{ font-size:12px; opacity:.7; margin-left:5px; }
+.add-btn{ position:relative; overflow:hidden; }
+.add-btn::after{ content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg,#ff66ff,#9d35ff); transition:.5s; z-index:0; }
+.add-btn:hover::after{ left:0; }
+.add-btn span{ position:relative; z-index:1; }
 
-/* Aba lateral para Carrinho / Login / Register */
-.side-panel{
-  position:fixed;
-  top:0;
-  right:-100%;
-  width:90%;
-  max-width:400px;
-  height:100%;
-  background:#0d0018;
-  padding:20px;
-  box-shadow:-5px 0 20px #6a00ff;
-  transition:.3s;
-  overflow:auto;
-  z-index:20;
-}
+/* Side Panels */
+.side-panel{ position:fixed; top:0; right:-100%; width:90%; max-width:400px; height:100%; background:#0d0018; padding:20px; box-shadow:-5px 0 20px #6a00ff; transition:.3s; overflow:auto; z-index:20; }
 .side-panel.open{ right:0; }
 .overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:#00000090; display:none; z-index:15; }
 .overlay.show{ display:block; }
 
-/* Itens do carrinho */
+/* Cart Items */
 .cart-item{ display:flex; gap:10px; align-items:center; margin-bottom:10px; border-bottom:1px solid #6a00ff; padding-bottom:10px; }
 .cart-item img{ width:60px; border-radius:8px; }
 .cart-item-info{ flex:1; }
 .cart-item-info h4{ margin:0; font-size:16px; }
 .cart-item-info p{ margin:2px 0; font-size:14px; }
 .remove-btn{ background:#ff3c3c; padding:4px 8px; border:none; border-radius:6px; cursor:pointer; color:white; }
-
-/* Inputs */
-input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border:none; }
-
-/* Botão Adicionar animado */
-.add-btn{
-  position:relative; overflow:hidden;
-}
-.add-btn::after{
-  content:""; position:absolute; width:100%; height:100%; top:0; left:-100%; background:linear-gradient(120deg,#ff66ff,#9d35ff); transition:.5s; z-index:0;
-}
-.add-btn:hover::after{ left:0; }
-.add-btn span{ position:relative; z-index:1; }
-
-/* Aba tabs admin */
-.page{ display:none; padding:30px; }
-.page.active{ display:block; }
-.admin-panel{ max-width:800px; margin:auto; }
-.tabs{ display:flex; gap:10px; margin-bottom:20px; }
-.tab{ padding:10px 20px; border-radius:8px; cursor:pointer; background:#1a002a; }
-.tab.active{ background:#7a00ff; }
-.order{ background:#140020; padding:10px; margin-top:10px; border-radius:8px; }
-
-/* Avaliações */
-.review-overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:#000000d0; display:none; z-index:30; overflow:auto; padding:20px; }
-.review-overlay.show{ display:block; }
-.review-box{ background:#140020; padding:20px; border-radius:12px; max-width:600px; margin:auto; }
-.review-box h3{ margin-top:0; }
-.review-item{ border-top:1px solid #6a00ff; padding:10px 0; }
-.review-media{ display:flex; overflow-x:auto; gap:5px; margin-top:5px; }
-.review-media img{ height:80px; border-radius:6px; }
 </style>
 </head>
 <body>
@@ -114,8 +70,8 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
   <div class="logo">AlphaStyle</div>
   <div class="top-actions">
     <input id="search" placeholder="Buscar produto" oninput="searchProducts()">
-    <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
-    <button id="registerBtn" onclick="togglePanel('register')"><span>Register</span></button>
+    <button onclick="togglePanel('login')"><span>Login</span></button>
+    <button onclick="togglePanel('register')"><span>Register</span></button>
     <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
   </div>
 </header>
@@ -129,7 +85,7 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
 
 <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
-<!-- Side Panel -->
+<!-- Side Panels -->
 <div class="side-panel" id="cartPanel">
   <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
   <h2>Carrinho</h2>
@@ -155,30 +111,6 @@ input,textarea{ width:100%; margin:6px 0; padding:8px; border-radius:6px; border
   <button onclick="registerUser()">Registrar</button>
 </div>
 
-<!-- Admin Page permanece igual -->
-<div class="page" id="adminPage">
-  <div class="admin-panel">
-    <div class="tabs">
-      <div class="tab active" id="tabProdutos" onclick="showTab('produtos')">Produtos</div>
-      <div class="tab" id="tabPedidos" onclick="showTab('pedidos')">Pedidos</div>
-    </div>
-    <div id="produtosTab">
-      <h3>Adicionar Produto</h3>
-      <input id="pNome" placeholder="Nome">
-      <input id="pPreco" placeholder="Preço venda">
-      <input id="pCusto" placeholder="Custo fornecedor">
-      <input id="pImg" placeholder="URL imagem">
-      <button onclick="addProduct()">Adicionar Produto</button>
-    </div>
-    <div id="pedidosTab" style="display:none">
-      <h3>Pedidos</h3>
-      <div id="pedidos"></div>
-    </div>
-    <p>Lucro total: R$ <span id="lucro">0</span></p>
-    <button onclick="logout()">Sair</button>
-  </div>
-</div>
-
 <script>
 const cartDiv = document.getElementById("cartPanel")
 const loginDiv = document.getElementById("loginPanel")
@@ -186,21 +118,22 @@ const registerDiv = document.getElementById("registerPanel")
 const overlayDiv = document.getElementById("overlay")
 const cartTotal = document.getElementById("cartTotal")
 const cartCount = document.getElementById("cartCount")
-const adminPage = document.getElementById("adminPage")
-const pedidosDiv = document.getElementById("pedidos")
-const lucro = document.getElementById("lucro")
 const productList = document.getElementById("productList")
 
 let products=[
-{name:"Relógio Premium",price:79,cost:30,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[]},
-{name:"Óculos Masculino",price:69,cost:25,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[]},
-{name:"Carteira Slim",price:49,cost:15,img:"https://i.imgur.com/p0KZP6C.jpg",reviews:[]}
+  {name:"Relógio Masculino Estilo Casual",price:199,cost:90,img:"https://i.imgur.com/2DhmtJ4.jpg",reviews:[]},
+  {name:"Óculos de Sol Polarizado",price:159,cost:70,img:"https://i.imgur.com/ZK6Q6wH.jpg",reviews:[]},
+  {name:"Boné Street Style",price:89,cost:35,img:"https://i.imgur.com/e2x7b6D.jpg",reviews:[]},
+  {name:"Fone Bluetooth Pro",price:179,cost:85,img:"https://i.imgur.com/kT5zHqH.jpg",reviews:[]},
+  {name:"Carteira Slim de Couro",price:129,cost:55,img:"https://i.imgur.com/p0KZP6C.jpg",reviews:[]},
+  {name:"Pulseira Masculina Estilo",price:79,cost:30,img:"https://i.imgur.com/v0eF5fT.jpg",reviews:[]},
+  {name:"Cinto Masculino Casual",price:59,cost:25,img:"https://i.imgur.com/dQ7zXrs.jpg",reviews:[]},
+  {name:"Meias Estilizadas (kit 3)",price:49,cost:15,img:"https://i.imgur.com/eR0Bztt.jpg",reviews:[]},
+  {name:"Bolsa Pochete Unissex",price:139,cost:60,img:"https://i.imgur.com/aBt7wN2.jpg",reviews:[]},
+  {name:"Pulseira de Couro Trançada",price:69,cost:28,img:"https://i.imgur.com/M8Y9h5w.jpg",reviews:[]}
 ]
 
 let cart=[]
-let lucroTotal=0
-let adminLogged=false
-let users=[]
 
 function renderProducts(){
 productList.innerHTML=""
@@ -210,17 +143,54 @@ productList.innerHTML+=`
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <div class="price">R$ ${p.price}</div>
-<div class="badge">${Math.floor(Math.random()*15)+3} vendo agora</div>
-<button class="add-btn" onclick="event.stopPropagation(); addToCart(${i})"><span>Adicionar</span></button>
+<div class="badge">${Math.floor(Math.random()*15)+3} vendendo agora</div>
+<button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
 </div>`
 })
 }
 
-function addToCart(i){ const item={...products[i], quantity:1}; cart.push(item); updateCart() }
-function updateCart(){ let itemsHTML="",total=0; cart.forEach((p,idx)=>{ total+=p.price*p.quantity; itemsHTML+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>` }); document.getElementById("cartItems").innerHTML=itemsHTML; cartTotal.innerText=total; cartCount.innerText=cart.length }
+function flyToCart(e,index){
+const img = e.target.closest('.card').querySelector('img')
+const imgClone = img.cloneNode(true)
+const rect = img.getBoundingClientRect()
+imgClone.style.position='fixed'
+imgClone.style.top=rect.top+'px'
+imgClone.style.left=rect.left+'px'
+imgClone.style.width=rect.width+'px'
+imgClone.style.height=rect.height+'px'
+imgClone.style.transition='all 0.8s ease-in-out'
+imgClone.style.zIndex=100
+document.body.appendChild(imgClone)
+const cartBtn = document.querySelector('.top-actions button:last-child')
+const cartRect = cartBtn.getBoundingClientRect()
+setTimeout(()=>{ imgClone.style.top=cartRect.top+'px'; imgClone.style.left=cartRect.left+'px'; imgClone.style.width='40px'; imgClone.style.height='40px'; imgClone.style.opacity=0 },10)
+setTimeout(()=>{ document.body.removeChild(imgClone); addToCart(index) },810)
+}
+
+function addToCart(i){ 
+  const item={...products[i], quantity:1}; 
+  cart.push(item); 
+  updateCart() 
+}
+function updateCart(){ 
+  let itemsHTML="",total=0; 
+  cart.forEach((p,idx)=>{
+    total+=p.price*p.quantity; 
+    itemsHTML+=`<div class="cart-item">
+      <img src="${p.img}">
+      <div class="cart-item-info">
+        <h4>${p.name}</h4>
+        <p>R$ ${p.price} x ${p.quantity}</p>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button>
+      </div>` 
+  }); 
+  document.getElementById("cartItems").innerHTML=itemsHTML; 
+  cartTotal.innerText=total; 
+  cartCount.innerText=cart.length 
+}
 function removeFromCart(idx){ cart.splice(idx,1); updateCart() }
 
-// Painel lateral toggle
 function togglePanel(panel){
   closeAllPanels()
   overlayDiv.classList.add("show")
@@ -236,20 +206,47 @@ function closeAllPanels(){
 }
 
 // Login/Register
+let users=[]
 function login(){ 
   let u=document.getElementById("user").value
   let p=document.getElementById("pass").value
   if(!u||!p){ return alert("Preencha os campos") }
   alert("Login efetuado como "+u)
   closeAllPanels()
-  if(u=="Marc@s015" && p=="Mayc@la015"){ adminPage.classList.add("active"); adminLogged=true }
 }
-function registerUser(){ let u=document.getElementById("regUser").value; let p=document.getElementById("regPass").value; if(!u||!p)return alert("Preencha os campos"); users.push({username:u,password:p}); alert("Usuário registrado!"); closeAllPanels() }
+function registerUser(){ 
+  let u=document.getElementById("regUser").value
+  let p=document.getElementById("regPass").value
+  if(!u||!p)return alert("Preencha os campos")
+  users.push({username:u,password:p})
+  alert("Usuário registrado!")
+  closeAllPanels()
+}
 
-// Admin
-function addProduct(){ if(!adminLogged) return alert("Faça login"); let n=document.getElementById("pNome").value; let pr=parseFloat(document.getElementById("pPreco").value); let c=parseFloat(document.getElementById("pCusto").value); let img=document.getElementById("pImg").value; products.push({name:n,price:pr,cost:c,img:img,reviews:[]}); renderProducts() }
-function checkoutPix(){ if(cart.length==0)return alert("Carrinho vazio"); let total=cart.reduce((t,p)=>t+p.price,0); let custo=cart.reduce((t,p)=>t+p.cost,0); lucroTotal+=total-custo; lucro.innerText=lucroTotal; let pedido=document.createElement("div"); pedido.className="order"; pedido.innerText=`Pedido R$${total}`; pedidosDiv.appendChild(pedido); alert("Pagamento PIX enviado (simulação)"); cart=[]; updateCart(); closeAllPanels() }
-function checkoutMercadoPago(){ window.open("https://www.mercadopago.com.br/checkout") }
+function checkoutPix(){
+  if(cart.length==0) return alert("Carrinho vazio")
+  let total = cart.reduce((t,p)=>t+p.price,0)
+  alert("Pagamento PIX enviado (simulação) de R$ "+total)
+  cart=[]
+  updateCart()
+  closeAllPanels()
+}
+
+function checkoutMercadoPago(){
+  window.open("https://www.mercadopago.com.br/checkout")
+}
+
+function searchProducts(){
+  let s=search.value.toLowerCase()
+  let cards=document.querySelectorAll(".card")
+  cards.forEach(c=>{
+    if(c.innerText.toLowerCase().includes(s)){
+      c.style.display="block"
+    }else{
+      c.style.display="none"
+    }
+  })
+}
 
 renderProducts()
 </script>

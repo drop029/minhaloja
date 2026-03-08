@@ -1,159 +1,151 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlphaStyle</title>
 <style>
 
-body{margin:0;font-family:Arial;background:#0a0a0a;color:white}
+body{
+margin:0;
+font-family:Arial;
+background:#0a0a0a;
+color:white;
+}
 
 header{
-background:#120016;
-padding:18px 25px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 0 20px rgba(179,0,255,0.35)
+padding:15px 30px;
+background:#120020;
+box-shadow:0 0 10px #7a00ff;
 }
 
 .logo{
-font-size:30px;
+font-size:28px;
 font-weight:bold;
-color:#d14cff;
-letter-spacing:2px
+color:#b366ff;
 }
 
-.cartIcon{
-font-size:22px;
-cursor:pointer;
-background:#7a00cc;
-padding:10px 14px;
+.top-actions{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+button{
+background:#7a00ff;
+border:none;
+padding:10px 16px;
+color:white;
 border-radius:8px;
-transition:0.3s
+cursor:pointer;
+transition:0.2s;
 }
 
-.cartIcon:hover{
-background:#b300ff;
-transform:scale(1.08)
+button:hover{
+transform:scale(1.05);
+background:#9a2bff;
 }
 
-.container{max-width:1200px;margin:auto;padding:25px}
+#search{
+padding:8px;
+border-radius:6px;
+border:none;
+}
 
-.grid{
+.products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:22px
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:30px;
 }
 
 .card{
-background:#111;
-border-radius:14px;
+background:#140020;
 padding:15px;
-text-align:center;
-box-shadow:0 0 15px rgba(179,0,255,0.15);
-transition:0.3s
+border-radius:12px;
+box-shadow:0 0 10px #6d00ff55;
+transition:0.25s;
 }
 
 .card:hover{
-transform:translateY(-5px) scale(1.02);
-box-shadow:0 0 20px rgba(179,0,255,0.35)
+transform:translateY(-5px);
+box-shadow:0 0 15px #8f2bff;
 }
 
 .card img{
 width:100%;
 border-radius:10px;
-height:210px;
-object-fit:cover
 }
 
 .price{
-font-size:20px;
-color:#b300ff;
-font-weight:bold
+color:#a855ff;
+font-size:18px;
+margin-top:5px;
 }
 
-button{
-background:#7a00cc;
-border:none;
-color:white;
-padding:12px 18px;
-border-radius:8px;
-cursor:pointer;
-transition:0.25s;
-font-weight:bold
+.cart{
+position:fixed;
+top:0;
+right:-420px;
+width:420px;
+height:100%;
+background:#0d0018;
+padding:20px;
+box-shadow:-5px 0 20px #6a00ff;
+transition:0.3s;
+overflow:auto;
 }
 
-button:hover{
-transform:scale(1.08);
-background:#b300ff;
-box-shadow:0 0 12px #b300ff
+.cart.open{
+right:0;
 }
 
-form{
-background:#111;
-padding:25px;
-border-radius:12px;
-max-width:420px;
-margin:auto;
-margin-bottom:25px;
-box-shadow:0 0 15px rgba(179,0,255,0.25)
+.close-btn{
+background:#ff3c3c;
+margin-bottom:15px;
 }
 
 input{
 width:100%;
-padding:11px;
+padding:10px;
 margin:6px 0;
 border-radius:6px;
 border:none;
-background:#1c1c1c;
-color:white
 }
 
-.hidden{display:none}
-
-.adminPanel{
-background:#111;
-padding:20px;
-border-radius:10px;
-margin-top:20px;
-box-shadow:0 0 12px rgba(179,0,255,0.2)
-}
-
-.order{
-background:#1a1a1a;
-padding:12px;
-margin:10px 0;
-border-radius:8px
-}
-
-.cartModal{
+.modal{
 position:fixed;
 top:0;
-right:0;
-width:320px;
+left:0;
+width:100%;
 height:100%;
-background:#111;
-padding:20px;
-box-shadow:-5px 0 20px rgba(0,0,0,0.5);
-transform:translateX(100%);
-transition:0.3s
+background:#000000cc;
+display:none;
+justify-content:center;
+align-items:center;
 }
 
-.cartModal.open{transform:translateX(0)}
-
-.cartItem{
-background:#1a1a1a;
-padding:8px;
-margin:6px 0;
-border-radius:6px
+.modal-content{
+background:#120020;
+padding:30px;
+border-radius:12px;
+width:320px;
 }
 
-.total{
-font-size:20px;
-color:#b300ff;
-font-weight:bold;
-margin-top:10px
+.admin{
+display:none;
+padding:30px;
+}
+
+.badge{
+background:#ff2bd6;
+padding:4px 8px;
+border-radius:6px;
+font-size:12px;
+margin-left:5px;
 }
 
 </style>
@@ -162,259 +154,209 @@ margin-top:10px
 
 <header>
 <div class="logo">AlphaStyle</div>
-<div class="cartIcon" onclick="toggleCart()">🛒</div>
+
+<div class="top-actions">
+<input id="search" placeholder="Buscar produto" oninput="searchProducts()">
+<button onclick="openLogin()">Entrar</button>
+<button onclick="toggleCart()">🛒 Carrinho (<span id="cartCount">0</span>)</button>
+</div>
 </header>
 
-<div class="container" id="auth">
+<div class="products" id="productList"></div>
 
-<h2>Criar conta</h2>
-<form id="registerForm">
-<input placeholder="Usuário" id="regUser" required>
-<input placeholder="Senha" type="password" id="regPass" required>
-<input placeholder="Rua" id="regStreet" required>
-<input placeholder="Cidade" id="regCity" required>
-<input placeholder="Estado" id="regState" required>
-<input placeholder="CEP" id="regCep" required>
-<button type="submit">Cadastrar</button>
-</form>
+<div class="cart" id="cart">
+<button class="close-btn" onclick="toggleCart()">Fechar</button>
+<h2>Carrinho</h2>
+<div id="cartItems"></div>
+<h3>Total: R$ <span id="cartTotal">0</span></h3>
 
-<h2>Entrar</h2>
-<form id="loginForm">
-<input placeholder="Usuário" id="logUser" required>
-<input placeholder="Senha" type="password" id="logPass" required>
-<button type="submit">Entrar</button>
-</form>
+<h3>Endereço</h3>
+<input id="rua" placeholder="Rua">
+<input id="cidade" placeholder="Cidade">
+<input id="cep" placeholder="CEP">
+
+<button onclick="checkoutPix()">Pagar com PIX</button>
+<button onclick="checkoutMercadoPago()">Mercado Pago</button>
 
 </div>
 
-<div class="container hidden" id="store">
-<h2>Produtos</h2>
-<div class="grid" id="productGrid"></div>
+<div class="modal" id="loginModal">
+<div class="modal-content">
+<h2>Login</h2>
+<input id="user" placeholder="Usuário">
+<input id="pass" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+<button onclick="closeLogin()">Voltar</button>
+</div>
 </div>
 
-<div class="cartModal" id="cartModal">
-<h2>Seu carrinho</h2>
-<div id="cart"></div>
-<p class="total" id="total"></p>
-<button onclick="finalizarCompra()">Finalizar pedido</button>
-</div>
+<div class="admin" id="adminPanel">
+<h2>Painel Admin</h2>
+<p>Lucro total: R$ <span id="lucro">0</span></p>
 
-<div class="container hidden" id="adminPanel">
-<h2>Painel administrador</h2>
+<h3>Adicionar Produto</h3>
+<input id="pNome" placeholder="Nome">
+<input id="pPreco" placeholder="Preço venda">
+<input id="pCusto" placeholder="Custo Shopee">
+<input id="pImg" placeholder="URL imagem">
+<button onclick="addProduct()">Adicionar</button>
 
-<div class="adminPanel">
-<h3>Adicionar produto</h3>
-<input id="prodName" placeholder="Nome do produto">
-<input id="prodPrice" placeholder="Preço de venda">
-<input id="prodCost" placeholder="Custo na Shopee">
-<input id="prodImg" placeholder="Link da imagem">
-<button onclick="addProduct()">Adicionar produto</button>
-</div>
-
-<div class="adminPanel">
 <h3>Pedidos</h3>
-<div id="orders"></div>
-</div>
-
-<div class="adminPanel">
-<h3>Lucro total</h3>
-<p id="profit"></p>
-</div>
-
+<div id="pedidos"></div>
 </div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
-
-let products = JSON.parse(localStorage.getItem("products")) || [
-{name:"Relógio Premium",price:59.9,cost:25,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30"},
-{name:"Corrente Masculina",price:39.9,cost:15,img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990"},
-{name:"Óculos Masculino",price:49.9,cost:18,img:"https://images.unsplash.com/photo-1511499767150-a48a237f0083"},
-{name:"Pulseira Couro",price:34.9,cost:10,img:"https://images.unsplash.com/photo-1608042314453-ae338d80c427"}
-];
-
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-let cart = [];
-
-function save(){
-localStorage.setItem("products",JSON.stringify(products));
-localStorage.setItem("orders",JSON.stringify(orders));
+let products=[
+{
+name:"Relógio Premium",
+price:79,
+cost:30,
+img:"https://i.imgur.com/2DhmtJ4.jpg"
+},
+{
+name:"Óculos Masculino",
+price:69,
+cost:25,
+img:"https://i.imgur.com/ZK6Q6wH.jpg"
+},
+{
+name:"Carteira Slim",
+price:49,
+cost:15,
+img:"https://i.imgur.com/p0KZP6C.jpg"
 }
+]
+
+let cart=[]
+let lucroTotal=0
 
 function renderProducts(){
-let grid=document.getElementById("productGrid");
-if(!grid) return;
-
-grid.innerHTML="";
+let list=document.getElementById("productList")
+list.innerHTML=""
 
 products.forEach((p,i)=>{
-
-let card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
+list.innerHTML+=`
+<div class="card">
 <img src="${p.img}">
 <h3>${p.name}</h3>
-<p class="price">R$ ${p.price}</p>
-<button onclick="addCart(${i})">Adicionar</button>
-`;
-
-grid.appendChild(card);
-});
+<div class="price">R$ ${p.price}</div>
+<button onclick="addToCart(${i})">Adicionar</button>
+<span class="badge">${Math.floor(Math.random()*20)+3} vendo</span>
+</div>
+`
+})
 }
 
-function addCart(i){
-cart.push(products[i]);
-renderCart();
+function addToCart(i){
+cart.push(products[i])
+updateCart()
 }
 
-function renderCart(){
-let div=document.getElementById("cart");
-let total=0;
-let html="";
+function updateCart(){
+let items=document.getElementById("cartItems")
+items.innerHTML=""
+
+let total=0
 
 cart.forEach(p=>{
+items.innerHTML+=`<p>${p.name} - R$ ${p.price}</p>`
 
-total+=p.price;
+total+=p.price
+})
 
-html+=`<div class='cartItem'>${p.name} - R$ ${p.price}</div>`;
+document.getElementById("cartTotal").innerText=total
 
-});
-
-div.innerHTML=html;
-
-document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+document.getElementById("cartCount").innerText=cart.length
 }
 
 function toggleCart(){
-
-document.getElementById("cartModal").classList.toggle("open");
-
+document.getElementById("cart").classList.toggle("open")
 }
 
-function finalizarCompra(){
+function openLogin(){
+document.getElementById("loginModal").style.display="flex"
+}
 
-let user=localStorage.getItem("loggedUser");
+function closeLogin(){
+document.getElementById("loginModal").style.display="none"
+}
 
-let u=users.find(x=>x.user===user);
+function login(){
+let u=document.getElementById("user").value
+let p=document.getElementById("pass").value
 
-orders.push({
-user:u.user,
-address:`${u.street}, ${u.city} - ${u.state} CEP:${u.cep}`,
-items:cart
-});
-
-save();
-
-alert("Pedido realizado!");
-
-cart=[];
-renderCart();
-
+if(u=="Marc@s015" && p=="Mayc@la015"){
+alert("Admin logado")
+document.getElementById("adminPanel").style.display="block"
+closeLogin()
+}else{
+alert("Login usuário simples")
+closeLogin()
+}
 }
 
 function addProduct(){
+let n=document.getElementById("pNome").value
+let pr=parseFloat(document.getElementById("pPreco").value)
+let c=parseFloat(document.getElementById("pCusto").value)
+let img=document.getElementById("pImg").value
 
-let name=document.getElementById("prodName").value;
-let price=parseFloat(document.getElementById("prodPrice").value);
-let cost=parseFloat(document.getElementById("prodCost").value);
-let img=document.getElementById("prodImg").value;
-
-products.push({name,price,cost,img});
-
-save();
-
-renderProducts();
-
-alert("Produto adicionado");
+products.push({name:n,price:pr,cost:c,img:img})
+renderProducts()
 }
 
-function renderOrders(){
+function checkoutPix(){
+if(cart.length==0) return alert("Carrinho vazio")
 
-let div=document.getElementById("orders");
-let profit=0;
+let rua=document.getElementById("rua").value
+let cidade=document.getElementById("cidade").value
+let cep=document.getElementById("cep").value
 
-orders.forEach(o=>{
+let total=cart.reduce((t,p)=>t+p.price,0)
+let custo=cart.reduce((t,p)=>t+p.cost,0)
 
-let html="<div class='order'>";
+lucroTotal+=total-custo
 
-html+=`<p><b>Cliente:</b> ${o.user}</p>`;
-html+=`<p><b>Endereço:</b> ${o.address}</p>`;
+document.getElementById("lucro").innerText=lucroTotal
 
+let pedido=`Pedido R$${total} | ${rua} ${cidade} ${cep}`
 
-o.items.forEach(i=>{
-profit += (i.price - i.cost);
-html+=`<p>${i.name}</p>`;
-});
+document.getElementById("pedidos").innerHTML+=`<p>${pedido}</p>`
 
-html+="</div>";
+alert("Simulação PIX enviada")
 
-div.innerHTML+=html;
-
-});
-
-document.getElementById("profit").innerText="R$ "+profit.toFixed(2);
+cart=[]
+updateCart()
 }
 
-// cadastro
-
-document.getElementById("registerForm").addEventListener("submit",function(e){
-
- e.preventDefault();
-
-let user=document.getElementById("regUser").value;
-let pass=document.getElementById("regPass").value;
-let street=document.getElementById("regStreet").value;
-let city=document.getElementById("regCity").value;
-let state=document.getElementById("regState").value;
-let cep=document.getElementById("regCep").value;
-
-users.push({user,pass,street,city,state,cep});
-
-localStorage.setItem("users",JSON.stringify(users));
-
-alert("Conta criada");
-
-});
-
-// login
-
-document.getElementById("loginForm").addEventListener("submit",function(e){
-
- e.preventDefault();
-
-let user=document.getElementById("logUser").value;
-let pass=document.getElementById("logPass").value;
-
-if(user==="Marc@s015" && pass==="Mayc@la015"){
-
- document.getElementById("auth").classList.add("hidden");
- document.getElementById("adminPanel").classList.remove("hidden");
-
- renderOrders();
-
- return;
-
+function checkoutMercadoPago(){
+window.open("https://www.mercadopago.com.br/checkout")
 }
 
-let valid=users.find(u=>u.user===user && u.pass===pass);
+function searchProducts(){
+let s=document.getElementById("search").value.toLowerCase()
 
-if(valid){
+let cards=document.querySelectorAll(".card")
 
-localStorage.setItem("loggedUser",user);
-
-document.getElementById("auth").classList.add("hidden");
-
-document.getElementById("store").classList.remove("hidden");
-
-renderProducts();
-
+cards.forEach(c=>{
+if(c.innerText.toLowerCase().includes(s)){
+c.style.display="block"
 }else{
-alert("Login incorreto");
+c.style.display="none"
+}
+})
 }
 
-});
+setInterval(()=>{
+let nomes=["Carlos","Ana","Pedro","Marcos","Julia"]
+let p=products[Math.floor(Math.random()*products.length)]
+
+console.log(nomes[Math.floor(Math.random()*nomes.length)]+" comprou "+p.name)
+
+},8000)
+
+renderProducts()
 
 </script>
 

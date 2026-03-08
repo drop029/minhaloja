@@ -1,100 +1,50 @@
 <!DOCTYPE html>
-.cart{
-position:fixed;
-top:0;
-right:-420px;
-width:420px;
-height:100%;
-background:#0d0018;
-padding:20px;
-box-shadow:-5px 0 20px #6a00ff;
-transition:.3s;
-overflow:auto;
-z-index:20;
-}
-
-.cart.open{
-right:0;
-}
-
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#00000090;
-display:none;
-z-index:15;
-}
-
-.overlay.show{
-display:block;
-}
-
-.close-btn{
-background:#ff3c3c;
-margin-bottom:15px;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:6px 0;
-border-radius:6px;
-border:none;
-}
-
-.page{
-display:none;
-padding:30px;
-}
-
-.page.active{
-display:block;
-}
-
-.admin-panel{
-max-width:800px;
-margin:auto;
-}
-
-.order{
-background:#140020;
-padding:10px;
-margin-top:10px;
-border-radius:8px;
-}
-
-</style>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>AlphaStyle</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
-<div class="logo">AlphaStyle</div>
 
-<div class="top-actions">
-<input id="search" placeholder="Buscar" oninput="searchProducts()">
-<button onclick="openLogin()">Login</button>
+<h1>AlphaStyle</h1>
+
+<div class="top">
+<input id="search" placeholder="Buscar produto">
+
+<a href="login.html">
+<button>Login</button>
+</a>
+
 <button onclick="toggleCart()">🛒 <span id="cartCount">0</span></button>
-</div>
-</header>
 
-<div class="banner">
-<h1>Bem-vindo à AlphaStyle</h1>
-<p>Acessórios masculinos modernos</p>
 </div>
+
+</header>
 
 <div class="products" id="productList"></div>
 
-<div class="overlay" id="overlay" onclick="closeCart()"></div>
-
 <div class="cart" id="cart">
-<button class="close-btn" onclick="closeCart()">✖ Fechar</button>
+
 <h2>Carrinho</h2>
+
 <div id="cartItems"></div>
+
 <h3>Total: R$ <span id="cartTotal">0</span></h3>
 
-<h3>Endereço</h3>
-<input id="rua" placeholder="Rua">
-<input id="cidade" placeholder="Cidade">
+<input placeholder="Rua">
+<input placeholder="Cidade">
+
+<button onclick="finalizarPedido()">Finalizar Pedido</button>
+
+<button onclick="toggleCart()">Fechar</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

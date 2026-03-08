@@ -1,10 +1,3 @@
-Perfeito, Marcos! 😎 Vou te entregar **o código completo da AlphaStyle Pro**, com **painel admin totalmente funcional**, **dashboard de vendas**, **editar produtos**, **remover produtos**, **lucro total**, **produtos vendidos**, **perfil do usuário**, **carrinho** e **visual responsivo** — tudo pronto pra colar no GitHub Pages.
-
-Segue o código completo:
-
----
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -46,7 +39,6 @@ button:hover::after{left:0;}
 .side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:0.3s;overflow:auto;z-index:20;}
 .side-panel.open{right:0;}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#00000090;display:none;z-index:15;}
-.overlay.show{display:block;}
 
 /* ====== CARRINHO ====== */
 .cart-item{display:flex;gap:8px;align-items:center;margin-bottom:10px;border-bottom:1px solid #6a00ff;padding-bottom:10px;}
@@ -169,14 +161,19 @@ button:hover::after{left:0;}
 <script>
 // ================= VARIÁVEIS =================
 const adminUser={username:"admin",password:"1234"};
-let products=[
+const defaultProducts=[
 {name:"Relógio Esportivo Masculino",price:159,cost:80,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",desc:"Relógio resistente à água, moderno e esportivo.",reviews:[5,4,5,4,5],sold:0},
 {name:"Óculos de Sol Polarizado",price:129,cost:60,img:"https://images.unsplash.com/photo-1516728778615-2d590ea1856f?w=500",desc:"Óculos polarizado com proteção UV.",reviews:[4,4,4,5],sold:0},
 {name:"Boné Streetwear",price:79,cost:35,img:"https://images.unsplash.com/photo-1503342452485-86f48843b77c?w=500",desc:"Boné urbano para o dia a dia.",reviews:[5,5,4,4],sold:0},
 {name:"Pulseira Masculina de Couro",price:49,cost:20,img:"https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=500",desc:"Pulseira de couro elegante.",reviews:[4,4,5,5],sold:0},
 {name:"Carteira Slim Masculina",price:69,cost:30,img:"https://images.unsplash.com/photo-1606813909151-0546b8f6e089?w=500",desc:"Carteira compacta e resistente.",reviews:[5,5,5,4],sold:0}
 ];
-let users=[], cart=[], currentUser=null;
+
+// CARREGAR PRODUTOS E USUÁRIOS DO LOCALSTORAGE OU PADRÃO
+let products = JSON.parse(localStorage.getItem("products")) || defaultProducts;
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let currentUser = null;
 
 // ELEMENTOS
 const overlay=document.getElementById("overlay");
@@ -188,9 +185,13 @@ const loginBtn=document.getElementById("loginBtn");
 const registerBtn=document.getElementById("registerBtn");
 
 // ================= FUNÇÕES =================
+// Salvar estado
 function saveState(){localStorage.setItem("products",JSON.stringify(products)); localStorage.setItem("users",JSON.stringify(users)); localStorage.setItem("cart",JSON.stringify(cart));}
+// Painéis
 function togglePanel(panel){closeAllPanels();overlay.classList.add("show");document.getElementById(panel+"Panel")?.classList.add("open");}
 function closeAllPanels(){overlay.classList.remove("show");document.querySelectorAll(".side-panel").forEach(el=>el.classList.remove("open"));}
+
+// Renderizar produtos
 function renderProducts(){
   const search=document.getElementById("search").value.toLowerCase();
   productListDiv.innerHTML="";
@@ -208,6 +209,8 @@ function renderProducts(){
     </div>`;
   });
 }
+
+// Carrinho
 function updateCart(){cartTotal.innerText=cart.reduce((a,p)=>a+p.price*p.quantity,0);cartCount.innerText=cart.reduce((a,p)=>a+p.quantity,0);document.getElementById("cartItems").innerHTML=cart.map((p,i)=>`<div class="cart-item">
 <img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$${p.price} x ${p.quantity}</p></div>
 <button class="remove-btn" onclick="removeFromCart(${i})">Remover</button></div>`).join('');}
@@ -233,6 +236,7 @@ function login(){
   }
   closeAllPanels();
 }
+
 function registerUser(){
   let u=document.getElementById("regUser").value.trim(),
       p=document.getElementById("regPass").value.trim(),
@@ -270,5 +274,51 @@ function saveProfile(){
 function adminAddProduct(){
   let n=document.getElementById("adminName").value,
       pr=Number(document.getElementById("adminPrice").value),
-      c=Number(document.getElementById
-```
+      c=Number(document.getElementById("adminCost").value),
+      d=document.getElementById("adminDesc").value,
+      i=document.getElementById("adminImg").value;
+  if(!n||!pr||!c||!d||!i)return alert("Preencha todos os campos!");
+  products.push({name:n,price:pr,cost:c,desc:d,img:i,reviews:[],sold:0});
+  saveState(); renderProducts(); renderAdminPanel(); renderDashboard(); alert("Produto adicionado!");
+}
+
+function renderAdminPanel(){
+  const listDiv=document.getElementById("adminProductList");
+  listDiv.innerHTML="";
+  products.forEach((p,i)=>{
+    const div=document.createElement("div"); div.className="admin-product";
+    div.innerHTML=`<input value="${p.name}" id="name${i}"><input value="${p.price}" type="number" id="price${i}"><input value="${p.desc}" id="desc${i}">
+      <button onclick="updateProduct(${i})">Salvar</button>
+      <button onclick="deleteProduct(${i})">Remover</button>`;
+    listDiv.appendChild(div);
+  });
+}
+
+function updateProduct(i){
+  const n=document.getElementById("name"+i).value;
+  const pr=Number(document.getElementById("price"+i).value);
+  const d=document.getElementById("desc"+i).value;
+  if(!n||!pr||!d)return alert("Preencha todos os campos!");
+  products[i].name=n; products[i].price=pr; products[i].desc=d;
+  saveState(); renderProducts(); renderAdminPanel(); renderDashboard(); alert("Produto atualizado!");
+}
+
+function deleteProduct(i){if(confirm("Tem certeza?")){products.splice(i,1);saveState();renderProducts();renderAdminPanel();renderDashboard();}}
+
+// ================= DASHBOARD =================
+function renderDashboard(){
+  const dash=document.getElementById("dashboard");
+  dash.innerHTML="";
+  products.forEach(p=>{
+    const div=document.createElement("div");
+    div.innerHTML=`${p.name} - ${p.sold} vendidos - Total R$${p.sold*p.price} <div class="bar" style="width:${Math.min(p.sold*10,100)}%"></div>`;
+    dash.appendChild(div);
+  });
+}
+
+// ================= INIT =================
+renderProducts(); updateCart();
+</script>
+
+</body>
+</html>

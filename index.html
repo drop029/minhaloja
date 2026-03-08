@@ -5,67 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlphaStyle Pro</title>
 <style>
-/* =================== CSS =================== */
-body{margin:0;font-family:Arial, Helvetica, sans-serif;background:#070010;color:white;}
+/* ============ CSS GLOBAL ============ */
+body{margin:0;font-family:Arial, sans-serif;background:#070010;color:white;}
 header{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:#140028;box-shadow:0 0 15px #7a00ff;position:sticky;top:0;z-index:10;}
-.logo{font-size:28px;font-weight:bold;color:#b366ff;letter-spacing:1px;}
-.top-actions{display:flex;gap:12px;align-items:center;}
-button{background:#7a00ff;border:none;padding:10px 16px;color:white;border-radius:8px;cursor:pointer;font-weight:bold;position:relative;overflow:hidden;transition:.3s;}
-button::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg, #9d35ff, #ff66ff);transition:.5s;z-index:0;}
+.logo{font-size:28px;font-weight:bold;color:#b366ff;}
+.top-actions{display:flex;gap:10px;align-items:center;}
+button{background:#7a00ff;border:none;padding:10px 15px;color:white;border-radius:8px;cursor:pointer;font-weight:bold;position:relative;overflow:hidden;transition:0.3s;}
+button::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg,#9d35ff,#ff66ff);transition:0.5s;z-index:0;}
 button:hover::after{left:0;}
 button span{position:relative;z-index:1;}
 #search{padding:8px;border-radius:6px;border:none;}
-.banner{padding:50px 20px;text-align:center;background:linear-gradient(90deg,#24004a,#120020);}
-.banner h1{font-size:36px;margin:0;}
-.banner p{opacity:.8;}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:30px;}
-.card{background:#140020;padding:15px;border-radius:12px;box-shadow:0 0 10px #6d00ff55;transition:.25s;cursor:pointer;position:relative;}
+
+/* ============ BANNER ============ */
+.banner{padding:40px 20px;text-align:center;background:linear-gradient(90deg,#24004a,#120020);}
+.banner h1{margin:0;font-size:34px;}
+.banner p{opacity:0.8;}
+
+/* ============ PRODUTOS ============ */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:25px;}
+.card{background:#140020;padding:15px;border-radius:12px;box-shadow:0 0 10px #6d00ff55;position:relative;transition:0.3s;}
 .card:hover{transform:translateY(-6px);box-shadow:0 0 15px #9f40ff;}
 .card img{width:100%;border-radius:10px;}
 .price{color:#a855ff;font-size:18px;margin:6px 0;}
 .badge{background:#ff2bd6;padding:4px 8px;border-radius:6px;font-size:12px;position:absolute;top:10px;right:10px;}
-.add-btn{position:relative;overflow:hidden;}
-.add-btn::after{content:"";position:absolute;width:100%;height:100%;top:0;left:-100%;background:linear-gradient(120deg,#ff66ff,#9d35ff);transition:.5s;z-index:0;}
-.add-btn:hover::after{left:0;}
-.add-btn span{position:relative;z-index:1;}
-.side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:.3s;overflow:auto;z-index:20;}
+.add-btn{width:100%;margin-top:10px;}
+
+/* ============ PAINÉIS LATERAIS ============ */
+.side-panel{position:fixed;top:0;right:-100%;width:90%;max-width:500px;height:100%;background:#0d0018;padding:20px;box-shadow:-5px 0 20px #6a00ff;transition:0.3s;overflow:auto;z-index:20;}
 .side-panel.open{right:0;}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#00000090;display:none;z-index:15;}
 .overlay.show{display:block;}
-.cart-item{display:flex;gap:10px;align-items:center;margin-bottom:10px;border-bottom:1px solid #6a00ff;padding-bottom:10px;}
-.cart-item img{width:60px;border-radius:8px;}
+
+/* ============ CARRINHO ============ */
+.cart-item{display:flex;gap:8px;align-items:center;margin-bottom:10px;border-bottom:1px solid #6a00ff;padding-bottom:10px;}
+.cart-item img{width:60px;border-radius:6px;}
 .cart-item-info{flex:1;}
 .cart-item-info h4{margin:0;font-size:16px;}
-.cart-item-info p{margin:2px 0;font-size:14px;}
-.remove-btn{background:#ff3c3c;padding:4px 8px;border:none;border-radius:6px;cursor:pointer;color:white;}
-.close-btn{background:#ff3c3c;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;margin-bottom:10px;color:white;}
-.side-panel input, .side-panel textarea, .side-panel select{width:100%;padding:8px;margin:6px 0 12px 0;border-radius:6px;border:none;}
-label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
-.admin-panel{display:none;margin-top:20px;border:1px solid #6a00ff;padding:10px;border-radius:8px;}
-.admin-panel h3{margin-top:0;font-size:18px;}
-.admin-panel button{margin-bottom:6px;}
+.cart-item-info p{margin:3px 0;font-size:14px;}
+.remove-btn{background:#ff3c3c;padding:4px 8px;border-radius:6px;color:white;cursor:pointer;}
+.close-btn{background:#ff3c3c;padding:6px 10px;border-radius:6px;color:white;cursor:pointer;margin-bottom:10px;}
+
+/* ============ ADMIN ============ */
+.admin-panel h3{margin-top:5px;font-size:18px;}
 .admin-section{border-top:1px solid #6a00ff;margin-top:10px;padding-top:10px;}
-.profile-panel img{width:100px;height:100px;border-radius:50%;margin-bottom:10px;object-fit:cover;}
-.profile-avatar{width:40px;height:40px;border-radius:50%;cursor:pointer;object-fit:cover;}
-@media(max-width:600px){.banner h1{font-size:28px;}.products{padding:15px;gap:15px;}}
+
+/* ============ PERFIL ============ */
+.profile-panel img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;border:2px solid #b366ff;}
+.profile-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid #b366ff;}
+@media(max-width:600px){.banner h1{font-size:28px;}}
 </style>
 </head>
 <body>
 
 <header>
-<div class="logo">AlphaStyle</div>
-<div class="top-actions">
-<input id="search" placeholder="Buscar produto" oninput="renderProducts()">
-<button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
-<button id="registerBtn" onclick="togglePanel('register')"><span>Registrar</span></button>
-<img id="profileAvatar" class="profile-avatar" style="display:none" onclick="togglePanel('profile')">
-<button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
-</div>
+  <div class="logo">AlphaStyle</div>
+  <div class="top-actions">
+    <input id="search" placeholder="Buscar produto" oninput="renderProducts()">
+    <button id="loginBtn" onclick="togglePanel('login')"><span>Login</span></button>
+    <button id="registerBtn" onclick="togglePanel('register')"><span>Registrar</span></button>
+    <img id="profileAvatar" class="profile-avatar" style="display:none" onclick="togglePanel('profile')">
+    <button onclick="togglePanel('cart')">🛒 <span id="cartCount">0</span></button>
+  </div>
 </header>
 
 <div class="banner">
-<h1>Bem-vindo à AlphaStyle</h1>
-<p>Acessórios masculinos modernos</p>
+  <h1>Bem-vindo à AlphaStyle</h1>
+  <p>Moda e acessórios masculinos com estilo</p>
 </div>
 
 <div class="products" id="productList"></div>
@@ -74,117 +79,112 @@ label{display:block;margin-top:10px;font-size:14px;opacity:.8;}
 
 <!-- CARRINHO -->
 <div class="side-panel" id="cartPanel">
-<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-<h2>Carrinho</h2>
-<div id="cartItems"></div>
-<h3>Total: R$ <span id="cartTotal">0</span></h3>
-<button onclick="emptyCart()">Esvaziar Carrinho</button>
-<button onclick="checkoutPix()">Pagar com PIX</button>
-<button onclick="checkoutMercadoPago()">Mercado Pago</button>
+  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+  <h2>Carrinho</h2>
+  <div id="cartItems"></div>
+  <h3>Total: R$ <span id="cartTotal">0</span></h3>
+  <button onclick="emptyCart()">Esvaziar Carrinho</button>
+  <button onclick="checkoutPix()">Pagar com PIX</button>
+  <button onclick="checkoutMercadoPago()">Mercado Pago</button>
 </div>
 
 <!-- LOGIN -->
 <div class="side-panel" id="loginPanel">
-<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-<h2>Login</h2>
-<label>Usuário</label><input id="user" placeholder="Usuário">
-<label>Senha</label><input id="pass" type="password" placeholder="Senha">
-<button onclick="login()">Entrar</button>
+  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+  <h2>Login</h2>
+  <label>Usuário</label><input id="user" placeholder="Usuário">
+  <label>Senha</label><input id="pass" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
 </div>
 
 <!-- REGISTER -->
 <div class="side-panel" id="registerPanel">
-<button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
-<h2>Registrar</h2>
-<label>Usuário</label><input id="regUser" placeholder="Usuário">
-<label>Senha</label><input id="regPass" type="password" placeholder="Senha">
-<label>Nome Completo</label><input id="regFullName" placeholder="Nome completo">
-<label>Email</label><input id="regEmail" placeholder="Email">
-<button onclick="registerUser()">Registrar</button>
+  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar</button>
+  <h2>Registrar</h2>
+  <label>Usuário</label><input id="regUser" placeholder="Usuário">
+  <label>Senha</label><input id="regPass" type="password" placeholder="Senha">
+  <label>Nome Completo</label><input id="regFullName" placeholder="Nome completo">
+  <label>Email</label><input id="regEmail" placeholder="Email">
+  <button onclick="registerUser()">Registrar</button>
 </div>
 
 <!-- PERFIL -->
 <div class="side-panel" id="profilePanel">
-<button class="close-btn" onclick="closeAllPanels()">✖ Fechar Perfil</button>
-<h2>Meu Perfil</h2>
-<div class="profile-panel" id="profileInfo">
-<img id="profilePic" src="https://i.imgur.com/2DhmtJ4.jpg" alt="Avatar">
-<label>Foto URL</label><input id="profilePicInput" placeholder="URL da foto">
-<label>Nome</label><input id="profileName">
-<label>Email</label><input id="profileEmail">
-<label>Telefone</label><input id="profilePhone">
-<label>Endereço</label><input id="profileAddress">
-<button onclick="saveProfile()">Salvar Perfil</button>
-<h3>Histórico de Compras</h3>
-<ul id="purchaseHistory"></ul>
-</div>
+  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Perfil</button>
+  <h2>Meu Perfil</h2>
+  <div class="profile-panel">
+    <img id="profilePic" src="https://i.imgur.com/2DhmtJ4.jpg" alt="Avatar">
+    <label>Foto URL</label><input id="profilePicInput" placeholder="URL da foto">
+    <label>Nome</label><input id="profileName">
+    <label>Email</label><input id="profileEmail">
+    <label>Telefone</label><input id="profilePhone">
+    <label>Endereço</label><input id="profileAddress">
+    <button onclick="saveProfile()">Salvar Perfil</button>
+    <h3>Histórico de Compras</h3>
+    <ul id="purchaseHistory"></ul>
+  </div>
 </div>
 
 <!-- ADMIN -->
 <div class="side-panel admin-panel" id="adminPanel">
-<button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
-<h2>Painel Admin Profissional</h2>
+  <button class="close-btn" onclick="closeAllPanels()">✖ Fechar Admin</button>
+  <h2>Painel Admin Profissional</h2>
 
-<div class="admin-section">
-<h3>Adicionar Produto</h3>
-<input id="adminName" placeholder="Nome Produto">
-<input id="adminPrice" type="number" placeholder="Preço">
-<input id="adminCost" type="number" placeholder="Custo">
-<textarea id="adminDesc" placeholder="Descrição do produto"></textarea>
-<input id="adminImg" placeholder="URL Imagem">
-<select id="adminCategory">
-<option value="Acessório">Acessório</option>
-<option value="Relógio">Relógio</option>
-<option value="Óculos">Óculos</option>
-<option value="Boné">Boné</option>
-</select>
-<button onclick="adminAddProduct()">Adicionar Produto</button>
-</div>
+  <div class="admin-section">
+    <h3>Adicionar Produto</h3>
+    <input id="adminName" placeholder="Nome Produto">
+    <input id="adminPrice" type="number" placeholder="Preço">
+    <input id="adminCost" type="number" placeholder="Custo">
+    <textarea id="adminDesc" placeholder="Descrição do produto"></textarea>
+    <input id="adminImg" placeholder="URL Imagem">
+    <select id="adminCategory">
+      <option value="Acessório">Acessório</option>
+      <option value="Relógio">Relógio</option>
+      <option value="Óculos">Óculos</option>
+      <option value="Boné">Boné</option>
+    </select>
+    <button onclick="adminAddProduct()">Adicionar Produto</button>
+  </div>
 
-<div class="admin-section">
-<h3>Editar/Remover Produtos</h3>
-<div id="adminProductList"></div>
-</div>
+  <div class="admin-section">
+    <h3>Editar/Remover Produtos</h3>
+    <div id="adminProductList"></div>
+  </div>
 
-<div class="admin-section">
-<h3>Usuários Registrados</h3>
-<div id="adminUserList"></div>
-</div>
+  <div class="admin-section">
+    <h3>Usuários Registrados</h3>
+    <div id="adminUserList"></div>
+  </div>
 
-<div class="admin-section">
-<h3>Estatísticas</h3>
-<p>Total de Vendas: R$ <span id="statTotalSales">0</span></p>
-<p>Produtos mais vendidos:</p>
-<ul id="statTopProducts"></ul>
-<p>Total de Usuários: <span id="statTotalUsers">0</span></p>
+  <div class="admin-section">
+    <h3>Estatísticas</h3>
+    <p>Total de Vendas: R$ <span id="statTotalSales">0</span></p>
+    <p>Produtos mais vendidos:</p>
+    <ul id="statTopProducts"></ul>
+    <p>Total de Usuários: <span id="statTotalUsers">0</span></p>
+  </div>
 </div>
 
 <script>
 // =================== JS COMPLETO ===================
 
-// ADMIN FIXO
-const adminUser={username:"admin",password:"1234"}
+// Admin fixo
+const adminUser = { username:"admin", password:"1234" };
 
-// PRODUTOS REAIS SHOPEE + LUCRO
-let products=JSON.parse(localStorage.getItem('products'))||[
-{name:"Relógio Esportivo Masculino",price:159,cost:80,img:"https://cf.shopee.com.br/file/456789abcd1234",desc:"Relógio resistente à água, moderno e esportivo.",reviews:[5,4,5,4,5],sold:0},
-{name:"Óculos de Sol Polarizado",price:129,cost:60,img:"https://cf.shopee.com.br/file/1234abcd5678",desc:"Óculos polarizado com proteção UV.",reviews:[4,4,4,5],sold:0},
-{name:"Boné Streetwear",price:79,cost:35,img:"https://cf.shopee.com.br/file/abcd1234efgh",desc:"Boné urbano para o dia a dia.",reviews:[5,5,4,4],sold:0},
-{name:"Pulseira Masculina de Couro",price:49,cost:20,img:"https://cf.shopee.com.br/file/efgh5678ijkl",desc:"Pulseira de couro elegante.",reviews:[4,4,5,5],sold:0},
-{name:"Carteira Slim Masculina",price:69,cost:30,img:"https://cf.shopee.com.br/file/ijkl1234mnop",desc:"Carteira compacta e resistente.",reviews:[5,5,5,4],sold:0},
-{name:"Chapéu Fedora",price:109,cost:50,img:"https://cf.shopee.com.br/file/mnop5678qrst",desc:"Chapéu clássico com estilo.",reviews:[4,3,4,5],sold:0},
-{name:"Relógio Smartwatch",price:299,cost:150,img:"https://cf.shopee.com.br/file/qrst1234uvwx",desc:"Smartwatch moderno com monitor de batimentos.",reviews:[5,5,5,5],sold:0},
-{name:"Óculos Aviador Masculino",price:179,cost:80,img:"https://cf.shopee.com.br/file/uvwx5678yzab",desc:"Estilo aviador clássico.",reviews:[4,5,5,4],sold:0},
-{name:"Boné Trucker Casual",price:89,cost:40,img:"https://cf.shopee.com.br/file/yzab1234cdef",desc:"Boné casual para uso diário.",reviews:[4,4,5,4],sold:0},
-{name:"Colar Masculino Moderno",price:59,cost:25,img:"https://cf.shopee.com.br/file/cdef5678ghij",desc:"Colar elegante masculino.",reviews:[5,4,5,5],sold:0},
+// Produtos iniciais com imagens que carregam
+let products = JSON.parse(localStorage.getItem('products')) || [
+  {name:"Relógio Esportivo Masculino",price:159,cost:80,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",desc:"Relógio resistente à água, moderno e esportivo.",reviews:[5,4,5,4,5],sold:0},
+  {name:"Óculos de Sol Polarizado",price:129,cost:60,img:"https://images.unsplash.com/photo-1516728778615-2d590ea1856f?w=500",desc:"Óculos polarizado com proteção UV.",reviews:[4,4,4,5],sold:0},
+  {name:"Boné Streetwear",price:79,cost:35,img:"https://images.unsplash.com/photo-1503342452485-86f48843b77c?w=500",desc:"Boné urbano para o dia a dia.",reviews:[5,5,4,4],sold:0},
+  {name:"Pulseira Masculina de Couro",price:49,cost:20,img:"https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=500",desc:"Pulseira de couro elegante.",reviews:[4,4,5,5],sold:0},
+  {name:"Carteira Slim Masculina",price:69,cost:30,img:"https://images.unsplash.com/photo-1606813909151-0546b8f6e089?w=500",desc:"Carteira compacta e resistente.",reviews:[5,5,5,4],sold:0}
 ];
 
-// USUÁRIOS E CARRINHO
-let users=JSON.parse(localStorage.getItem('users'))||[];
-let cart=JSON.parse(localStorage.getItem('cart'))||[];
-let currentUser=null;
+let users = JSON.parse(localStorage.getItem('users')) || [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let currentUser = null;
 
-// ELEMENTOS
+// Elementos
 const overlayDiv=document.getElementById("overlay");
 const cartDiv=document.getElementById("cartPanel");
 const loginDiv=document.getElementById("loginPanel");
@@ -198,196 +198,206 @@ const loginBtn=document.getElementById("loginBtn");
 const registerBtn=document.getElementById("registerBtn");
 const profileAvatar=document.getElementById("profileAvatar");
 
-// =================== FUNÇÕES ===================
+// Funções
 function saveState(){
-localStorage.setItem("products",JSON.stringify(products));
-localStorage.setItem("users",JSON.stringify(users));
-localStorage.setItem("cart",JSON.stringify(cart));
+  localStorage.setItem("products",JSON.stringify(products));
+  localStorage.setItem("users",JSON.stringify(users));
+  localStorage.setItem("cart",JSON.stringify(cart));
 }
 
-function togglePanel(panel){closeAllPanels();overlayDiv.classList.add("show");
-if(panel==="cart")cartDiv.classList.add("open");
-if(panel==="login")loginDiv.classList.add("open");
-if(panel==="register")registerDiv.classList.add("open");
-if(panel==="profile")profileDiv.classList.add("open");
-if(panel==="admin")adminPanel.classList.add("open")}
-function closeAllPanels(){overlayDiv.classList.remove("show");cartDiv.classList.remove("open");loginDiv.classList.remove("open");registerDiv.classList.remove("open");profileDiv.classList.remove("open");adminPanel.classList.remove("open")}
+function togglePanel(panel){
+  closeAllPanels();
+  overlayDiv.classList.add("show");
+  document.getElementById(panel+"Panel")?.classList.add("open");
+}
+function closeAllPanels(){
+  overlayDiv.classList.remove("show");
+  document.querySelectorAll(".side-panel").forEach(el=>el.classList.remove("open"));
+}
 
-// =================== PRODUTOS ===================
+// Render produtos
 function renderProducts(){
-let searchText=document.getElementById("search").value.toLowerCase();
-productList.innerHTML="";
-products.forEach((p,i)=>{
-if(!p.name.toLowerCase().includes(searchText)) return;
-const soldNow=p.sold||0;
-const promo=Math.random()<0.3?'🔥 Promo!':'';
-let stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0;
-let starHTML="";
-for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆";}
-productList.innerHTML+=`<div class="card">
-<img src="${p.img}" loading="lazy" alt="${p.name}">
-<div class="badge">${soldNow} vendidos ${promo}</div>
-<h3>${p.name}</h3>
-<div class="price">R$ ${p.price}</div>
-<p>${p.desc}</p>
-<div>${starHTML}</div>
-<button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
-</div>`});
+  let searchText=document.getElementById("search").value.toLowerCase();
+  productList.innerHTML="";
+  products.forEach((p,i)=>{
+    if(!p.name.toLowerCase().includes(searchText)) return;
+    let stars=p.reviews.length?Math.round(p.reviews.reduce((a,b)=>a+b,0)/p.reviews.length):0;
+    let starHTML="";for(let s=0;s<5;s++){starHTML+=s<stars?"⭐":"☆";}
+    productList.innerHTML+=`
+      <div class="card">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="badge">${p.sold} vendidos</div>
+        <h3>${p.name}</h3>
+        <div class="price">R$ ${p.price}</div>
+        <p>${p.desc}</p>
+        <div>${starHTML}</div>
+        <button class="add-btn" onclick="flyToCart(event,${i})"><span>Adicionar</span></button>
+      </div>`;
+  });
 }
 
-// =================== CARRINHO ===================
+// Carrinho
 function updateCart(){
-let html="",total=0,count=0;
-cart.forEach((p,idx)=>{total+=p.price*p.quantity;count+=p.quantity;
-html+=`<div class="cart-item"><img src="${p.img}"><div class="cart-item-info"><h4>${p.name}</h4><p>R$ ${p.price} x ${p.quantity}</p></div><button class="remove-btn" onclick="removeFromCart(${idx})">Remover</button></div>`});
-cartTotal.innerText=total;cartCount.innerText=count;document.getElementById("cartItems").innerHTML=html;
+  cartTotal.innerText = cart.reduce((acc,p)=>acc + (p.price*p.quantity),0);
+  cartCount.innerText = cart.reduce((acc,p)=>acc + p.quantity,0);
+  let html="";
+  cart.forEach((p,i)=>html+=`
+    <div class="cart-item">
+      <img src="${p.img}">
+      <div class="cart-item-info">
+        <h4>${p.name}</h4><p>R$${p.price} x ${p.quantity}</p>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${i})">Remover</button>
+    </div>
+  `);
+  document.getElementById("cartItems").innerHTML=html;
 }
 
 function addToCart(i){
-const existing=cart.find(p=>p.name===products[i].name);
-if(existing){existing.quantity++;products[i].sold++}
-else{cart.push({...products[i],quantity:1});products[i].sold=1}
-updateCart();renderAdminPanel();saveState();
+  const existing = cart.find(x=>x.name===products[i].name);
+  if(existing){existing.quantity++;products[i].sold++;}
+  else {cart.push({...products[i],quantity:1});products[i].sold=1;}
+  saveState();
+  renderProducts();
+  updateCart();
 }
 
-function removeFromCart(idx){cart.splice(idx,1);updateCart();saveState();}
-function emptyCart(){cart=[];updateCart();saveState();}
+function removeFromCart(i){cart.splice(i,1);saveState();updateCart();}
+function emptyCart(){cart=[];saveState();updateCart();}
 
-// =================== ANIMAÇÃO FLY ===================
-let flying=false
-function flyToCart(e,i){if(flying)return;flying=true
-const img=e.target.closest('.card').querySelector('img')
-const clone=img.cloneNode(true)
-const rect=img.getBoundingClientRect()
-clone.style.position='fixed';clone.style.top=rect.top+'px';clone.style.left=rect.left+'px';clone.style.width=rect.width+'px';clone.style.height=rect.height+'px';clone.style.transition='all 0.8s ease-in-out';clone.style.zIndex=100
-document.body.appendChild(clone)
-const cartBtn=document.querySelector('.top-actions button:last-child')
-const cRect=cartBtn.getBoundingClientRect()
-setTimeout(()=>{clone.style.top=cRect.top+'px';clone.style.left=cRect.left+'px';clone.style.width='40px';clone.style.height='40px';clone.style.opacity=0},10)
-setTimeout(()=>{document.body.removeChild(clone);addToCart(i);flying=false},810)
+// Fly animation
+function flyToCart(e,i){
+  const img = e.target.closest(".card").querySelector("img");
+  const clone = img.cloneNode(true);
+  const rect = img.getBoundingClientRect();
+  clone.style.position="fixed";
+  clone.style.top=rect.top+"px";
+  clone.style.left=rect.left+"px";
+  clone.style.width=rect.width+"px";
+  clone.style.transition="all 0.8s ease";
+  document.body.appendChild(clone);
+  const cartBtnRect = document.querySelector(".top-actions button:last-child").getBoundingClientRect();
+  setTimeout(()=>{
+    clone.style.top=cartBtnRect.top+"px";
+    clone.style.left=cartBtnRect.left+"px";
+    clone.style.width="40px";
+    clone.style.opacity="0";
+  },10);
+  setTimeout(()=>{clone.remove();addToCart(i);},800);
 }
 
-// =================== LOGIN/REGISTER ===================
+// Login / Register
 function login(){
-let u=document.getElementById("user").value.trim();
-let p=document.getElementById("pass").value.trim();
-if(!u||!p) return alert("Preencha todos os campos");
-if(u===adminUser.username && p===adminUser.password){
-alert("Login efetuado como ADMIN");
-loginBtn.style.display="none";
-registerBtn.style.display="none";
-profileAvatar.style.display="none";
-togglePanel("admin");
-}else{
-const user=users.find(x=>x.username===u && x.password===p);
-if(user){
-currentUser=user;
-alert("Login efetuado como usuário "+u);
-loginBtn.style.display="none";
-registerBtn.style.display="none";
-profileAvatar.style.display="inline-block";
-profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
-loadProfile();
-}else alert("Usuário ou senha incorretos");
-}
-closeAllPanels();
+  let u=document.getElementById("user").value.trim();
+  let p=document.getElementById("pass").value.trim();
+  if(!u||!p)return alert("Preencha todos os campos!");
+  if(u===adminUser.username && p===adminUser.password){
+    alert("Logado como ADMIN");
+    profileAvatar.style.display="none";
+    loginBtn.style.display="none";
+    registerBtn.style.display="none";
+    togglePanel("admin");
+  } else {
+    const user = users.find(x=>x.username===u && x.password===p);
+    if(!user) return alert("Usuário ou senha inválidos!");
+    currentUser=user;
+    alert("Bem‑vindo "+u+"!");
+    loginBtn.style.display="none";
+    registerBtn.style.display="none";
+    profileAvatar.style.display="block";
+    profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
+    loadProfile();
+  }
+  closeAllPanels();
 }
 
 function registerUser(){
-let username=document.getElementById("regUser").value.trim();
-let password=document.getElementById("regPass").value.trim();
-let fullName=document.getElementById("regFullName").value.trim();
-let email=document.getElementById("regEmail").value.trim();
-if(!username||!password||!fullName||!email) return alert("Preencha todos os campos");
-if(users.find(u=>u.username===username)) return alert("Usuário já existe");
-let newUser={username,password,fullName,email,phone:"",address:"",pic:"",history:[]};
-users.push(newUser);
-saveState();
-alert("Registro efetuado com sucesso! Faça login.");
-closeAllPanels();
+  let username=document.getElementById("regUser").value.trim();
+  let password=document.getElementById("regPass").value.trim();
+  let fullName=document.getElementById("regFullName").value.trim();
+  let email=document.getElementById("regEmail").value.trim();
+  if(!username||!password||!fullName||!email)return alert("Preencha todos os campos!");
+  if(users.find(x=>x.username===username))return alert("Usuário já existe!");
+  users.push({username,password,fullName,email,phone:"",address:"",pic:"",history:[]});
+  saveState();
+  alert("Registrado! Faça login.");
+  closeAllPanels();
 }
 
-// =================== PERFIL ===================
+// Perfil
 function loadProfile(){
-if(!currentUser) return;
-document.getElementById("profilePic").src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
-document.getElementById("profileName").value=currentUser.fullName||"";
-document.getElementById("profileEmail").value=currentUser.email||"";
-document.getElementById("profilePhone").value=currentUser.phone||"";
-document.getElementById("profileAddress").value=currentUser.address||"";
-let historyHTML="";
-(currentUser.history||[]).forEach(item=>{historyHTML+=`<li>${item}</li>`});
-document.getElementById("purchaseHistory").innerHTML=historyHTML;
+  if(!currentUser)return;
+  document.getElementById("profilePic").src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
+  document.getElementById("profileName").value=currentUser.fullName||"";
+  document.getElementById("profileEmail").value=currentUser.email||"";
+  document.getElementById("profilePhone").value=currentUser.phone||"";
+  document.getElementById("profileAddress").value=currentUser.address||"";
+  let histHTML="";
+  (currentUser.history||[]).forEach(i=>histHTML+=`<li>${i}</li>`);
+  document.getElementById("purchaseHistory").innerHTML=histHTML;
 }
 
 function saveProfile(){
-if(!currentUser) return;
-currentUser.pic=document.getElementById("profilePicInput").value.trim()||currentUser.pic;
-currentUser.fullName=document.getElementById("profileName").value.trim();
-currentUser.email=document.getElementById("profileEmail").value.trim();
-currentUser.phone=document.getElementById("profilePhone").value.trim();
-currentUser.address=document.getElementById("profileAddress").value.trim();
-profileAvatar.src=currentUser.pic||"https://i.imgur.com/2DhmtJ4.jpg";
-saveState();
-alert("Perfil salvo!");
-loadProfile();
+  if(!currentUser) return alert("Faça login primeiro!");
+  currentUser.pic=document.getElementById("profilePicInput").value.trim()||currentUser.pic;
+  currentUser.fullName=document.getElementById("profileName").value.trim();
+  currentUser.email=document.getElementById("profileEmail").value.trim();
+  currentUser.phone=document.getElementById("profilePhone").value.trim();
+  currentUser.address=document.getElementById("profileAddress").value.trim();
+  profileAvatar.src=currentUser.pic||profileAvatar.src;
+  saveState();
+  alert("Perfil atualizado!");
+  loadProfile();
 }
 
-// =================== ADMIN ===================
+// Admin
 function renderAdminPanel(){
-if(!adminPanel.classList.contains('open')) return;
-let html="";
-products.forEach((p,i)=>{
-html+=`<div style="border:1px solid #6a00ff;padding:5px;margin:5px;border-radius:5px;">
-<strong>${p.name}</strong> - R$ ${p.price} 
-<button onclick="editProduct(${i})">Editar</button>
-<button onclick="deleteProduct(${i})">Remover</button>
-</div>`;
-});
-document.getElementById("adminProductList").innerHTML=html;
-
-let userHtml="";
-users.forEach(u=>{
-userHtml+=`<div>${u.username} (${u.fullName})</div>`;
-});
-document.getElementById("adminUserList").innerHTML=userHtml;
-
-let totalSales=cart.reduce((a,b)=>a.price*b.quantity+a,0);
-document.getElementById("statTotalSales").innerText=totalSales;
-let topProducts=products.sort((a,b)=>b.sold-a.sold).slice(0,5).map(p=>`<li>${p.name} - ${p.sold} vendidos</li>`).join("");
-document.getElementById("statTopProducts").innerHTML=topProducts;
-document.getElementById("statTotalUsers").innerText=users.length;
+  let prodHTML="";
+  products.forEach((p,i)=>{
+    prodHTML+=`<div style="border:1px solid #6a00ff;padding:6px;margin:5px;border-radius:6px;">
+      <b>${p.name}</b> - R$${p.price}
+      <button onclick="editProduct(${i})">Editar</button>
+      <button onclick="deleteProduct(${i})">Remover</button>
+    </div>`;
+  });
+  document.getElementById("adminProductList").innerHTML=prodHTML;
+  let userHTML="";
+  users.forEach(u=>userHTML+=`<div>${u.username} (${u.fullName})</div>`);
+  document.getElementById("adminUserList").innerHTML=userHTML;
+  document.getElementById("statTotalUsers").innerText = users.length;
+  document.getElementById("statTotalSales").innerText = cart.reduce((acc,p)=>acc+p.price*p.quantity,0);
+  document.getElementById("statTopProducts").innerHTML = products.sort((a,b)=>b.sold-a.sold).slice(0,5).map(p=>`<li>${p.name} - ${p.sold} vendidos</li>`).join("");
 }
 
 function adminAddProduct(){
-let name=document.getElementById("adminName").value.trim();
-let price=parseFloat(document.getElementById("adminPrice").value);
-let cost=parseFloat(document.getElementById("adminCost").value);
-let desc=document.getElementById("adminDesc").value.trim();
-let img=document.getElementById("adminImg").value.trim();
-let category=document.getElementById("adminCategory").value;
-if(!name || !price || !cost || !desc || !img) return alert("Preencha todos os campos");
-products.push({name,price,cost,img,desc,reviews:[],sold:0});
-saveState();renderProducts();renderAdminPanel();
-alert("Produto adicionado!");
+  let name=document.getElementById("adminName").value.trim();
+  let price=parseFloat(document.getElementById("adminPrice").value);
+  let cost=parseFloat(document.getElementById("adminCost").value);
+  let desc=document.getElementById("adminDesc").value.trim();
+  let img=document.getElementById("adminImg").value.trim();
+  if(!name||!price||!cost||!desc||!img)return alert("Preencha todos os campos!");
+  products.push({name,price,cost,img,desc,reviews:[],sold:0});
+  saveState();renderProducts();renderAdminPanel();
+  alert("Produto adicionado!");
 }
 
 function editProduct(i){
-let p=products[i];
-let newName=prompt("Nome",p.name);
-if(newName!==null)p.name=newName;
-let newPrice=parseFloat(prompt("Preço",p.price));
-if(!isNaN(newPrice))p.price=newPrice;
-let newDesc=prompt("Descrição",p.desc);
-if(newDesc!==null)p.desc=newDesc;
-let newImg=prompt("URL Imagem",p.img);
-if(newImg!==null)p.img=newImg;
-saveState();renderProducts();renderAdminPanel();
+  let p=products[i];
+  let n=prompt("Nome:",p.name); if(n!=null)p.name=n;
+  let pr=parseFloat(prompt("Preço:",p.price)); if(!isNaN(pr))p.price=pr;
+  let d=prompt("Descrição:",p.desc); if(d!=null)p.desc=d;
+  let im=prompt("URL da imagem:",p.img); if(im!=null)p.img=im;
+  saveState();renderProducts();renderAdminPanel();
 }
 
-function deleteProduct(i){if(confirm("Remover produto?")){products.splice(i,1);saveState();renderProducts();renderAdminPanel();}}
+function deleteProduct(i){
+  if(confirm("Remover produto?")){
+    products.splice(i,1);
+    saveState();renderProducts();renderAdminPanel();
+  }
+}
 
-// =================== INICIAL ===================
+// Inicialização
 renderProducts();
 updateCart();
 </script>
